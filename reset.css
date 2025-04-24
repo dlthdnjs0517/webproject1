@@ -1,0 +1,281 @@
+@font-face {
+	font-family: 'KoPub Dotum';
+	font-style: normal;
+	font-weight: 300;
+	src: url("https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css");
+}
+
+@font-face {
+	font-family: 'KoPub Dotum';
+	font-style: normal;
+	font-weight: 400;
+	src: url("https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css");
+}
+
+@font-face {
+	font-family: 'KoPub Dotum';
+	font-style: normal;
+	font-weight: 100;
+	src: url("https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css");
+}
+
+@font-face {
+	font-family: 'KoPub Dotum';
+	font-style: normal;
+	font-weight: 500;
+	src: url("https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css");
+}
+
+@font-face {
+	font-family: 'KoPub Dotum';
+	font-style: normal;
+	font-weight: 700;
+	src: url("https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css");
+}
+
+
+* {
+	margin: 0;
+	padding: 0
+}
+
+html {
+	width: 100%;
+	height: 100%
+}
+
+body {
+	font-size: 12px;
+	font-family: "Noto Sans KR", "Malgun Gothic", "맑은고딕", dotum, "돋움", sans-serif;
+	color: #000
+}
+
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+p,
+form,
+fieldset,
+input,
+table,
+tr,
+th,
+td {
+	margin: 0;
+	padding: 0
+}
+
+ul,
+ol,
+li {
+	list-style: none
+}
+
+img,
+fieldset {
+	border: none;
+	vertical-align: top
+}
+
+legend,
+caption {
+	text-indent: -9999px;
+	overflow: hidden;
+	width: 0;
+	height: 0;
+	;
+	font-size: 0;
+	line-height: 0
+}
+
+textarea,
+button {
+	vertical-align: middle
+}
+
+input,
+select {
+	height: 16px;
+	border: 1px solid #ddd;
+	background: #fff;
+	color: #000;
+	font-family: 'KoPub Dotum';
+	vertical-align: middle
+}
+
+input {
+	padding: 3px
+}
+
+select {
+	padding: 2px
+}
+
+textarea {
+	padding: 3px;
+	border: 1px solid #ddd;
+	background: #fff;
+	color: #000;
+	vertical-align: middle
+}
+
+.checkbox {
+	padding: 0;
+	border: 0;
+}
+
+.disNone {
+	display: none;
+}
+
+a {
+	color: #000;
+	text-decoration: none
+}
+
+a:hover,
+a:focus,
+a:active {
+	color: #000;
+	text-decoration: none
+}
+
+table {
+	border-collapse: collapse
+}
+
+/* 간격, 폰트 */
+.mt5 {
+	margin-top: 5px
+}
+
+.mt10 {
+	margin-top: 10px
+}
+
+.mt15 {
+	margin-top: 15px
+}
+
+.mt20 {
+	margin-top: 20px
+}
+
+.mt25 {
+	margin-top: 25px
+}
+
+.mt30 {
+	margin-top: 30px
+}
+
+.mt35 {
+	margin-top: 35px
+}
+
+.mt40 {
+	margin-top: 40px !important
+}
+
+.mt45 {
+	margin-top: 45px
+}
+
+.mt50 {
+	margin-top: 50px
+}
+
+.mt55 {
+	margin-top: 55px
+}
+
+.mt60 {
+	margin-top: 60px
+}
+
+.mt80 {
+	margin-top: 80px
+}
+
+.margR9 {
+	margin-right: 9px;
+}
+
+.margR10 {
+	margin-right: 10px
+}
+
+.margL9 {
+	margin-left: 10px
+}
+
+.mt18 {
+	margin-top: 18px
+}
+
+.mt27 {
+	margin-top: 27px
+}
+
+.mt28 {
+	margin-top: 28px
+}
+
+.mt100 {
+	margin-top: 100px
+}
+
+.mt11 {
+	margin-top: 11px
+}
+
+.mt13 {
+	margin-top: 13px
+}
+
+.mt114 {
+	margin-top: 114px !important
+}
+
+.mt146 {
+	margin-top: 146px
+}
+
+.mb10 {
+	margin-bottom: 10px;
+}
+
+.mb30 {
+	margin-bottom: 30px;
+}
+
+.mb80 {
+	margin-bottom: 80px;
+}
+
+.pdL10 {
+	padding-left: 10px;
+}
+
+.pdL20 {
+	padding-left: 20px;
+}
+
+.pdT20 {
+	padding-top: 20px;
+}
+
+.pdT55 {
+	padding-top: 55px;
+}
