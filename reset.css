@@ -2,37 +2,61 @@
 	font-family: 'KoPub Dotum';
 	font-style: normal;
 	font-weight: 300;
-	src: url("https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css");
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Light.eot);
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Light.eot?#iefix) format('embedded-opentype'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Light.woff) format('woff'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Light.ttf) format('truetype');
 }
 
 @font-face {
 	font-family: 'KoPub Dotum';
 	font-style: normal;
 	font-weight: 400;
-	src: url("https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css");
-}
-
-@font-face {
-	font-family: 'KoPub Dotum';
-	font-style: normal;
-	font-weight: 100;
-	src: url("https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css");
-}
-
-@font-face {
-	font-family: 'KoPub Dotum';
-	font-style: normal;
-	font-weight: 500;
-	src: url("https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css");
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Medium.eot);
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Medium.eot?#iefix) format('embedded-opentype'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Medium.woff) format('woff'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Medium.ttf) format('truetype');
 }
 
 @font-face {
 	font-family: 'KoPub Dotum';
 	font-style: normal;
 	font-weight: 700;
-	src: url("https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css");
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Bold.eot);
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Bold.eot?#iefix) format('embedded-opentype'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Bold.woff) format('woff'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubDotum-Bold.ttf) format('truetype');
 }
 
+@font-face {
+	font-family: 'KoPub Batang';
+	font-style: normal;
+	font-weight: 300;
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Light.eot);
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Light.eot?#iefix) format('embedded-opentype'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Light.woff) format('woff'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Light.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'KoPub Batang';
+	font-style: normal;
+	font-weight: 400;
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Medium.eot);
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Medium.eot?#iefix) format('embedded-opentype'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Medium.woff) format('woff'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Medium.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'KoPub Batang';
+	font-style: normal;
+	font-weight: 700;
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Bold.eot);
+	src: url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Bold.eot?#iefix) format('embedded-opentype'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Bold.woff) format('woff'),
+		url(//cdn.jsdelivr.net/npm/font-kopub@1.0/fonts/KoPubBatang-Bold.ttf) format('truetype');
+}
 
 * {
 	margin: 0;
@@ -46,7 +70,7 @@ html {
 
 body {
 	font-size: 12px;
-	font-family: "Noto Sans KR", "Malgun Gothic", "맑은고딕", dotum, "돋움", sans-serif;
+	font-family: 'KoPub Dotum';
 	color: #000
 }
 

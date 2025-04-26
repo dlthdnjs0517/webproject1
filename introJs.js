@@ -1,8 +1,8 @@
 const header = document.querySelector('header');
 const headerLogo = document.querySelector('header h1 img');
 const headerInner = document.querySelector('.header-inner');
-const subMenus = document.querySelectorAll(".gnb-title .sub");
-const headerbg = document.querySelector(".headerbg");
+const subMenus = document.querySelectorAll('.sub');
+const headerbg = document.querySelector('.headerbg');
 
 
 // gnb.addEventListener('mouseenter', () => {
@@ -58,13 +58,19 @@ header.addEventListener('mouseenter', function () {
 		headerInner.classList.add('active');
 	}
 	if (subMenus) {
-		subMenus.style.display = 'block';
-		subMenus.style.opacity = 0;
+		subMenus.forEach(function (menu) {
+			menu.style.display = 'none';
+		})
+		subMenus.forEach(function (menu) {
+			menu.style.opacity = 0;
+		})
 		let opacity = 0;
-		const fadeInInterval - setInterval(function () {
+		const fadeInInterval = setInterval(function () {
 			if (opacity < 1) {
 				opacity += 0.1;
-				subMenus.style.opacity = opacity;
+				subMenus.forEach(function (menu) {
+					menu.style.opacity = opacity;
+				})
 			} else {
 				clearInterval(fadeInInterval);
 			}
@@ -77,35 +83,43 @@ header.addEventListener('mouseenter', function () {
 });
 
 header.addEventListener('mouseleave', function () {
-	headerLogo.setAttribute('src', originalLogoSrc);
 	this.classList.remove('active');
 	if (headerbg) {
 		headerbg.classList.remove('active');
 	}
 	// Hide subMenus immediately on mouse leave as in the original jQuery
 	if (subMenus) {
-		subMenus.style.display = 'none';
+		subMenus.forEach(function (menu) {
+			menu.style.display = 'none';
+		})
+	} else {
+		console.log('subMenu 요소를 찾을 수 없습니다');
 	}
 });
 
 // 230705 Accessibility work (Keyup event)
 header.addEventListener('keyup', function (e) {
 	// Check if the pressed key is Tab (keyCode 9)
-	if (e.keyCode === 9) {
-		headerLogo.setAttribute('src', '/common/images/main/hover_logo.png');
+	if (e.key === 'Tab') {
 		// Check if headerInner exists before trying to add a class
 		if (headerInner) {
 			headerInner.classList.add('active');
 		}
 		// Simple fade-in approximation for subMenus
 		if (subMenus) {
-			subMenus.style.display = 'block';
-			subMenus.style.opacity = 0;
+			subMenus.forEach(function (menu) {
+				menu.style.display = 'none';
+			})
+			subMenus.forEach(function (menu) {
+				menu.style.opacity = 0;
+			})
 			let opacity = 0;
 			const fadeInInterval = setInterval(function () {
 				if (opacity < 1) {
 					opacity += 0.1; // Adjust increment for speed
-					subMenus.style.opacity = opacity;
+					subMenus.forEach(function (menu) {
+						menu.style.opacity = 0;
+					})
 				} else {
 					clearInterval(fadeInInterval);
 				}
@@ -125,14 +139,15 @@ header.addEventListener('focusout', function () {
 	// you would need to add a separate event listener for that element.
 
 	// Revert logo and remove classes
-	headerLogo.setAttribute('src', originalLogoSrc);
 	this.classList.remove('active');
 	if (headerbg) {
 		headerbg.classList.remove('active');
 	}
 	// Hide subMenus immediately on focus out
 	if (subMenus) {
-		subMenus.style.display = 'none';
+		subMenus.forEach(function (menu) {
+			menu.style.display = 'none';
+		})
 	}
 });
 

@@ -133,11 +133,22 @@ header h1 {
 
 header .header-top {
 	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	width: 100%;
 	top: 10px;
-	left: 756px;
 	margin-bottom: 30px;
 	background-color: fuchsia;
 }
+
+/* @media (min-width:1429px) {
+	header .header-top {
+		top: 10px;
+		left: 900px;
+		width: 100%;
+	}
+} */
 
 header .header-top a {
 	margin-right: 16px;
@@ -154,22 +165,18 @@ header .header-top a.active {
 
 header .header-top a::after {
 	content: "";
-	position: absolute;
+	position: relative;
+	display: inline-block;
 	width: 1px;
 	height: 10px;
 	margin-top: 5px;
 	margin-left: 9px;
 	background: #fff;
+	vertical-align: middle;
 }
 
 header.active .header-top a::after {
 	background: gray;
-}
-
-header .gnb .gnb-menu ul {
-	margin-left: 364px;
-	font-size: 15px;
-	overflow: hidden;
 }
 
 header .header-top a {
@@ -177,12 +184,46 @@ header .header-top a {
 	color: #fff;
 }
 
-header.active .header-top a {
-	color: gray;
+
+/* header .header-top .employbox {
+	height: 17px;
+	float: left;
+	width: 63px;
+	height: 17px;
+	padding-left: 22px;
+	overflow: hidden;
 }
 
-header .header-top a.active {
-	color: gray;
+header .header-top .employ {
+	position: relative;
+	display: block;
+	float: left;
+	height: 19px;
+} */
+header .header-top .employbox,
+header .header-top .employ {
+	float: none;
+	display: flex;
+	align-items: center;
+	padding-left: 0;
+}
+
+header.active .header-top .employ {
+	color: #008944;
+}
+
+header .header-top .employ.active {
+	color: #008944;
+}
+
+header .header-top .afternone::after {
+	display: none;
+}
+
+header .gnb .gnb-menu ul {
+	margin-left: 364px;
+	font-size: 15px;
+	overflow: hidden;
 }
 
 header .gnb .gnb-menu .gnb-title {
