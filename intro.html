@@ -5,44 +5,47 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="reset.css">
+	<link rel="stylesheet" href="swiper.css">
+	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 	<link rel="stylesheet" href="introCss.css">
 	<link href="https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css" rel="stylesheet">
-	<script src="https://cdn.tailwindcss.com"></script>
-	<!-- <script>
-		// 	jQuery(document).ready(function () {
-		// 		jQuery(".directBt").focusin(function () {
-		// 			jQuery(this).css("top", "0");
-		// 		}).focusout(function () {
-		// 			jQuery(this).css("top", "-100px");
-		// 		})
-		// 	});
-		// </script> -->
+	<script>//접근성 요소
+		window.onload = function () { //페이지의 모든 요소들이 로딩될때 작동되는 함수
+			const btn = document.querySelector('.directBt')
+			btn.addEventListener('focus', function () {
+				this.style.top = '0';
+			})
+			btn.addEventListener('blur', function () {
+				this.style.top = '-100px';
+			})
+		}
+	</script>
 	<title>(주)백일몽</title>
 </head>
 
 <body>
 	<a class="directBt" style="top:-100px;" href="#container">본문 바로가기</a>
-	<div id="wrap" style="translate: none; rotate: none; scale: none; transform: translate(0px,0px);">
+	<div id="wrap">
 		<!-- 여기서부터 헤더 -->
 		<header class="">
-			<div class="header-inner" class="2xl">
+			<div class="header-inner">
 				<div class="layout">
-					<div class="header-top">
+					<nav class="header-top">
 						<div class="employbox">
-							<a href="" class="employ active">로그인<i class="active"></i></a>
+							<a href="" class="employ ">로그인<i class=""></i></a>
 						</div>
-						<a href="" class="active">ENG</a>
-						<a href="" class="afternone active">中文</a>
-					</div>
+						<a href="" class="">ENG</a>
+						<a href="" class="afternone">中文</a>
+					</nav>
 					<h1><a href="/"><img class="logo-img" src="../PROJECT1/img/img1.png"></a></h1>
 				</div>
-				<div class="gnb"> <!--global navigation bar, 전체 상단 메뉴바 -->
-					<div class="gnb-menu">
+				<nav class="gnb"> <!--global navigation bar, 전체 상단 메뉴바 -->
+					<nav class="gnb-menu">
 						<div class="layout">
 							<ul>
 								<li class="gnb-title">
 									<div class="one">
-										<a href="" class="active">소개</a>
+										<a href="" class="">소개</a>
 										<p class="line"></p>
 									</div>
 									<div class="sub">
@@ -55,7 +58,7 @@
 								</li>
 								<li class="gnb-title">
 									<div class="one">
-										<a href="" class="active">항목 2</a>
+										<a href="" class="">항목 2</a>
 										<p class="line"></p>
 									</div>
 									<div class="sub">
@@ -67,7 +70,7 @@
 								</li>
 								<li class="gnb-title">
 									<div class="one">
-										<a href="" class="active">항목 3</a>
+										<a href="" class="">항목 3</a>
 										<p class="line"></p>
 									</div>
 									<div class="sub">
@@ -80,13 +83,29 @@
 							</ul>
 						</div>
 						<div class="headerbg"></div>
-						<div class="headerhov active"></div>
-					</div>
-				</div>
+						<div class="headerhov"></div>
+					</nav>
+				</nav>
 			</div>
 	</div>
 	</header>
+	<!-- main start -->
+	<main id="main">
+		<div class="content">
+			<div class="swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide slide01"></div>
+					<div class="swiper-slide slide02"></div>
+					<div class="swiper-slide slide03"></div>
+				</div>
+				<div>
+					<p>이렇게 하면 적용이 될까요?</p>
+				</div>
+				<div class="swiper-pagination"></div>
 
+			</div>
+	</main>
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script src="introJs.js"></script>
 </body>
 
