@@ -99,7 +99,7 @@ header.addEventListener('mouseleave', function () {
 
 // 230705 Accessibility work (Keyup event)
 header.addEventListener('keyup', function (e) {
-	// Check if the pressed key is Tab (keyCode 9)
+	// Check if the pressed key is Tab,레거시 코드라서 수정 원래는 e.key ==='9'였음
 	if (e.key === 'Tab') {
 		// Check if headerInner exists before trying to add a class
 		if (headerInner) {
@@ -149,6 +149,24 @@ header.addEventListener('focusout', function () {
 			menu.style.display = 'none';
 		})
 	}
+});
+
+//swiper 코드, class를 만든다.
+const swiper = new Swiper('.swiper', {
+	loop: true,
+	slidesPerView: 1,
+	spaceBetween: 30,
+	centeredSlides: true,
+	autoplay: {
+		delay: 2500,
+		disableOnInteraction: false,
+	},
+	pagination: {
+		el: '.swiper-pagination',
+		clickable: true,
+	},
+	effect: 'fade'
+
 });
 
 
