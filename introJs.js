@@ -5,54 +5,6 @@ const subMenus = document.querySelectorAll('.sub');
 const headerbg = document.querySelector('.headerbg');
 
 
-// gnb.addEventListener('mouseenter', () => {
-// 	headerbg.style.opacity = "1";
-// 	headerbg.style.height = "400px";  // 메뉴 높이에 맞게 설정
-// 	headerbg.style.zIndex = "1";
-// });
-
-// gnb.addEventListener('mouseleave', () => {
-// 	headerbg.style.opacity = "0";
-// 	headerbg.style.height = "0px";
-// 	headerbg.style.zIndex = "-2";
-// });
-
-
-// gnb.addEventListener('mouseenter', () => {
-// 	// 배경 펼치기
-// 	headerbg.style.opacity = "1";
-// 	headerbg.style.height = "200px";
-// 	headerbg.style.zIndex = "1";
-
-// 	// 모든 sub 메뉴 보여주기
-// 	subMenus.forEach(sub => {
-// 		sub.style.opacity = "1";
-// 		sub.style.visibility = "visible";
-// 		sub.style.zIndex = "2";
-// 	});
-// });
-
-// gnb.addEventListener('mouseleave', () => {
-// 	// 배경 접기
-// 	headerbg.style.opacity = "0";
-// 	headerbg.style.height = "0px";
-// 	headerbg.style.zIndex = "-2";
-
-// 	// 모든 sub 메뉴 숨기기
-// 	subMenus.forEach(sub => {
-// 		sub.style.opacity = "0";
-// 		sub.style.visibility = "hidden";
-// 	});
-// });
-// headerHov.addEventListener('mouseenter', () => {
-// 	headerHov.classList.add('active');
-// });
-// headerHov.addEventListener('mouseleave', () => {
-// 	headerHov.classList.remove('active');
-// });
-// header.addEventListener('mouseleave', () => {
-// 	header.classList.remove('active');
-// });
 header.addEventListener('mouseenter', function () {
 	if (headerInner) {
 		headerInner.classList.add('active');
@@ -70,6 +22,7 @@ header.addEventListener('mouseenter', function () {
 				opacity += 0.1;
 				subMenus.forEach(function (menu) {
 					menu.style.opacity = opacity;
+					menu.style.display = 'block';
 				})
 			} else {
 				clearInterval(fadeInInterval);
