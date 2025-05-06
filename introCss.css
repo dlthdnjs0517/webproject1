@@ -33,7 +33,7 @@ header .headerbg.active {
 	position: absolute;
 	/* top: 104px */
 	opacity: 1;
-	height: 300px;
+	height: 250px;
 	transform: translateY(104px);
 	transition: opacity 0.4s linear, 0.8s;
 	z-index: 1;
@@ -121,7 +121,7 @@ a.directBt {
 	align-items: center;
 	/* 세로 가운데 정렬 */
 	justify-content: space-between;
-	z-index: 20;
+
 }
 
 /* .gnb-title .sub {
@@ -222,6 +222,7 @@ header .header-top .afternone::after {
 }
 
 header .gnb .gnb-menu ul {
+	/* margin-left: 364px; */
 	margin-left: 364px;
 	font-size: 15px;
 	overflow: visible;
@@ -231,7 +232,6 @@ header .gnb .gnb-menu .gnb-title {
 	position: relative;
 	display: flex;
 	margin-left: 30px;
-	white-space: nowrap;
 	/* 왼쪽부터 차례대로 나열 */
 	text-align: center;
 	line-height: 34px;
@@ -250,19 +250,25 @@ header .gnb .gnb-menu .gnb-title .sub {
 	margin-top: 30px;
 	opacity: 0;
 	height: 0;
+	position: absolute;
+	visibility: hidden;
 	/* hover 되기 전에 보이지 않음 처리 하는 것 */
 }
 
 header.active .gnb .gnb-menu .gnb-title .sub {
-	height: 100%;
+	width: 100%;
 	opacity: 1;
+	position: absolute;
+	top: 50%;
+	visibility: visible;
 	-webkit-transition: opacity 0.4s linear, height 0.4s linear;
 	transition: opacity 0.4s linear, height 0.4s linear;
 	z-index: 20;
 }
 
 header .gnb .gnb-menu .gnb-title .sub a {
-	display: block;
+	display: flex;
+	flex-direction: column;
 	text-align: center;
 	font-weight: 300;
 	color: #000;
