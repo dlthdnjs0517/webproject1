@@ -105,21 +105,23 @@ header.addEventListener('focusout', function () {
 });
 
 //swiper 코드, class를 만든다.
-const swiper = new Swiper('.swiper', {
-	loop: true,
-	slidesPerView: 1,
-	spaceBetween: 30,
-	centeredSlides: true,
-	autoplay: {
-		delay: 2500,
-		disableOnInteraction: false,
-	},
-	pagination: {
-		el: '.swiper-pagination',
-		clickable: true,
-	},
-	effect: 'fade'
+window.addEventListener('DOMContentLoaded', function () {
+	const swiper = new Swiper('.swiper', {
+		loop: true,
+		slidesPerView: 1,
+		spaceBetween: 30,
+		centeredSlides: true,
+		autoplay: {
+			delay: 2500,
+			disableOnInteraction: false,
+		},
+		pagination: {
+			el: '.swiper-pagination',
+			clickable: true,
+		},
+		effect: 'fade'
 
+	});
 });
 
 
