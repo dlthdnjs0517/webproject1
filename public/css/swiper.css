@@ -11,17 +11,17 @@
 	display: block;
 	width: 100vw;
 	height: 100%;
-	background: center contain;
+	background: center cover;
 
 }
 
 .content .swiper .swiper-wrapper .slide01 {
-	background-image: url("./img/bg1.jpeg");
+	background-image: url("../img/bg1.jpeg");
 }
 
 .content .swiper .swiper-wrapper .slide02 {
 
-	background-image: url("./img/bg2.jpg");
+	background-image: url("../img/bg2.jpg");
 }
 
 .content .swiper .swiper-wrapper .slide03 {

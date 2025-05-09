@@ -11,11 +11,10 @@ header.addEventListener('mouseenter', function () {
 	}
 	if (subMenus) {
 		subMenus.forEach(function (menu) {
-			menu.style.display = 'none';
-		})
-		subMenus.forEach(function (menu) {
+			menu.style.display = 'block';
 			menu.style.opacity = 0;
-		})
+			menu.style.pointerEvents = 'auto';
+		});
 		let opacity = 0;
 		const fadeInInterval = setInterval(function () {
 			if (opacity < 1) {

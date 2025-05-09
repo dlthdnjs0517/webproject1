@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>(주)백일몽</title>
+	<link href="https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/swiper.css">
+	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+	<link rel="stylesheet" href="/css/introCss.css">
+	<script>//접근성 요소
+		window.onload = function () { //페이지의 모든 요소들이 로딩될때 작동되는 함수
+			const btn = document.querySelector('.directBt')
+			btn.addEventListener('focus', function () {
+				this.style.top = '0';
+			})
+			btn.addEventListener('blur', function () {
+				this.style.top = '-100px';
+			})
+		}
+	</script>
+</head>
+
+<body>
+	<a class="directBt" style="top:-100px;" href="#container">본문 바로가기</a>
+	<div id="wrap">
+		<!-- 여기서부터 헤더 -->
+		<header class="">
+			<div class="header-inner">
+				<div class="layout">
+					<nav class="header-top">
+						<div class="employbox">
+							<a href="" class="employ ">로그인<i class=""></i></a>
+						</div>
+						<a href="" class="">ENG</a>
+						<a href="" class="afternone">中文</a>
+					</nav>
+					<h1><a href="/"><img class="logo-img" src="./img/img1.png"></a></h1>
+				</div>
+				<nav class="gnb"> <!--global navigation bar, 전체 상단 메뉴바 -->
+					<div class="gnb-menu">
+						<div class="layout">
+							<ul class="gnb-title-container">
+								<li class="gnb-title">
+									<div class="one">
+										<a href="#" class="">기업소개</a>
+										<p class="line"></p>
+									</div>
+									<div class="sub">
+										<a href="#">회사소개</a>
+										<a href="#">CEO 인삿말</a>
+										<a href="#">회사연혁</a>
+										<a href="#">기업이념</a>
+										<a href="/orgChart">조직도</a>
+									</div>
+								</li>
+								<li class="gnb-title">
+									<div class="one">
+										<a href="#" class="">R&D</a>
+										<p class="line"></p>
+									</div>
+									<div class="sub">
+										<a href="#">연구분야</a>
+										<a href="#">개발성과</a>
+										<a href="#">연구소 소개</a>
+										<a href="#">보도자료</a>
+									</div>
+								</li>
+								<li class="gnb-title">
+									<div class="one">
+										<a href="#" class="">제품정보</a>
+										<p class="line"></p>
+									</div>
+									<div class="sub">
+										<a href="#">일반의약품</a>
+										<a href="#">전문의약품</a>
+										<a href="#">의약외품</a>
+										<a href="#">건강기능식품</a>
+									</div>
+								</li>
+								<li class="gnb-title">
+									<div class="one">
+										<a href="#" class="">인재채용</a>
+										<p class="line"></p>
+									</div>
+									<div class="sub">
+										<a href="#">인재상</a>
+										<a href="#">직무소개</a>
+										<a href="#">인재채용근황</a>
+										<a href="#">복리후생</a>
+									</div>
+								</li>
+								<li class="gnb-title">
+									<div class="one">
+										<a href="#" class="">고객지원</a>
+										<p class="line"></p>
+									</div>
+									<div class="sub">
+										<a href="#"></a>
+										<a href="#"></a>
+										<a href="#"></a>
+										<a href="#"></a>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="headerbg"></div>
+						<div class="headerhov"></div>
+					</div>
+				</nav>
+			</div>
+	</div>
+	</header>
+	<!-- main start -->
+	<main id="main">
+		<div class="content">
+			<div class="swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide slide01"></div>
+					<div class="swiper-slide slide02"></div>
+					<div class="swiper-slide slide03"></div>
+				</div>
+				<div class="swiper-pagination"></div>
+
+			</div>
+			<!-- 유한양행 브랜드 사이트를 협력사 리스트로 대체 -->
+	</main>
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<script src="/introJs.js"></script>
+</body>
+
+</html>
