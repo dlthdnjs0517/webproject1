@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="/css/swiper.css">
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 	<link rel="stylesheet" href="/css/introCss.css">
+	<script src="https://cdn.tailwindcss.com"></script>
 	<script>//접근성 요소
 		window.onload = function () { //페이지의 모든 요소들이 로딩될때 작동되는 함수
 			const btn = document.querySelector('.directBt')
@@ -32,7 +33,7 @@
 				<div class="layout">
 					<nav class="header-top">
 						<div class="employbox">
-							<a href="" class="employ ">로그인<i class=""></i></a>
+							<a href="" class="employ">로그인<i class=""></i></a>
 						</div>
 						<a href="" class="">ENG</a>
 						<a href="" class="afternone">中文</a>
@@ -127,6 +128,32 @@
 			</div>
 			<!-- 유한양행 브랜드 사이트를 협력사 리스트로 대체 -->
 	</main>
+
+	<!-- <div id="loginModal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<h2>로그인</h2>
+			<form id="loginForm">
+				<input type="text" placeholder="아이디" required>
+				<input type="text" placeholder="비밀번호" required>
+				<button type="submit"> 로그인 </button>
+			</form>
+		</div>
+	</div> -->
+	<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+		<div class="bg-white rounded-xl w-96 p-8 shadow-lg relative">
+			<button class="close absolute top-3 right-3 text-gray-500 hover:text-black text-xl">&times;</button>
+			<h2 class="text-2xl font-bold mb-6 text-center">로그인</h2>
+			<form class="space-y-4">
+				<input type="text" placeholder="아이디"
+					class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400">
+				<input type="password" placeholder="비밀번호"
+					class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400">
+				<button type="submit"
+					class="w-full bg-green-500 hover:bg-green-600 text-white rounded py-2">로그인</button>
+			</form>
+		</div>
+	</div>
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script src="/introJs.js"></script>
 </body>
