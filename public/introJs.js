@@ -1,3 +1,4 @@
+
 const header = document.querySelector('header');
 const headerLogo = document.querySelector('header h1 img');
 const headerInner = document.querySelector('.header-inner');
@@ -101,6 +102,26 @@ header.addEventListener('focusout', function () {
 			menu.style.display = 'none';
 		})
 	}
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+	const loginLink = document.querySelector('.employ');
+	const loginModal = document.getElementById('loginModal');
+	const closeBtn = document.querySelector('.close');
+
+	loginLink.addEventListener('click', (event) => {
+		event.preventDefault();
+		loginModal.style.display = 'flex';
+		console.log('로그인 버튼 눌림')
+	});
+	closeBtn.addEventListener('click', () => {
+		loginModal.style.display = 'none';
+	});
+	window.addEventListener('click', (event) => {
+		if (event.target === loginModal) {
+			loginModal.style.display = 'none';
+		}
+	});
 });
 
 //swiper 코드, class를 만든다.
