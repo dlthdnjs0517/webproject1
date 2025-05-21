@@ -208,11 +208,19 @@ header .header-top .afternone::after {
 }
 
 header .gnb .gnb-menu ul {
-	/* margin-left: 364px; */
-	margin-left: 364px;
+	/* margin-left: 364px;
+	font-size: 15px; */
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 	font-size: 15px;
-	overflow: visible;
+	place-items: center;
+}
 
+@media screen and (max-width: 768px) {
+	.gnb-menu {
+		display: flex;
+		flex-direction: column;
+	}
 }
 
 header .gnb .gnb-menu .gnb-title {
@@ -223,6 +231,10 @@ header .gnb .gnb-menu .gnb-title {
 	text-align: center;
 	line-height: 34px;
 	z-index: 10;
+	/* display: grid; */
+	/* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+	gap: 100px; */
+
 }
 
 header .gnb .gnb-menu .gnb-title .one a {
