@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 
 
 app.get('/orgChart', (req, res) => {
-	res.render('orgChart', { title: '(주)백일몽 -조직도' });
+	res.render('orgChart', { title: '(주)백일몽-조직도' });
 });
 
 
