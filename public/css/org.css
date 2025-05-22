@@ -18,23 +18,36 @@ section h1 {
 
 .nav-container {
 	height: 10vh;
-	width: 100vw;
+	width: 100%;
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	flex-wrap: nowrap;
-	gap: 20vw;
+	gap: 10vw;
+	margin-left: 20px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .gnb-container {
 	display: flex;
+	align-items: center;
 	justify-content: flex-start;
-	gap: 20px;
+	gap: 10vw;
 }
 
 .gnb-title {
 	text-align: center;
 	font-size: 1rem;
+}
+
+@media screen and (max-width:768px) {
+	.img1 {
+		height: auto;
+		width: 70%;
+		max-width: 600px;
+		object-fit: contain;
+		display: block;
+	}
 }
 
 .gnb-title a {
