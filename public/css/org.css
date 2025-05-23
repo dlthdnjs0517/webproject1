@@ -12,9 +12,6 @@ body {
 	z-index: 999;
 }
 
-section h1 {
-	text-align: center;
-}
 
 .nav-container {
 	height: 10vh;
@@ -42,11 +39,14 @@ section h1 {
 
 @media screen and (max-width:768px) {
 	.img1 {
+
 		height: auto;
 		width: 70%;
 		max-width: 600px;
 		object-fit: contain;
 		display: block;
+		padding: 50px 0px;
+		/* gap: 100px; */
 	}
 }
 
@@ -62,13 +62,62 @@ section h1 {
 }
 
 .img-container {
-	margin: 20vw 20vw;
+
+	padding: 10vw 20vw;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
 .img1 {
-	height: 90vh;
-	width: 90vw;
+	position: relative;
+	margin-top: 20px;
+	height: auto;
+	width: 100%;
+	min-width: 700px;
+	object-fit: contain;
+	display: block;
+}
+
+.form-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 10vh;
+	margin-top: 20vh;
+}
+
+.form-box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 10rem;
+	width: 400px;
+	border-radius: 6px;
+	border: thick double #780000;
+}
+
+form {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	width: 25vw;
+	height: 20px;
+}
+
+input {
+	width: 30vw;
+	height: 30px;
+}
+
+.form-container button {
+	border-radius: 10px;
+	white-space: nowrap;
+	padding: 0px 12px;
+	margin: 10px 10px;
+	height: 30px;
+	color: #fee440;
+	background-color: #003049;
+	font-weight: 600;
 }
