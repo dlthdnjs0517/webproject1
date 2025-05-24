@@ -85,7 +85,6 @@ body {
 	align-items: center;
 	width: 100%;
 	height: 10vh;
-	/* gap: 10px; */
 	margin-top: 20vh;
 
 }
@@ -94,12 +93,22 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* gap: 20px; */
 	height: 5rem;
 	width: 400px;
+	min-width: 350px;
 	border-radius: 6px;
 	background-color: #ebebeb;
 	border: thick double #780000;
+}
+
+@media screen and (max-width:768px) {
+	.form-box {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 350px;
+		height: 5rem;
+	}
 }
 
 .form-icon {
@@ -111,11 +120,11 @@ body {
 
 .form-icon img {
 	width: 30px;
-	height: auto;
+	height: 30px;
 }
 
 .title {
-	position: relative;
+	/* position: relative; */
 	justify-content: flex-start;
 	white-space: nowrap;
 	text-align: center;
@@ -138,7 +147,7 @@ input {
 	border-radius: 5px;
 }
 
-.form-container button {
+.form-container .search {
 	border-radius: 10px;
 	white-space: nowrap;
 	padding: 0px 12px;
@@ -147,4 +156,24 @@ input {
 	color: #fee440;
 	background-color: #003049;
 	font-weight: 600;
+}
+
+.addBtn-layout {
+	display: flex;
+	justify-content: center;
+	position: relative;
+	padding-right: 8rem;
+	margin-top: 5px;
+
+}
+
+.addBtn {
+	border-radius: 6px;
+	white-space: nowrap;
+	padding: 6px 12px;
+	height: 30px;
+	color: #dd2d4a;
+	background-color: #b8b8ff;
+	font-weight: 600;
+	font-size: 12px;
 }
