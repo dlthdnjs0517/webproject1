@@ -21,10 +21,17 @@
 				<div class="form-container">
 					<div class="form-box">
 						<form action="/orgChart" method="GET">
-							<input type="text" name="query" placeholder="찾으시는 직원이름을 입력해주세요">
-							<button type="submit">검색</button>
+							<div class="form-icon">
+								<img src="/img/eye.svg" alt="직원찾기 아이콘">
+								<h2 class="title">직원 찾기</h2>
+							</div>
+							<input type="text" name="query">
+							<button type="submit" class="search">검색</button>
 						</form>
 					</div>
+				</div>
+				<div class="addBtn-layout">
+					<button type="button" class="addBtn">+ 직원추가</button>
 				</div>
 				<div class="img-container">
 					<img class="img1" src="/img/orgChartV1.png">
