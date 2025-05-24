@@ -85,30 +85,57 @@ body {
 	align-items: center;
 	width: 100%;
 	height: 10vh;
+	/* gap: 10px; */
 	margin-top: 20vh;
+
 }
 
 .form-box {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 10rem;
+	/* gap: 20px; */
+	height: 5rem;
 	width: 400px;
 	border-radius: 6px;
+	background-color: #ebebeb;
 	border: thick double #780000;
+}
+
+.form-icon {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.form-icon img {
+	width: 30px;
+	height: auto;
+}
+
+.title {
+	position: relative;
+	justify-content: flex-start;
+	white-space: nowrap;
+	text-align: center;
+	font-weight: 600;
 }
 
 form {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	gap: 12px;
 	width: 25vw;
 	height: 20px;
 }
 
 input {
-	width: 30vw;
+	flex-shrink: 0;
+	width: 165px;
 	height: 30px;
+	border-radius: 5px;
 }
 
 .form-container button {
