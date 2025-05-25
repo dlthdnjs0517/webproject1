@@ -91,14 +91,17 @@ body {
 
 .form-box {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
-	height: 5rem;
-	width: 400px;
+	flex-direction: column;
+
+
+	height: 8rem;
+	width: 500px;
 	min-width: 350px;
 	border-radius: 6px;
 	background-color: #ebebeb;
-	border: thick double #780000;
+	border: 3px double #780000;
 }
 
 @media screen and (max-width:768px) {
@@ -106,8 +109,8 @@ body {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 350px;
-		height: 5rem;
+		width: 380px;
+		height: 6rem;
 	}
 }
 
@@ -131,10 +134,17 @@ body {
 	font-weight: 600;
 }
 
+.form-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
 form {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	max-width: 700px;
 	gap: 12px;
 	width: 25vw;
 	height: 20px;
@@ -158,22 +168,16 @@ input {
 	font-weight: 600;
 }
 
-.addBtn-layout {
-	display: flex;
-	justify-content: center;
-	position: relative;
-	padding-right: 8rem;
-	margin-top: 5px;
-
+.add-link {
+	margin-top: 20px;
+	text-align: center;
 }
 
-.addBtn {
-	border-radius: 6px;
-	white-space: nowrap;
-	padding: 6px 12px;
-	height: 30px;
-	color: #dd2d4a;
-	background-color: #b8b8ff;
-	font-weight: 600;
-	font-size: 12px;
+.add-link a {
+	color: #ba181b;
+	text-decoration: none;
+	display: inline-block;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: nowrap;
 }
