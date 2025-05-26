@@ -1,11 +1,10 @@
-const { name } = require('ejs');
 const mongoose = require('mongoose');
 
-const EmployeeSchema = new mongoose.Schema({
+const employeeSchema = new mongoose.Schema({
 
-	department: {
+	departments: {
 		type: String,
-		enum: ['임원부', '생산부', '개발부', '영업부', '마케팅부', '관리부'],
+		enum: ['executive', 'production', 'development', 'sales', 'marketing', 'administration'],
 		required: true
 	},
 	position: {
@@ -16,9 +15,17 @@ const EmployeeSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	phoneNumber: {
-		type: Number,
-		required: true
+	email: {
+		type: String,
+		required: true,
+		unique: true,
+		set: function (value) {
+			if (value.endsWith('@daydream.com')) return value;
+			if (value.includes('@')) throw new Error('도메인을 직접 입력하지 마세요!');
+			return `${value}@daydream.com`
+		}
 	}
 
 })
+
+const Employee = mongoose.model('Employee', employeeSchema);
