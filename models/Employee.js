@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const departments = require('../constants/departments');
 
 const employeeSchema = new mongoose.Schema({
 
 	departments: {
 		type: String,
-		enum: ['executive', 'production', 'development', 'sales', 'marketing', 'administration'],
+		enum: departments.map(d => d.value),
 		required: true
 	},
 	position: {
