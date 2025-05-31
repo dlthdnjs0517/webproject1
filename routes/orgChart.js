@@ -1,7 +1,20 @@
 const express = require('express');
-const app = express();
+const router = express.Router();
 const path = require('path');
-const mongoose = require('mongoose');
-const methodOverride = require('method-override')
 
-const addEmployee = require('./models/Employee');
+
+const departments = require('../constants/departments');
+// const addEmployee = require('./models/Employee');
+
+
+// app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname, 'views'));
+
+
+router.get('/', (req, res) => {
+	res.render('orgChart', { departments, title: '(주)백일몽-조직도' });
+})
+
+
+
+module.exports = router;
