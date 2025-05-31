@@ -1,8 +1,19 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 const path = require('path');
+const methodOverride = require('method-override')
 const { title } = require('process');
 const port = process.env.PORT || 3000;
+
+mongoose.connect(process.env.MONGO_URL)
+	.then(() => {
+		console.log('Mongo connection open!')
+	})
+	.catch(err => {
+		console.log(err)
+	})
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -12,10 +23,14 @@ app.get('/', (req, res) => {
 	res.render('index');
 });
 
+const orgChartRouter = require('./routes/orgChart');
+app.use('/orgChart', orgChartRouter);
 
-app.get('/orgChart', (req, res) => {
-	res.render('orgChart', { title: '(주)백일몽-조직도' });
-});
+
+
+// app.get('/orgChart', (req, res) => {
+// 	res.render('orgChart', { title: '(주)백일몽-조직도' });
+// });
 
 
 
