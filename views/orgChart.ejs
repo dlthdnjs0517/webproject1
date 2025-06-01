@@ -21,25 +21,79 @@
 				<div class="form-container">
 					<div class="form-box">
 						<form action="/orgChart" method="GET">
-							<div class="form-icon">
-								<img src="/img/eye.svg" alt="직원찾기 아이콘">
-								<h2 class="title">직원 찾기</h2>
+							<div class="form-row">
+								<div class="form-icon">
+									<img src="/img/eye.svg" alt="직원찾기 아이콘">
+									<h2 class="title">직원 찾기</h2>
+								</div>
+								<input type="text" name="query">
+								<button type="submit" class="search">검색</button>
 							</div>
-							<input type="text" name="query">
-							<button type="submit" class="search">검색</button>
 						</form>
+						<div class="add-link">
+							<a href="#" class="addLink"> 직원을 추가하고 싶으신가요?</a>
+						</div>
 					</div>
-				</div>
-				<div class="addBtn-layout">
-					<button type="button" class="addBtn">+ 직원추가</button>
 				</div>
 				<div class="img-container">
 					<img class="img1" src="/img/orgChartV1.png">
 				</div>
 			</main>
 	</div>
-	<script src="/introJs.js"></script>
+	<div id="popupForm" class="fixed inset-0 bg-black/50 flex justify-center items-center z-50 hidden">
+		<div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
 
+			<!-- 닫기 버튼 -->
+			<button class="absolute top-3 right-3 text-red-600 hover:text-black text-xl font-bold close">
+				&times;
+			</button>
+
+			<h2 class="text-2xl font-semibold text-center text-black mb-4">직원 등록</h2>
+
+			<form action="/addEmployee" method="POST" class="space-y-4">
+				<div>
+					<label class="block text-sm font-medium text-gray-700">이름</label>
+					<input type="text" name="name" required
+						class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+				</div>
+
+				<div>
+					<label class="block text-sm font-medium text-gray-700">부서</label>
+					<select name="department" required>
+						<% departments.forEach(dep=> { %>
+							<option value="<%= dep.value%>">
+								<%= dep.label %>
+							</option>
+							<% })%>;
+					</select>
+				</div>
+
+				<div>
+					<label class="block text-sm font-medium text-gray-700">직급</label>
+					<input type="text" name="position" required
+						class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+				</div>
+
+				<div>
+					<label class="block text-sm font-medium text-gray-700">이메일 아이디</label>
+					<input type="text" name="email" placeholder="예: honggildong" required
+						class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+				</div>
+
+				<div class="flex justify-between mt-6">
+					<button type="button"
+						class="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition close">
+						취소
+					</button>
+					<button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-black transition">
+						등록
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script src="/orgChart.js"></script>
+	<script src="/introJs.js"></script>
 </body>
 
 </html>
