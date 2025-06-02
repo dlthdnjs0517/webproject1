@@ -95,7 +95,6 @@ body {
 	align-items: center;
 	flex-direction: column;
 
-
 	height: 8rem;
 	width: 500px;
 	min-width: 350px;
@@ -136,8 +135,21 @@ body {
 
 .form-row {
 	display: flex;
+	position: relative;
+	padding-top: 10vh;
+	justify-content: center;
 	align-items: center;
 	gap: 12px;
+}
+
+@media screen and (max-width:768px) {
+	.form-row {
+		padding-top: 8vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 200px;
+	}
 }
 
 form {
@@ -169,7 +181,7 @@ input {
 }
 
 .add-link {
-	margin-top: 20px;
+	padding-top: 5vh;
 	text-align: center;
 }
 
@@ -180,4 +192,5 @@ input {
 	align-items: center;
 	justify-content: center;
 	flex-wrap: nowrap;
+	padding: 10px 0;
 }
