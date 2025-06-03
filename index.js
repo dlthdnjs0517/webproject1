@@ -28,11 +28,6 @@ app.use('/orgChart', orgChartRouter);
 
 
 
-// app.get('/orgChart', (req, res) => {
-// 	res.render('orgChart', { title: '(주)백일몽-조직도' });
-// });
-
-
 
 app.use(express.static('public'));
 
