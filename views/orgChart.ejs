@@ -26,7 +26,7 @@
 									<img src="/img/eye.svg" alt="직원찾기 아이콘">
 									<h2 class="title">직원 찾기</h2>
 								</div>
-								<input type="text" name="query">
+								<input type="text" name="query" class="searchForm">
 								<button type="submit" class="search">검색</button>
 							</div>
 						</form>
@@ -41,43 +41,43 @@
 			</main>
 	</div>
 	<div id="popupForm" class="fixed inset-0 bg-black/50 flex justify-center items-center z-50 hidden">
-		<div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
-
+		<div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 min-h-[400px] relative">
 			<!-- 닫기 버튼 -->
 			<button class="absolute top-3 right-3 text-red-600 hover:text-black text-xl font-bold close">
 				&times;
 			</button>
 
 			<h2 class="text-2xl font-semibold text-center text-black mb-4">직원 등록</h2>
+			<form action="/addEmployee" method="POST" class=" h-full max-w-md mx-auto flex flex-col gap-2 ">
 
-			<form action="/addEmployee" method="POST" class="space-y-4">
-				<div>
-					<label class="block text-sm font-medium text-gray-700">이름</label>
+				<div class="flex items-center gap-2 mb-4">
+					<label for="name" class="w-16 text-sm font-medium text-gray-700">이름</label>
 					<input type="text" name="name" required
-						class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+						class="flex-1 max-w-xs border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
 				</div>
 
-				<div>
-					<label class="block text-sm font-medium text-gray-700">부서</label>
-					<select name="department" required>
+				<div class="flex items-center gap-2 mb-4">
+					<label class=" w-16 text-sm font-medium text-gray-700">부서</label>
+					<select name="department" required
+						class="flex-1 py-3 px-4 border-gray-300 rounded-lg text-sm focus:border-red-500 focus:ring-red-500 disabled:opacity-50">
 						<% departments.forEach(dep=> { %>
 							<option value="<%= dep.value%>">
 								<%= dep.label %>
 							</option>
-							<% })%>;
+							<% })%>
 					</select>
 				</div>
 
-				<div>
-					<label class="block text-sm font-medium text-gray-700">직급</label>
+				<div class="flex items-center gap-2 mb-4">
+					<label class="w-16 text-sm font-medium text-gray-700">직급</label>
 					<input type="text" name="position" required
-						class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+						class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
 				</div>
 
-				<div>
-					<label class="block text-sm font-medium text-gray-700">이메일 아이디</label>
+				<div class="flex items-center gap-2 mb-4">
+					<label class="w-16 text-sm font-medium text-gray-700">이메일ID</label>
 					<input type="text" name="email" placeholder="예: honggildong" required
-						class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+						class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
 				</div>
 
 				<div class="flex justify-between mt-6">
@@ -93,7 +93,6 @@
 		</div>
 	</div>
 	<script src="/orgChart.js"></script>
-	<script src="/introJs.js"></script>
 </body>
 
 </html>
