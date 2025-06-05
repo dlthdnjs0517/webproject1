@@ -7,8 +7,6 @@ const departments = require('../constants/departments');
 // const addEmployee = require('./models/Employee');
 
 
-// app.set('view engine', 'ejs');
-// app.set('views', path.join(__dirname, 'views'));
 
 
 router.get('/', (req, res) => {

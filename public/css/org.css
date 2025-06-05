@@ -169,7 +169,12 @@ input {
 	border-radius: 5px;
 }
 
-.form-container .search {
+.form-row .searchForm {
+	padding: 0.5rem 0.75rem;
+	font-size: medium;
+}
+
+.form-row .search {
 	border-radius: 10px;
 	white-space: nowrap;
 	padding: 0px 12px;
