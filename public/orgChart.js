@@ -2,6 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	const openBtn = document.querySelector('.addLink');
 	const modal = document.getElementById('popupForm');
 	const closeBtn = document.querySelectorAll('.close');
+	function closePopup() {
+		modal.classList.add('hidden');
+	}
+
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') {
+			closePopup();
+		}
+	})
+
+
+
 	if (openBtn && modal) {
 		openBtn.addEventListener('click', function (e) {
 			e.preventDefault(); //a 태그의 기본 동작 막기(페이지 맨 위로 올라가는 동작 방지
