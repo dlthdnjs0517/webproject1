@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape') {
-			closePopup();
+			if (modal && !modal.classList.contains('hidden')) {
+				closePopup();
+			}
+
 		}
 	})
 
