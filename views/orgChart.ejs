@@ -20,7 +20,7 @@
 			<main>
 				<div class="form-container">
 					<div class="form-box">
-						<form action="/orgChart" method="GET">
+						<form action="/orgChart" method=POST">
 							<div class="form-row">
 								<div class="form-icon">
 									<img src="/img/eye.svg" alt="직원찾기 아이콘">
@@ -59,7 +59,7 @@
 				<div class="flex items-center gap-2 mb-4">
 					<label for="department" class=" w-16 text-sm font-medium text-gray-700 h-[20px]">부서</label>
 					<select name="department" required
-						class="w-[165px] h-[30px] px-5 py-1 bg-white text-gray-800 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50">
+						class="w-[165px] h-[30px] px-5 py-1 bg-white text-gray-800 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50">
 						<!-- "flex-1 px-5 py-4 bg-white text-gray-800 border border-gray-300 rounded-lg text-sm focus:border-red-500 focus:ring-red-500 disabled:opacity-50" -->
 						<% departments.forEach(dep=> { %>
 							<option value="<%= dep.value%>">
