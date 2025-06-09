@@ -1,12 +1,11 @@
 const express = require('express');
 const app = express();
-const router = express.Router();//라우터 객체를 생성
+const router = express.Router();//라우터 객체를 생성(메인이 아닌 하위 요소)
 const path = require('path');
 
 
-const departments = require('./constants/departments');
-const Employee = require('./models/Employee');
-// const addEmployee = require('./models/Employee');
+const departments = require('../constants/departments');
+const Employee = require('../models/Employee');
 
 
 app.use(express.urlencoded({ extended: true }));
