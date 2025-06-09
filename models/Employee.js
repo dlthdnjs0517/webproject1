@@ -3,7 +3,7 @@ const departments = require('../constants/departments');
 
 const employeeSchema = new mongoose.Schema({
 
-	departments: {
+	department: {
 		type: String,
 		enum: departments.map(d => d.value),
 		required: true
@@ -30,3 +30,4 @@ const employeeSchema = new mongoose.Schema({
 })
 
 const Employee = mongoose.model('Employee', employeeSchema);
+module.exports = Employee;
