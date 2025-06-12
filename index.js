@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 	res.render('index');
 });
 
-const orgChartRouter = require('./routes/orgChart');
+const orgChartRouter = require('./routes/orgRoute');
 app.use('/orgChart', orgChartRouter);
 
 
