@@ -25,6 +25,9 @@ const employeeSchema = new mongoose.Schema({
 			if (value.includes('@')) throw new Error('도메인을 직접 입력하지 마세요!');
 			return `${value}@daydream.com`
 		}
+	},
+	assignedTask: {
+		type: String
 	}
 
 })
