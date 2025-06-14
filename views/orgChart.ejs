@@ -5,12 +5,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>
-		<%= title %>
+		<%=title%>
 	</title>
 	<link rel="stylesheet" href="/css/reset.css">
 	<link href="https://cdn.jsdelivr.net/npm/font-kopub@1.0/kopubdotum.min.css" rel="stylesheet">
 	<script src="https://cdn.tailwindcss.com"></script>
-	<link rel="stylesheet" href="css/org.css">
+	<link rel="stylesheet" href="/css/org.css">
 	<!-- <link rel="stylesheet" href="css/introCss.css"> -->
 </head>
 
@@ -20,7 +20,7 @@
 			<main>
 				<div class="form-container">
 					<div class="form-box">
-						<form action="/orgChart" method=POST">
+						<form action="/orgChart/searchEmployee" method=GET">
 							<div class="form-row">
 								<div class="form-icon">
 									<img src="/img/eye.svg" alt="직원찾기 아이콘">
@@ -35,9 +35,40 @@
 						</div>
 					</div>
 				</div>
-				<div class="img-container">
-					<img class="img1" src="/img/orgChartV1.png">
-				</div>
+				<% if (typeof search !=='undefined' && search.length>0){ %>
+					<div class="tableContainer">
+						<table class="empTable">
+							<thead>
+								<tr>
+									<% fieldNames.forEach(field=> { %>
+										<th>
+											<%=field%>
+										</th>
+										<% })%>
+								</tr>
+							</thead>
+							<tbody>
+
+								<% search.forEach(emp=> { %> <!--찾은 직원 반복 시작-->
+									<tr> <!--직원 한 명 반복 시작-->
+										<% fieldNames.forEach(field=> { %>
+											<td>
+												<%= emp[field] %>
+											</td>
+											<% }) %>
+									</tr>
+
+									<% }) %>
+
+							</tbody>
+						</table>
+						<% } else if (typeof search !=='undefined' ) { %>
+							<p>검색 결과가 없습니다.</p>
+							<% } %>
+					</div>
+					<div class="img-container">
+						<img class="img1" src="/img/orgChartV1.png">
+					</div>
 			</main>
 	</div>
 	<div id="popupForm" class="fixed inset-0 bg-black/50 flex justify-center items-center z-50 hidden">
@@ -67,7 +98,6 @@
 								<%= dep.label %>
 							</option>
 							<% })%>
-
 					</select>
 				</div>
 
@@ -81,6 +111,12 @@
 				<div class="flex items-center gap-2 mb-4">
 					<label class="w-16 text-sm font-medium text-gray-700">이메일ID</label>
 					<input type="text" name="email" placeholder="예: honggildong" required
+						class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+				</div>
+
+				<div class="flex items-center gap-2 mb-4">
+					<label class="w-16 text-sm font-medium text-gray-700">담당업무</label>
+					<input type="text" name="assignedTask" required
 						class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
 				</div>
 

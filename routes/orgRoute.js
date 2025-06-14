@@ -34,10 +34,13 @@ router.get('/searchEmployee', async (req, res) => {
 			name: { $regex: keyword }
 		});
 		// console.log("✅ 검색 결과:", search);
-		// res.json(search);
-		const rawFields = Object.keys(Employee.schema.path);
+		// res.json(search); 
+		// --> search 객체를 자동으로 JSON 문자열로 바꿔서 브라우저나 프론트에 보내줌.
+		//사람한테 보여준다 : res.render() 코드한테 보내준다 res.json()
+		const rawFields = Object.keys(Employee.schema.paths);
+		//object.keys는 key값만 배열로 return하는 메서드
 		const fieldNames = rawFields.filter(field => !['_id', '__v'].includes(field));
-		res.render('orgChart', { employees: search, fieldNames, keyword, departments, title: '(주)백일몽-조직도' });
+		res.render('orgChart', { search, fieldNames, keyword, departments, title: '(주)백일몽-조직도' });
 	}
 	catch (err) {
 		console.error(err);
