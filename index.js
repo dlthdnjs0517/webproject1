@@ -18,6 +18,7 @@ mongoose.connect(process.env.MONGO_URL)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
 	res.render('index');
@@ -26,10 +27,6 @@ app.get('/', (req, res) => {
 const orgChartRouter = require('./routes/orgRoute');
 app.use('/orgChart', orgChartRouter);
 
-
-
-
-app.use(express.static('public'));
 
 app.listen(port, () => {
 	console.log(`✅ 서버 실행 중: http://localhost:${port}`);
