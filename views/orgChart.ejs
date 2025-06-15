@@ -39,9 +39,9 @@
 					<div class="tableContainer">
 						<table class="empTable">
 							<thead>
-								<tr>
+								<tr class="h-8">
 									<% fieldNames.forEach(field=> { %>
-										<th>
+										<th class="fieldRow bg-black text-white">
 											<%=field%>
 										</th>
 										<% })%>
@@ -52,7 +52,7 @@
 								<% search.forEach(emp=> { %> <!--찾은 직원 반복 시작-->
 									<tr> <!--직원 한 명 반복 시작-->
 										<% fieldNames.forEach(field=> { %>
-											<td>
+											<td class="fieldData h-8">
 												<%= emp[field] %>
 											</td>
 											<% }) %>
