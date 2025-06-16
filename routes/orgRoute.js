@@ -6,7 +6,9 @@ const path = require('path');
 
 const departments = require('../constants/departments');
 const Employee = require('../models/Employee');
+const mappingFields = require('../utils/mappingFields');
 const { title } = require('process');
+const tableFields = require('../constants/tableFields');
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -40,7 +42,7 @@ router.get('/searchEmployee', async (req, res) => {
 		const rawFields = Object.keys(Employee.schema.paths);
 		//object.keys는 key값만 배열로 return하는 메서드
 		const fieldNames = rawFields.filter(field => !['_id', '__v'].includes(field));
-		res.render('orgChart', { search, fieldNames, keyword, departments, title: '(주)백일몽-조직도' });
+		res.render('orgChart', { tableFields, search, fieldNames, keyword, departments, title: '(주)백일몽-조직도' });
 	}
 	catch (err) {
 		console.error(err);
