@@ -20,7 +20,7 @@
 			<main>
 				<div class="form-container">
 					<div class="form-box">
-						<form action="/orgChart/searchEmployee" method=GET">
+						<form action="/orgChart/searchEmployee" method="GET">
 							<div class="form-row">
 								<div class="form-icon">
 									<img src="/img/eye.svg" alt="직원찾기 아이콘">
@@ -42,7 +42,7 @@
 								<tr class="h-8">
 									<% fieldNames.forEach(field=> { %>
 										<th class="fieldRow bg-black text-white">
-											<%=field%>
+											<%=tableFields[field]%>
 										</th>
 										<% })%>
 								</tr>
