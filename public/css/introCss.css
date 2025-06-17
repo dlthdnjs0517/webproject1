@@ -144,7 +144,6 @@ header .header-top {
 	width: 100%;
 	top: 10px;
 	margin-bottom: 30px;
-	background-color: powderblue;
 }
 
 
@@ -196,11 +195,11 @@ header .header-top .employ {
 }
 
 header.active .header-top .employ {
-	color: #008944;
+	color: #00c6a9;
 }
 
 header .header-top .employ.active {
-	color: #008944;
+	color: #00c6a9;
 }
 
 header .header-top .afternone::after {
@@ -274,8 +273,8 @@ header .gnb .gnb-menu .gnb-title .sub a {
 }
 
 header .gnb .gnb-menu .gnb-title .sub a:hover {
-	color: #fff;
-	background: #017e3f;
+	color: white;
+	background: #97afba;
 }
 
 header .gnb .gnb-menu .gnb-title .one a {
@@ -362,7 +361,7 @@ header .gnb .lang a:hover {
 }
 
 body {
-	background: #bde0fe;
+
 	font-family: ' KoPub Dotum';
 }
 
