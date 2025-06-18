@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="/css/reset.css">
 	<link rel="stylesheet" href="/css/swiper.css">
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css">
 	<link rel="stylesheet" href="/css/introCss.css">
 	<script src="https://cdn.tailwindcss.com"></script>
 	<script>//접근성 요소
@@ -38,7 +39,7 @@
 						<a href="" class="">ENG</a>
 						<a href="" class="afternone">中文</a>
 					</nav>
-					<h1><a href="/"><img class="logo-img" src="./img/img1.png"></a></h1>
+					<h1><a href="/"><img class="logo-img" src="./img/mainlogo.png"></a></h1>
 				</div>
 				<nav class="gnb"> <!--global navigation bar, 전체 상단 메뉴바 -->
 					<div class="gnb-menu">
@@ -116,17 +117,27 @@
 	</header>
 	<!-- main start -->
 	<main id="main">
-		<div class="content">
-			<div class="swiper">
-				<div class="swiper-wrapper">
-					<div class="swiper-slide slide01"></div>
-					<div class="swiper-slide slide02"></div>
-					<div class="swiper-slide slide03"></div>
+		<div class="section">
+			<div class="content">
+				<div class="swiper">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide slide01"></div>
+						<div class="swiper-slide slide02"></div>
+						<div class="swiper-slide slide03"></div>
+					</div>
+					<div class="swiper-pagination"></div>
+
 				</div>
-				<div class="swiper-pagination"></div>
+				<!-- 여기까지 첫번째 화면 요소(fullpage.js 적용) -->
+				<div class="section w-xl h-xl bg-inherit">
+					<h1 data-aos="zoom-in">두 번째 페이지</h1>
+					<p data-aos="fade-left" data-aos-delay="500">내부 요소들이 애니메이션됩니다.</p>
+				</div>
+				<!-- 여기까지 두번째 화면 요소(fullpage.js 적용) -->
 
 			</div>
-			<!-- 유한양행 브랜드 사이트를 협력사 리스트로 대체 -->
+		</div>
+		<!-- 유한양행 브랜드 사이트를 협력사 리스트로 대체 -->
 	</main>
 
 
