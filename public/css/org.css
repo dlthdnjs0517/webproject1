@@ -5,7 +5,7 @@ body {
 }
 
 .base {
-	background-color: #ef476f;
+	background-color: #003049;
 	width: 100%;
 	position: fixed;
 	top: 0;
@@ -51,14 +51,13 @@ body {
 }
 
 .gnb-title a {
-	color: aliceblue;
+	color: #97afba;
 	font-weight: 600;
 }
 
 .logo-img img {
-
-	width: 174px;
-	height: 41px;
+	height: auto;
+	width: auto;
 }
 
 .img-container {
@@ -100,7 +99,7 @@ body {
 	min-width: 350px;
 	border-radius: 6px;
 	background-color: #ebebeb;
-	border: 3px double #780000;
+	border: 2px solid #780000;
 }
 
 @media screen and (max-width:768px) {
@@ -198,4 +197,34 @@ input {
 	justify-content: center;
 	flex-wrap: nowrap;
 	padding: 10px 0;
+}
+
+.tableContainer {
+	height: 100%;
+	margin: 5rem;
+	text-align: center;
+	padding: 20px;
+}
+
+@media screen and (max-width:768px) {
+	.tableContainer {
+		height: 100%;
+		margin-left: 4vw;
+		text-align: center;
+		padding: 20px;
+	}
+
+}
+
+.empTable {
+	width: 34rem;
+	margin-left: auto;
+	margin-right: auto;
+	border-collapse: collapse;
+	text-align: center;
+}
+
+.fieldRow,
+.fieldData {
+	border: 1px solid #d62828;
 }
