@@ -109,8 +109,8 @@ a.directBt {
 
 .logo-img {
 	margin: 0 1rem;
-	width: 174px;
-	height: 41px;
+	width: auto;
+	height: auto;
 }
 
 .gnb-title-container {
