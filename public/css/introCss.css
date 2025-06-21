@@ -107,22 +107,28 @@ a.directBt {
 	z-index: 20000;
 }
 
-.logo-img {
-	margin: 0 1rem;
-	width: auto;
-	height: auto;
-}
+
 
 .gnb-title-container {
 	display: flex;
 	position: relative;
 	flex-wrap: nowrap;
 	/* 줄바꿈 방지 */
-	align-items: center;
+	align-items: flex-start;
+	padding-left: 0;
 	/* 세로 가운데 정렬 */
 	justify-content: flex-start;
-	margin-left: 0;
-	padding-left: 0;
+}
+
+.logo-container{
+	padding-bottom: 20px;
+}
+
+.logo-img {
+	
+	width: auto;
+	height: 35px;
+	vertical-align: middle;
 }
 
 
@@ -225,15 +231,12 @@ header .gnb .gnb-menu ul {
 header .gnb .gnb-menu .gnb-title {
 	position: relative;
 	display: flex;
-	margin-left: 0px;
 	/* 왼쪽부터 차례대로 나열 */
 	text-align: center;
 	line-height: 34px;
 	z-index: 10;
-	/* display: grid; */
-	/* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-	gap: 100px; */
-
+	margin-left: 0;
+	padding-left: 0;
 }
 
 header .gnb .gnb-menu .gnb-title .one a {
