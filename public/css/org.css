@@ -56,8 +56,9 @@ body {
 }
 
 .logo-img img {
-	height: auto;
+	height: 35px;
 	width: auto;
+	padding-bottom: 5px;
 }
 
 .img-container {
