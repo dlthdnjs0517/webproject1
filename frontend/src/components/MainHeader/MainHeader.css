@@ -1,9 +1,8 @@
-/* #root {
+#root {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  /* margin: 0 auto; */
   text-align: center;
-} */
+}
 
 /* @keyframes logo-spin {
 	from {
@@ -20,7 +19,7 @@
 	}
   } */
 
-.layout {
+.header-layout {
   position: relative;
   /* min-width: 100%; */
   width: 100%;
@@ -152,10 +151,6 @@ header.active {
   opacity: 1;
   -webkit-transition: opacity 0.4s linear, height 0.4s linear;
   transition: opacity 0.4s linear, height 0.4s linear;
-}
-
-header h1 {
-  float: left;
 }
 
 header .header-top {
