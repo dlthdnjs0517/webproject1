@@ -6,13 +6,13 @@ import logo from '../../assets/img/logo.png'
 
 function MainHeader(){
 	
-	const [isActive, setIsActive] = useState(false);
+	const [isHovered, setIsHovered] = useState(false); 
 	
 	return(
 
 	<header className="">
 				<div className="header-inner">
-					<div className="layout">
+					<div className="header-layout">
 						<nav className="header-top">
 							<div className="employbox">
 								<Link to="" className="employ">로그인<i className=""></i></Link>
@@ -23,7 +23,7 @@ function MainHeader(){
 					</div>
 					<nav className="gnb">  {/* global navigation bar, 전체 상단 메뉴바 */}
 						<div className="gnb-menu">
-							<div className="layout">
+							<div className="header-layout">
 								<ul className="gnb-title-container">
 									<li className="gnb-title">
 										<div className="logo-container">
