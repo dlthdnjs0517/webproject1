@@ -1,5 +1,5 @@
+import { Link } from 'react-router-dom';
 import React,{useState, useEffect, useRef} from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './MainHeader.css'
 import logo from '../../assets/img/logo.png'
 
@@ -8,10 +8,21 @@ function MainHeader(){
 	
 	const [isHovered, setIsHovered] = useState(false); 
 	
+	const handleMouseEnter = () => {
+		setIsHovered(true);
+	};
+	const handleMouseLeave = () => {
+		setIsHovered(false);
+	};
+
+
+
 	return(
 
-	<header className="">
-				<div className="header-inner">
+	<header className={isHovered ? 'active' : ''}
+	onMouseEnter={handleMouseEnter}
+	onMouseLeave={handleMouseLeave}>
+				<div className={`header-inner ${isHovered ? 'active' : ''}`}>
 					<div className="header-layout">
 						<nav className="header-top">
 							<div className="employbox">
@@ -95,7 +106,7 @@ function MainHeader(){
 									</li>
 								</ul>
 							</div>
-							<div className="headerbg"></div>
+							<div className={`headerbg ${isHovered ? 'active' : ''}`}></div>
 							<div className="headerhov"></div>
 						</div>
 					</nav>
