@@ -126,6 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //swiper 코드, class를 만든다.
 window.addEventListener('DOMContentLoaded', function () {
+	// swiper 코드
+	// swiper 코드
 	const swiper = new Swiper('.swiper', {
 		loop: true,
 		slidesPerView: 1,
