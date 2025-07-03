@@ -24,7 +24,7 @@ function MainHeader() {
           <nav className="header-top">
             <div className="employbox">
               <Link to="" className="employ">
-                로그인<i className=""></i>
+                로그인
               </Link>
             </div>
             <Link to="" className="">
@@ -36,7 +36,6 @@ function MainHeader() {
           </nav>
         </div>
         <nav className="gnb">
-          {" "}
           {/* global navigation bar, 전체 상단 메뉴바 */}
           <div className="gnb-menu">
             <div className="header-layout">
@@ -53,14 +52,15 @@ function MainHeader() {
                     <Link to="#" className="">
                       기업소개
                     </Link>
-                    <p className="line"></p>
                   </div>
                   <div className="sub">
                     <Link to="#">회사소개</Link>
                     <Link to="#">CEO 인삿말</Link>
                     <Link to="#">회사연혁</Link>
                     <Link to="#">기업이념</Link>
-                    <Link to="/orgChart">조직도</Link>
+                    <Link to="/orgChart" className="glitch" data-text="조직도">
+                      조직도
+                    </Link>
                   </div>
                 </li>
                 <li className="gnb-title">
@@ -68,7 +68,6 @@ function MainHeader() {
                     <Link to="#" className="">
                       R&D
                     </Link>
-                    <p className="line"></p>
                   </div>
                   <div className="sub">
                     <Link to="#">연구분야</Link>
@@ -82,7 +81,6 @@ function MainHeader() {
                     <Link to="#" className="">
                       제품정보
                     </Link>
-                    <p className="line"></p>
                   </div>
                   <div className="sub">
                     <Link to="#">일반의약품</Link>
@@ -96,7 +94,6 @@ function MainHeader() {
                     <Link to="#" className="">
                       인재채용
                     </Link>
-                    <p className="line"></p>
                   </div>
                   <div className="sub">
                     <Link to="#">인재상</Link>
@@ -110,7 +107,6 @@ function MainHeader() {
                     <Link to="#" className="">
                       고객지원
                     </Link>
-                    <p className="line"></p>
                   </div>
                   <div className="sub">
                     <Link to="#"></Link>
@@ -122,7 +118,6 @@ function MainHeader() {
               </ul>
             </div>
             <div className={`headerbg ${isHovered ? "active" : ""}`}></div>
-            <div className="headerhov"></div>
           </div>
         </nav>
       </div>
