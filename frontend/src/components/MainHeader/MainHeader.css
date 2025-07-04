@@ -265,9 +265,86 @@ header .gnb .gnb-menu .gnb-title .sub a {
 
 .glitch {
   position: relative;
+  /* mix-blend-mode: lighten; */
+}
+.sub .glitch::before,
+.sub .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  clip: inset(0, 0, 0, 0);
 }
 
-a.glitch::before,
+.glitch::before {
+  display: none;
+  left: -1px;
+  text-shadow: 1px 0 rgba(255, 0, 0, 0.7);
+}
+
+.glitch::after {
+  display: none;
+  left: 1px;
+  text-shadow: -1px 0 rgba(0, 0, 255, 0.7);
+}
+
+header .gnb .gnb-menu .gnb-title .sub .glitch:hover::before {
+  text-shadow: 4px 0 rgba(255, 0, 0, 0.7);
+  animation: glitch-loop-1 0.8s infinite ease-in-out alternate-reverse;
+}
+header .gnb .gnb-menu .gnb-title .sub .glitch:hover::after {
+  text-shadow: -5px 0 rgba(0, 0, 255, 0.7);
+  animation: glitch-loop-2 0.8s infinite ease-in-out alternate-reverse;
+}
+
+@keyframes glitch-loop-1 {
+  0% {
+    clip: rect(8px, 9999px, 25px, 0);
+  }
+  25% {
+    clip: rect(5px, 9999px, 18px, 0);
+  }
+  50% {
+    clip: rect(12px, 9999px, 30px, 0);
+  }
+  75% {
+    clip: rect(2px, 9999px, 22px, 0);
+  }
+  100% {
+    clip: rect(15px, 9999px, 32px, 0);
+  }
+}
+
+@keyframes glitch-loop-2 {
+  0% {
+    top: -1px;
+    left: 1px;
+    clip: rect(17px, 9999px, 33px, 0);
+  }
+  25% {
+    top: -6px;
+    left: 4px;
+    clip: rect(3px, 9999px, 21px, 0);
+  }
+  50% {
+    top: -3px;
+    left: 2px;
+    clip: rect(10px, 9999px, 28px, 0);
+  }
+  75% {
+    top: 0px;
+    left: -4px;
+    clip: rect(20px, 9999px, 34px, 0);
+  }
+  100% {
+    top: -1px;
+    left: -1px;
+    clip: rect(1px, 9999px, 15px, 0);
+  }
+}
+
+/* a.glitch::before,
 a.glitch::after {
   content: attr(data-text);
   position: absolute;
@@ -292,33 +369,33 @@ a.glitch:hover::before,
 a.glitch:hover::after {
   opacity: 1;
   animation: glitchAni 0.3s infinite;
-}
-@keyframes glitchAni {
+} */
+/* @keyframes glitchAni {
   0% {
-    clip-path: inset(0 0 50% 0);
+    clip: inset(0 0 50% 0);
     transform: translate(1px, -1px);
   }
   20% {
-    clip-path: inset(10% 0 40% 0);
+    clip: inset(10% 0 40% 0);
     transform: translate(-2px, 2px);
   }
   40% {
-    clip-path: inset(20% 0 30% 0);
+    clip: inset(20% 0 30% 0);
     transform: translate(2px, -1px);
   }
   60% {
-    clip-path: inset(30% 0 20% 0);
+    clip: inset(30% 0 20% 0);
     transform: translate(-1px, 1px);
   }
   80% {
-    clip-path: inset(40% 0 10% 0);
+    clip: inset(40% 0 10% 0);
     transform: translate(1px, 0);
   }
   100% {
-    clip-path: inset(50% 0 0 0);
+    clip: inset(50% 0 0 0);
     transform: translate(0, 0);
   }
-}
+} */
 
 header .gnb .gnb-menu .gnb-title .sub a.glitch:hover {
   background: transparent;
