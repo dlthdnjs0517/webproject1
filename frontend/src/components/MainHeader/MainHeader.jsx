@@ -41,7 +41,7 @@ function MainHeader() {
             <div className="header-layout">
               <ul className="gnb-title-container">
                 <li className="gnb-title">
-                  <div className="logo-container">
+                  <div className="logo-container one">
                     <Link to="/">
                       <img className="logo-img" src={logo} />
                     </Link>
