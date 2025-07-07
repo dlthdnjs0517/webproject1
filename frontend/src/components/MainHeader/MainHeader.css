@@ -83,7 +83,7 @@ header .gnb .gnb-menu.acitve {
 
 header.active .gnb .gnb-menu .gnb-title > a {
   color: black;
-  transition: color 0.4s ease-in-out;
+  /* transition: color 0.4s ease-in-out; */
 }
 
 header .header-inner::after {
@@ -117,13 +117,15 @@ a.directBt {
   flex-wrap: nowrap;
   /* 줄바꿈 방지 */
   align-items: flex-start;
-  padding-left: 0;
+  /* padding-left: 0; */
+  right: 10px;
+  bottom: 10px;
   /* 세로 가운데 정렬 */
   justify-content: flex-start;
 }
 
-.logo-container {
-  padding-bottom: 20px;
+header .gnb .gnb-menu .gnb-title .logo-container {
+  padding-bottom: 10px;
 }
 
 .logo-img {
@@ -201,10 +203,9 @@ header .header-top .afternone::after {
 }
 
 header .gnb .gnb-menu ul {
-  /* margin-left: 364px;
-	  font-size: 15px; */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(8, minmax(100px, 1fr));
+  gap: 20px;
   font-size: 15px;
   place-items: center;
 }
@@ -248,9 +249,8 @@ header.active .gnb .gnb-menu .gnb-title .sub {
   width: 100%;
   opacity: 1;
   position: absolute;
-  top: 50%;
+  top: 100%;
   visibility: visible;
-  -webkit-transition: opacity 0.4s linear, height 0.4s linear;
   transition: opacity 0.4s linear, height 0.4s linear;
   z-index: 20;
 }
@@ -259,7 +259,7 @@ header .gnb .gnb-menu .gnb-title .sub a {
   display: flex;
   flex-direction: column;
   text-align: center;
-  font-weight: 300;
+  font-weight: 400;
   color: #fff;
 }
 
@@ -402,8 +402,10 @@ header .gnb .gnb-menu .gnb-title .sub a.glitch:hover {
 }
 
 header .gnb .gnb-menu .gnb-title .sub a:hover {
-  color: white;
-  background: #97afba;
+  color: #fff;
+  /* background: #97afba; */
+  background: #2d93ad;
+  border-radius: 10px;
 }
 
 header .gnb .gnb-menu .gnb-title .one a {
@@ -413,54 +415,9 @@ header .gnb .gnb-menu .gnb-title .one a {
   line-height: 44px;
   font-size: 18px;
   font-weight: 700;
+  transition: all, 0.4s ease-in-out;
 }
 
 header.active .gnb .gnb-menu .gnb-title .one a {
   color: #000;
 }
-
-/* header .gnb .gnb-menu .gnb-title .one .line {
-  position: relative;
-  right: 0;
-  width: 100%;
-  height: 2px;
-  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-header .gnb .gnb-menu .gnb-title:hover .one .line::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 2px;
-  background: #cfcfcf;
-  z-index: 0;
-}
-
-header .gnb .gnb-menu .gnb-title .one .line::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: auto;
-  right: 0;
-  display: block;
-  width: 0;
-  height: 2px;
-  background: rgb(67, 176, 42);
-  background: linear-gradient(
-    90deg,
-    rgba(67, 176, 42, 1) 0%,
-    rgba(0, 169, 224, 1) 100%
-  );
-  z-index: 100;
-  transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-header .gnb .gnb-menu .gnb-title:hover .one .line:after {
-  content: "";
-  left: 0;
-  right: auto;
-  width: 100%;
-} */
