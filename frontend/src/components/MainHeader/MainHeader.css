@@ -17,6 +17,7 @@ header .headerbg {
   background: #003049;
   transition: opacity 0.4s linear, 0.8s;
   z-index: -2;
+  border-radius: 20px;
 }
 
 header .headerbg.active {
@@ -24,7 +25,7 @@ header .headerbg.active {
   /* top: 104px */
   opacity: 1;
   height: 220px;
-  transform: translateY(105px);
+  transform: translateY(70px);
   transition: opacity 0.4s linear, 0.8s;
   z-index: 1;
 }
@@ -33,7 +34,7 @@ header .header-inner::after {
   content: "";
   position: absolute;
   width: 100%;
-  height: 105px;
+  height: 80px;
   top: 0;
   background: #fff;
   opacity: 0;
@@ -171,19 +172,19 @@ header .gnb .gnb-menu .gnb-title {
   /* min-width: 100%; */
   width: 100%;
   height: 100%;
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 0 2rem;
   display: flex;
   justify-content: space-between;
 }
 
-header .gnb .gnb-menu .header-layout .gnb-wrap {
+header .gnb .gnb-menu .header-layout .gnb-right {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.gnb-wrap .login {
+.gnb-right .login {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -192,7 +193,8 @@ header .gnb .gnb-menu .header-layout .gnb-wrap {
   width: 4rem;
   height: 2rem;
 }
-header.active .gnb-wrap .login {
+
+header.active .gnb-right .login {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -240,7 +242,7 @@ header.active .gnb .gnb-menu .gnb-title .sub {
 }
 
 header .gnb .gnb-menu .gnb-title .sub a {
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   display: block;
   flex-direction: column;
   text-align: center;
@@ -396,6 +398,3 @@ a.glitch:hover::after {
     transform: translate(0, 0);
   }
 } */
-.herderbg {
-  border-radius: 20px;
-}
