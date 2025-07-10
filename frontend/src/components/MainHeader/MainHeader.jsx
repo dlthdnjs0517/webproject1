@@ -20,15 +20,6 @@ function MainHeader() {
       onMouseLeave={handleMouseLeave}
     >
       <div className={`header-inner ${isHovered ? "active" : ""}`}>
-        {/* <div className="header-layout">
-          <nav className="header-top">
-            <div className="employbox">
-              <Link to="" className="employ">
-                로그인
-              </Link>
-            </div>
-          </nav>
-        </div> */}
         <nav className="gnb">
           {/* global navigation bar, 전체 상단 메뉴바 */}
           <div className="gnb-menu">
@@ -48,7 +39,6 @@ function MainHeader() {
                     </Link>
                   </div>
                   <div className="sub">
-                    <Link to="#">회사소개</Link>
                     <Link to="#">CEO 인삿말</Link>
                     <Link to="#">회사연혁</Link>
                     <Link to="#">기업이념</Link>
@@ -109,14 +99,14 @@ function MainHeader() {
                     <Link to="#"></Link>
                   </div>
                 </li>
+                <div className={`headerbg ${isHovered ? "active" : ""}`}></div>
               </ul>
-              <div className="gnb-wrap">
+              <div className="gnb-right">
                 <Link className="login" to="">
                   로그인
                 </Link>
               </div>
             </div>
-            <div className={`headerbg ${isHovered ? "active" : ""}`}></div>
           </div>
         </nav>
       </div>
