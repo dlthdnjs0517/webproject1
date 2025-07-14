@@ -1,0 +1,97 @@
+.section {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* 스크롤 시 이 요소의 시작 부분이 컨테이너의 시작 부분에 맞춰지도록 설정 */
+  scroll-snap-align: start;
+  text-align: center;
+  padding-top: 2rem;
+}
+
+/* --- Fullpage 컨테이너 --- */
+.fullpage-container {
+  height: 100vh;
+  /* 세로(y) 방향으로 스크롤을 강제하고, 섹션 단위로 딱 맞게 멈추도록 설정 */
+  scroll-snap-type: y mandatory;
+  /* 컨테이너를 벗어나는 내용은 스크롤로 처리 */
+  overflow-y: scroll;
+}
+
+/* 스크롤바 숨기기 */
+.fullpage-container::-webkit-scrollbar {
+  display: none;
+}
+.fullpage-container {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+
+/* --- 각 섹션별 배경 --- */
+
+/* 첫 번째 섹션: 스크린샷과 유사한 그라데이션 배경 적용 */
+.section-1 {
+  background: radial-gradient(
+    circle,
+    rgba(238, 174, 202, 1) 0%,
+    rgba(148, 187, 233, 1) 100%
+  );
+}
+
+.section-2 {
+  background: linear-gradient(135deg, #536976, #292e49);
+}
+.section-3 {
+  /* background: eas-gradient(135deg, #ffc8dd, #ffafcc, #fb6f92); */
+
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+}
+
+/* --- 콘텐츠 스타일 --- */
+.content h1 {
+  font-size: 5.2rem;
+  font-weight: 600;
+}
+
+/* 첫 번째 섹션의 텍스트 스타일 */
+.section-1 .content h1 {
+  text-transform: uppercase; /* 텍스트를 대문자로 변경 */
+  color: rgba(255, 255, 255, 0.85); /* 텍스트 색상을 약간 부드럽게 조정 */
+}
+
+/* 첫 번째 섹션의 두 번째 줄 텍스트 스타일 조정 */
+.content .subtitle {
+  font-weight: 600;
+}
+
+.content p {
+  font-size: 1.25rem;
+  max-width: 600px;
+}
+
+/* 텍스트를 가로로 정렬하기 위한 컨테이너 스타일 */
+.horizontal-text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4.5rem; /* 단어 사이의 간격 */
+  flex-wrap: wrap; /* 화면이 작아지면 줄바꿈 허용 */
+}
+
+/* 모바일 화면 대응 */
+@media (max-width: 768px) {
+  .content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0; /* 모바일에서는 h1 마진 제거 */
+  }
+  .horizontal-text-container {
+    /* flex-direction: column; // 모바일에서 세로로 정렬되던 코드를 주석 처리하여 항상 가로 정렬을 유지합니다. */
+    gap: 1rem;
+  }
+  .content p {
+    font-size: 1rem;
+    padding: 0 20px;
+  }
+}
