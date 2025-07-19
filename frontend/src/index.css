@@ -7,6 +7,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 } */
+@import "//cdn.jsdelivr.net/npm/font-kopub@1.0";
+
+* {
+  box-sizing: border-box;
+}
 
 body {
   /* margin: 0;
@@ -15,5 +20,10 @@ body {
   min-width: 320px;
   min-height: 100vh; */
   font-family: "KoPub Dotum";
-  background-color: #1a1a1a;
+  /* background-color: #1a1a1a; */
+  background-color: #000;
+}
+
+html {
+  scroll-behavior: smooth;
 }
