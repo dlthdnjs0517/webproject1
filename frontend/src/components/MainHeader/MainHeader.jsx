@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import "./MainHeader.css";
-import logo from "../../assets/img/logo.png";
+import LoginModal from "../../components/LoginModal";
+import logo from "../../assets/img/logo.svg";
 
 function MainHeader() {
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoginOpen, setLoginOpen] = useState(false);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -102,9 +104,14 @@ function MainHeader() {
                 <div className={`headerbg ${isHovered ? "active" : ""}`}></div>
               </ul>
               <div className="gnb-right">
-                <Link className="login" to="">
+                <button onClick={() => setLoginOpen(true)} className="login">
                   로그인
-                </Link>
+                </button>
+                <LoginModal
+                  isOpen={isLoginOpen}
+                  onClose={() => setLoginOpen(false)}
+                  onSuccess={() => alert("메뉴 갱신 예정")}
+                />
               </div>
             </div>
           </div>
