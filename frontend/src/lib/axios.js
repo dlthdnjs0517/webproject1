@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "/api",
+  baseURL: "http://localhost:3000",
   timeout: 5000,
 });
 
@@ -17,15 +17,15 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-  ((response) => {
-    return response.data;
+  (response) => {
+    return response;
   },
   (error) => {
     if (error.response?.status === 401) {
       alert("당신은 볼 수 없습니다.");
     }
     return Promise.reject(error);
-  })
+  }
 );
 
 export default instance;
