@@ -36,6 +36,9 @@ app.use("/api/auth", authRouter);
 const orgChartRouter = require("./routes/orgRoute.js");
 app.use("/orgChart", orgChartRouter);
 
+const menuRouter = require("./routes/menuRoute.js");
+app.use("/api/menu", menuRouter);
+
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 app.use((req, res) => {
