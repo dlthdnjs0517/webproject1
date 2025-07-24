@@ -1,27 +1,22 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import "./MainHeader.css";
+import { fetchMenus } from "../../api/menu";
 import LoginModal from "../../components/LoginModal";
 import logo from "../../assets/img/logo.svg";
 
 function MainHeader() {
-  const [isHovered, setIsHovered] = useState(false);
+  const [menus, setMenus] = useState([]); //api로 받은 메뉴 저장
+  const [activeIndex, setActiveIndex] = useState(null);
   const [isLoginOpen, setLoginOpen] = useState(false);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+  useEffect(() => {
+    fetchMenus().then(setMenus);
+  }, []);
 
   return (
-    <header
-      className={isHovered ? "active" : ""}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className={`header-inner ${isHovered ? "active" : ""}`}>
+    <header>
+      <div className="header-inner">
         <nav className="gnb">
           {/* global navigation bar, 전체 상단 메뉴바 */}
           <div className="gnb-menu">
@@ -33,7 +28,41 @@ function MainHeader() {
                   </Link>
                 </div>
               </h1>
+
+              {/* api로 불러온 데이터를 기반으로 반복 렌더링 */}
               <ul className="gnb-title-container">
+                {menus.map((menu, index) => (
+                  <li
+                    key={index}
+                    className={`gnb-title ${
+                      activeIndex === index ? "active" : ""
+                    }`}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onMouseLeave={() => setActiveIndex(null)}
+                  >
+                    <div className="one">
+                      <Link to={menu.links[0]?.to || "#"}>{menu.title}</Link>
+                    </div>
+
+                    {/* 서브메뉴: 링크가 있을 때만 표시 */}
+                    <div
+                      className={`sub ${activeIndex === index ? "active" : ""}`}
+                    >
+                      {menu.links.map((link, i) => (
+                        <Link
+                          key={i}
+                          to={link.to}
+                          className={link.glitch ? "glitch" : ""}
+                          data-text={link.glitch ? link.label : undefined}
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              {/* <ul className="gnb-title-container">
                 <li className="gnb-title">
                   <div className="one">
                     <Link to="#" className="">
@@ -102,7 +131,7 @@ function MainHeader() {
                   </div>
                 </li>
                 <div className={`headerbg ${isHovered ? "active" : ""}`}></div>
-              </ul>
+              </ul> */}
               <div className="gnb-right">
                 <button onClick={() => setLoginOpen(true)} className="login">
                   로그인
