@@ -2,16 +2,34 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import "./MainHeader.css";
 import { fetchMenus } from "../../api/menu";
+import { getUserRole, isLoggedIn } from "../../utils/auth";
 import LoginModal from "../../components/LoginModal";
 import logo from "../../assets/img/logo.svg";
+import { logout } from "../../api/auth";
 
 function MainHeader() {
   const [menus, setMenus] = useState([]); //api로 받은 메뉴 저장
+  const [role, setRole] = useState("guest");
   const [activeIndex, setActiveIndex] = useState(null);
   const [isLoginOpen, setLoginOpen] = useState(false);
 
+  const updateMenus = async () => {
+    const data = await fetchMenus();
+    setMenus(data);
+
+    //role 갱신
+    const currentRole = getUserRole();
+    setRole(currentRole);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setRole("guest");
+    updateMenus();
+  };
+
   useEffect(() => {
-    fetchMenus().then(setMenus);
+    updateMenus();
   }, []);
 
   return (
@@ -62,84 +80,20 @@ function MainHeader() {
                   </li>
                 ))}
               </ul>
-              {/* <ul className="gnb-title-container">
-                <li className="gnb-title">
-                  <div className="one">
-                    <Link to="#" className="">
-                      기업소개
-                    </Link>
-                  </div>
-                  <div className="sub">
-                    <Link to="#">CEO 인삿말</Link>
-                    <Link to="#">회사연혁</Link>
-                    <Link to="#">기업이념</Link>
-                    <Link to="/orgChart" className="glitch" data-text="조직도">
-                      조직도
-                    </Link>
-                  </div>
-                </li>
-                <li className="gnb-title">
-                  <div className="one">
-                    <Link to="#" className="">
-                      R&D
-                    </Link>
-                  </div>
-                  <div className="sub">
-                    <Link to="#">연구분야</Link>
-                    <Link to="#">개발성과</Link>
-                    <Link to="#">연구소 소개</Link>
-                    <Link to="#">보도자료</Link>
-                  </div>
-                </li>
-                <li className="gnb-title">
-                  <div className="one">
-                    <Link to="#" className="">
-                      제품정보
-                    </Link>
-                  </div>
-                  <div className="sub">
-                    <Link to="#">일반의약품</Link>
-                    <Link to="#">전문의약품</Link>
-                    <Link to="#">의약외품</Link>
-                    <Link to="#">건강기능식품</Link>
-                  </div>
-                </li>
-                <li className="gnb-title">
-                  <div className="one">
-                    <Link to="#" className="">
-                      인재채용
-                    </Link>
-                  </div>
-                  <div className="sub">
-                    <Link to="#">인재상</Link>
-                    <Link to="#">직무소개</Link>
-                    <Link to="#">인재채용근황</Link>
-                    <Link to="#">복리후생</Link>
-                  </div>
-                </li>
-                <li className="gnb-title">
-                  <div className="one">
-                    <Link to="#" className="">
-                      고객지원
-                    </Link>
-                  </div>
-                  <div className="sub">
-                    <Link to="#"></Link>
-                    <Link to="#"></Link>
-                    <Link to="#"></Link>
-                    <Link to="#"></Link>
-                  </div>
-                </li>
-                <div className={`headerbg ${isHovered ? "active" : ""}`}></div>
-              </ul> */}
               <div className="gnb-right">
-                <button onClick={() => setLoginOpen(true)} className="login">
-                  로그인
-                </button>
+                {role === "guest" ? (
+                  <button onClick={() => setLoginOpen(true)} className="login">
+                    로그인
+                  </button>
+                ) : (
+                  <button onClick={handleLogout} className="login">
+                    로그아웃
+                  </button>
+                )}
                 <LoginModal
                   isOpen={isLoginOpen}
                   onClose={() => setLoginOpen(false)}
-                  onSuccess={() => alert("메뉴 갱신 예정")}
+                  onSuccess={updateMenus}
                 />
               </div>
             </div>
