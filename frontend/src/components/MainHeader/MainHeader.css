@@ -8,87 +8,69 @@ header {
   z-index: 10;
 }
 
-header .headerbg {
-  position: absolute;
-  width: 100%;
-  height: 0px;
-  top: 0;
-  opacity: 0;
-  background: #003049;
-  transition: opacity 0.4s linear, 0.8s;
-  z-index: -2;
-  border-radius: 20px;
+header .gnb .gnb-menu {
+  flex: 1 1 0%;
 }
 
-header .headerbg.active {
-  position: absolute;
-  /* top: 104px */
-  opacity: 1;
-  height: 220px;
-  transform: translateY(70px);
-  transition: opacity 0.4s linear, 0.8s;
-  z-index: 1;
-}
-
-header .header-inner::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 80px;
-  top: 0;
-  background: #fff;
-  opacity: 0;
-  z-index: -10;
-}
-
-header.active .header-inner::after {
-  opacity: 1;
-  -webkit-transition: opacity 0.4s linear, height 0.4s linear;
-  transition: opacity 0.4s linear, height 0.4s linear;
-}
-
-header .gnb .gnb-menu.acitve {
-  opacity: 1;
-  background: #003049;
-  -webkit-transition: opacity 0.4s linear, height 0.4s linear;
-  transition: opacity 0.4s linear, height 0.4s linear;
-}
-
-header.active .gnb .gnb-menu .gnb-title > a {
-  color: black;
-  /* transition: color 0.4s ease-in-out; */
-}
-
-header .header-inner::after {
-  transition: opacity 0.3s linear 0.3s;
-}
-
-header.active .header-inner::after {
-  opacity: 1;
-  transition-delay: 0ms;
-}
-
-a.directBt {
-  background: #d90429;
-  border-bottom: 1px solid #bf4342;
-  color: #001233;
-  font-size: 18px;
-  font-weight: bold;
-  height: 60px;
-  left: 0;
-  line-height: 60px;
-  position: absolute;
-  text-align: center;
-  top: 0;
-  width: 100%;
-  z-index: 20000;
-}
+/* 드롭다운 메뉴 구현할때 width, height 무조건 구현하기 */
 
 .gnb-title-container {
   display: flex;
   position: relative;
   flex-wrap: nowrap;
+  gap: 0 10px;
   /* 줄바꿈 방지 */
+}
+
+header .gnb .gnb-menu .gnb-title {
+  position: relative;
+  /* 자식요소인 .sub의 position:absolute의 기준이 됨 */
+  display: flex;
+  /* 왼쪽부터 차례대로 나열 */
+  text-align: center;
+  line-height: 2rem;
+  z-index: 10;
+}
+
+header .gnb .gnb-menu .gnb-title .sub {
+  position: absolute;
+  /* position : absolute는 position:relative가 설정된 가장 가까운 조상을 기준으로
+  위치를 잡겠다는 뜻  */
+  top: 100%;
+  left: 0;
+  width: 100%;
+
+  background-color: #003049;
+  border-radius: 10px;
+  padding: 15px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
+  /* hover 되기 전에 보이지 않음 처리 하는 것 */
+}
+
+.gnb-title.active .sub {
+  opacity: 1;
+  visibility: visible;
+}
+
+header .gnb .gnb-menu .gnb-title .one {
+  color: #fff;
+  display: block;
+  width: 140px;
+  height: auto;
+  line-height: 44px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.gnb-title.active .sub a:hover {
+  background-color: #2d93ad;
 }
 
 .logo-container {
@@ -101,40 +83,7 @@ a.directBt {
   width: auto;
   height: 35px;
   vertical-align: middle;
-}
-
-header.active {
-  opacity: 1;
-  -webkit-transition: opacity 0.4s linear, height 0.4s linear;
-  transition: opacity 0.4s linear, height 0.4s linear;
-}
-
-header .header-top {
-  position: relative;
-  display: flex;
-  /* align-items: center; */
-  justify-content: flex-end;
-  width: 100%;
-  top: 10px;
-  margin-bottom: 30px;
-}
-
-header .header-top a {
-  margin-right: 4rem;
-  color: #fff;
-}
-
-header .header-top a {
-  font-size: small;
-  color: #fff;
-}
-
-header.active .header-top .employ {
-  color: #00c6a9;
-}
-
-header .header-top .employ.active {
-  color: #00c6a9;
+  min-width: 80px;
 }
 
 header .gnb .gnb-menu ul {
@@ -148,23 +97,6 @@ header .gnb .gnb-menu ul {
     flex: 1 1 0%;
     flex-direction: column;
   }
-}
-
-header .gnb {
-  display: flex;
-  justify-content: space-between;
-}
-header .gnb .gnb-menu {
-  flex: 1 1 0%;
-}
-
-header .gnb .gnb-menu .gnb-title {
-  position: relative;
-  display: flex;
-  /* 왼쪽부터 차례대로 나열 */
-  text-align: center;
-  line-height: 34px;
-  z-index: 10;
 }
 
 .header-layout {
@@ -190,61 +122,30 @@ header .gnb .gnb-menu .header-layout .gnb-right {
   align-items: center;
   color: #fff;
   font-weight: 700;
-  width: 4rem;
-  height: 2rem;
+  width: 150px;
+  height: 44px;
+  /* width: 4rem;
+  height: 2rem; */
 }
 
-header.active .gnb-right .login {
+.gnb-right .login:hover {
   display: flex;
   justify-content: center;
   align-items: center;
   color: #000;
   font-weight: 700;
-  width: 4rem;
-  height: 2rem;
+  width: 150px;
+  height: 44px;
+  border-radius: 40px;
+  background-color: #2d93ad;
 }
 
-header .gnb .gnb-menu .gnb-title .one a {
-  color: #fff;
-  display: block;
-  width: 140px;
-  height: auto;
-  line-height: 44px;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-header .gnb .gnb-menu .gnb-title .one a.active {
+header .gnb .gnb-menu .gnb-title .one a:hover {
   color: #000;
-}
-
-header.active .gnb .gnb-menu .gnb-title .one a {
-  color: #000;
-}
-
-header .gnb .gnb-menu .gnb-title .sub {
-  margin-top: 30px;
-  opacity: 0;
-  height: 0;
-  position: absolute;
-  visibility: hidden;
-  /* hover 되기 전에 보이지 않음 처리 하는 것 */
-}
-
-header.active .gnb .gnb-menu .gnb-title .sub {
-  width: 100%;
-  opacity: 1;
-  position: absolute;
-  top: 100%;
-  visibility: visible;
-  transition: opacity 0.4s linear, height 0.4s linear;
-  z-index: 20;
 }
 
 header .gnb .gnb-menu .gnb-title .sub a {
-  /* box-sizing: border-box; */
   display: block;
-  flex-direction: column;
   text-align: center;
   border-radius: 10px;
   font-weight: 400;
@@ -258,7 +159,6 @@ header .gnb .gnb-menu .gnb-title .sub a:hover {
   color: #fff;
   /* background: #97afba; */
   background: #2d93ad;
-  border-radius: 10px;
 }
 
 header .gnb .gnb-menu .gnb-title .sub a.glitch:hover {
