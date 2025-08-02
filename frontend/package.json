@@ -14,11 +14,13 @@
     "@gsap/react": "^2.1.2",
     "@react-three/drei": "^10.6.1",
     "@react-three/fiber": "^9.3.0",
+    "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.10.0",
     "gsap": "^3.13.0",
     "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.2",
     "swiper": "^11.2.10",
     "three": "^0.178.0"
