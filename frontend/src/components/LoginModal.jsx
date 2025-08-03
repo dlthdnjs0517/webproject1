@@ -1,21 +1,28 @@
 import { useState } from "react";
-import { login } from "../api/auth";
+import { loginRequest } from "../api/auth";
+import { jwtDecode } from "jwt-decode";
+import { login } from "../store/authSlice";
+import { useDispatch } from "react-redux";
 
 export default function LoginModal({ isOpen, onClose, onSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
+  const dispatch = useDispatch();
+
   if (!isOpen) return null; // 모달이 닫혀있으면 렌더링 안 함
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { token } = await login({ username, password });
+      const { token } = await loginRequest({ username, password });
+      const decoded = jwtDecode(token);
       localStorage.setItem("jwtToken", token);
+      dispatch(login(decoded));
       setErrorMsg("");
       alert("로그인 성공");
-      onSuccess?.(); // 부모 컴포넌트에 알림 (메뉴 갱신 등)
+      onSuccess?.(); // MainHeader 에서 받은 콜백: 메뉴갱신 + 모달 닫기
       onClose(); // 모달 닫기
     } catch (error) {
       if (error.response?.status === 401) {
@@ -29,7 +36,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-2 shadow-md w-full max-w-md h-90 relative">
+      <div className="bg-white rounded-lg p-2 shadow-md w-full max-w-md h-85 relative">
         <button
           onClick={onClose}
           className="absolute right-3 text-gray-600 hover:text-black text-xl"
@@ -37,7 +44,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
           &times;
         </button>
         <h2 className="text-xl font-bold text-center m-8">로그인</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-7">
           <input
             type="text"
             placeholder="아이디"
@@ -57,7 +64,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
           )}
           <button
             type="submit"
-            className="mx-auto w-1/2 bg-[#003049] text-white py-2 rounded hover:bg-[#2d93ad]"
+            className="mx-auto w-24 bg-[#003049] text-white py-2 rounded hover:bg-[#2d93ad]"
           >
             로그인
           </button>
