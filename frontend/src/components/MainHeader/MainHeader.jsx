@@ -2,32 +2,33 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import "./MainHeader.css";
 import { fetchMenus } from "../../api/menu";
-import { getUserRole, isLoggedIn } from "../../utils/auth";
+import { getUserRole } from "../../utils/auth";
 import LoginModal from "../../components/LoginModal";
 import logo from "../../assets/img/logo.svg";
-import { logout } from "../../api/auth";
+import { logoutRequest } from "../../api/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/authSlice";
 
 function MainHeader() {
   const [menus, setMenus] = useState([]); //api로 받은 메뉴 저장
-  const [role, setRole] = useState("guest");
   const [activeIndex, setActiveIndex] = useState(null);
   const [isLoginOpen, setLoginOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const role = useSelector((state) => state.auth.role);
 
   const updateMenus = async () => {
     const data = await fetchMenus();
     setMenus(data);
-
-    //role 갱신
-    const currentRole = getUserRole();
-    setRole(currentRole);
   };
 
   const handleLogout = () => {
-    logout();
-    setRole("guest");
+    dispatch(logout());
+    logoutRequest();
     updateMenus();
   };
 
+  // 화면이 렌더링 될때 1회만 실행.
   useEffect(() => {
     updateMenus();
   }, []);
@@ -61,23 +62,25 @@ function MainHeader() {
                     }
                   }}
                 >
-                  <div className="one">
-                    <Link to={menu.links[0]?.to || "#"}>{menu.title}</Link>
-                  </div>
+                  <Link to={menu.links[0]?.to || "#"} className="main-menu">
+                    {menu.title}
+                  </Link>
 
                   {/* 서브메뉴: 링크가 있을 때만 표시 */}
-                  <div className="sub">
-                    {menu.links.map((link, i) => (
-                      <Link
-                        key={i}
-                        to={link.to}
-                        className={link.glitch ? "glitch" : ""}
-                        data-text={link.glitch ? link.label : undefined}
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
+                  {menu.links.length > 0 && (
+                    <div className="sub">
+                      {menu.links.map((link, i) => (
+                        <Link
+                          key={i}
+                          to={link.to}
+                          className={link.glitch ? "glitch" : ""}
+                          data-text={link.glitch ? link.label : undefined}
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>

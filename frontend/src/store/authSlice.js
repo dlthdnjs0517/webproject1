@@ -22,3 +22,4 @@ const authSlice = createSlice({
 
 export const { login, logout } = authSlice.actions;
 export default authSlice.reducer;
+//export default 는 이름 마음대로 지을 수 있음
