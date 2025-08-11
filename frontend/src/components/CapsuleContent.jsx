@@ -10,14 +10,14 @@ export default function CapsuleContent() {
     <>
       <div style={{ height: "100vh", width: "100vw" }}>
         <Canvas
-          camera={{ position: [8, 2, 0], fov: 75 }}
+          camera={{ position: [8, 0, 0], fov: 75 }}
           gl={{ localClippingEnabled: true }}
         >
           <ambientLight intensity={0.3} />
           <directionalLight position={[3, 4, 4]} intensity={1} />
           <Environment preset="sunset" />
           <SplitCapsule isLoggedIn={isLoggedIn} />
-          <OrbitControls />
+          {/* <OrbitControls /> */}
         </Canvas>
       </div>
     </>
