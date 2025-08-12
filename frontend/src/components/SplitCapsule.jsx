@@ -4,7 +4,7 @@ import gsap from "gsap";
 import CapsuleHalf from "./CapsuleHalf";
 import { useThree } from "@react-three/fiber";
 
-export default function SplitCapsule({ isLoggedIn }) {
+export default function SplitCapsule({ isLoggedIn, triggerEl }) {
   const topRef = useRef();
   const bottomRef = useRef();
   const { camera } = useThree();
@@ -13,8 +13,9 @@ export default function SplitCapsule({ isLoggedIn }) {
   const bottomColor = isLoggedIn ? "#E67775" : "#344C80";
 
   useEffect(() => {
-    if (!topRef.current || !bottomRef.current) return;
+    if (!topRef.current || !bottomRef.current || !triggerEl) return;
 
+    gsap.registerPlugin(ScrollTrigger);
     const tl = gsap.timeline();
 
     //양옆으로 분리
