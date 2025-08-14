@@ -17,9 +17,8 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
     e.preventDefault();
     try {
       const { token } = await loginRequest({ username, password });
-      const decoded = jwtDecode(token);
       localStorage.setItem("jwtToken", token);
-      dispatch(login(decoded));
+      dispatch(login({ token }));
       setErrorMsg("");
       alert("로그인 성공");
       onSuccess?.(); // MainHeader 에서 받은 콜백: 메뉴갱신 + 모달 닫기
