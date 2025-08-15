@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import "./MainHeader.css";
 import { fetchMenus } from "../../api/menu";
@@ -11,11 +11,13 @@ import { logout } from "../../store/authSlice";
 
 function MainHeader() {
   const [menus, setMenus] = useState([]); //api로 받은 메뉴 저장
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [isMenuOpen, setMenuOpen] = useState(false); // 햄버거 열림/닫힘
+  const [openIndex, setOpenIndex] = useState(null);
   const [isLoginOpen, setLoginOpen] = useState(false);
 
   const dispatch = useDispatch();
   const role = useSelector((state) => state.auth.role);
+  const location = useLocation();
 
   const updateMenus = async () => {
     const data = await fetchMenus();
@@ -26,13 +28,24 @@ function MainHeader() {
     dispatch(logout());
     logoutRequest();
     updateMenus();
+    setMenuOpen(false);
   };
 
   // 화면이 렌더링 될때 1회만 실행.
   useEffect(() => {
-    updateMenus();
+    setMenuOpen(false);
+    setOpenIndex(null);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  const toggleSection = (i) => {
+    setOpenIndex((prev) => (prev === i ? null : i));
+  };
   return (
     <header>
       <nav className="gnb">
@@ -46,9 +59,8 @@ function MainHeader() {
                 </Link>
               </div>
             </h1>
-
             {/* api로 불러온 데이터를 기반으로 반복 렌더링 */}
-            <ul className="gnb-title-container">
+            {/* <ul className="gnb-title-container">
               {menus.map((menu, index) => (
                 <li
                   key={index}
@@ -65,9 +77,9 @@ function MainHeader() {
                   <Link to={menu.links[0]?.to || "#"} className="main-menu">
                     {menu.title}
                   </Link>
-
-                  {/* 서브메뉴: 링크가 있을 때만 표시 */}
-                  {menu.links.length > 0 && (
+ */}
+            {/* 서브메뉴: 링크가 있을 때만 표시 */}
+            {/* {menu.links.length > 0 && (
                     <div className="sub">
                       {menu.links.map((link, i) => (
                         <Link
@@ -83,7 +95,7 @@ function MainHeader() {
                   )}
                 </li>
               ))}
-            </ul>
+            </ul> */}
             <div className="gnb-right">
               {role === "guest" ? (
                 <button onClick={() => setLoginOpen(true)} className="login">
@@ -94,6 +106,82 @@ function MainHeader() {
                   로그아웃
                 </button>
               )}
+              <button
+                className="hamburger-btn"
+                aria-label="메뉴 열기"
+                aria-expanded={isMenuOpen}
+                onClick={() => setMenuOpen((v) => !v)}
+              >
+                <span className="bar" />
+                <span className="bar" />
+                <span className="bar" />
+              </button>
+
+              {/* 사이드 패널 + 오버레이 */}
+              {isMenuOpen && (
+                <div
+                  className="menu-overlay"
+                  onClick={() => setMenuOpen(false)}
+                />
+              )}
+
+              <aside className={`menu-panel ${isMenuOpen ? "open" : ""}`}>
+                <ul className="panel-list">
+                  {menus.map((menu, index) => (
+                    <li key={index} className="panel-item">
+                      {/* 1뎁스: 섹션 토글 */}
+                      <button
+                        className="panel-section"
+                        onClick={() => toggleSection(index)}
+                        aria-expanded={openIndex === index}
+                      >
+                        {menu.title}
+                        <span
+                          className={`chevron ${openIndex === index ? "up" : ""}`}
+                        />
+                      </button>
+
+                      {/* 2뎁스: 링크 목록(아코디언) */}
+                      {menu.links?.length > 0 && (
+                        <ul
+                          className={`submenu ${openIndex === index ? "open" : ""}`}
+                        >
+                          {menu.links.map((link, i) => (
+                            <li key={i}>
+                              <Link
+                                to={link.to}
+                                className={`submenu-link ${link.glitch ? "glitch" : ""}`}
+                                data-text={link.glitch ? link.label : undefined}
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                {link.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* 로그인/로그아웃은 패널 하단 고정 */}
+                <div className="panel-footer">
+                  {role === "guest" ? (
+                    <button
+                      onClick={() => {
+                        setLoginOpen(true);
+                      }}
+                      className="login action"
+                    >
+                      로그인
+                    </button>
+                  ) : (
+                    <button onClick={handleLogout} className="login action">
+                      로그아웃
+                    </button>
+                  )}
+                </div>
+              </aside>
               <LoginModal
                 isOpen={isLoginOpen}
                 onClose={() => setLoginOpen(false)}
