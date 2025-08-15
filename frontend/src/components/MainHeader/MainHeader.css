@@ -51,18 +51,19 @@ header .gnb .gnb-menu .gnb-title .sub {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.4s ease;
+
   /* hover 되기 전에 보이지 않음 처리 하는 것 */
 }
 
-.gnb-title.active .sub {
+header .gnb .gnb-menu .gnb-title.active .sub {
   opacity: 1;
   visibility: visible;
 }
 
-header .gnb .gnb-menu .gnb-title .one {
+header .gnb .gnb-menu .gnb-title .main-menu {
   color: #fff;
-  display: block;
-  width: 140px;
+  display: inline-block;
+  min-width: 140px;
   height: auto;
   line-height: 44px;
   font-size: 18px;
@@ -91,7 +92,7 @@ header .gnb .gnb-menu ul {
   place-items: center;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (width: 768px) {
   .gnb-menu {
     display: flex;
     flex: 1 1 0%;
@@ -112,7 +113,155 @@ header .gnb .gnb-menu ul {
 
 header .gnb .gnb-menu .header-layout .gnb-right {
   display: flex;
+  align-items: center;
+  gap: 8px; /*버튼 간격*/
+}
+
+/* === 햄버거 & 패널 레이아웃 === */
+.hamburger-btn {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 5px;
   justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.hamburger-btn .bar {
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+/* 오버레이 */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 9998;
+}
+
+/* 사이드 패널 */
+.menu-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(320px, 85vw);
+  height: 100dvh;
+  background: #003049;
+  box-shadow: -6px 0 18px rgba(0, 0, 0, 0.25);
+  transform: translateX(100%);
+  transition: transform 0.28s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 20px 20px; /* 헤더 여백 */
+}
+.menu-panel.open {
+  transform: translateX(0);
+}
+
+.panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+
+/* 1뎁스 버튼 */
+.panel-item + .panel-item {
+  margin-top: 8px;
+}
+
+.panel-section {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0a2d47;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+}
+.panel-section:hover {
+  background: #184264;
+}
+
+.chevron {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.chevron.up {
+  transform: rotate(-135deg);
+}
+
+/* 2뎁스(아코디언) */
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.22s ease;
+  padding-left: 4px;
+}
+.submenu.open {
+  max-height: 400px;
+} /* 필요하면 크게 */
+
+.submenu li {
+  margin-top: 6px;
+}
+.submenu-link {
+  display: block;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 400;
+}
+.submenu-link:hover {
+  background: #2d93ad;
+}
+
+/* 패널 하단 액션 버튼 */
+.panel-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+.panel-footer .action {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  border: 0;
+  background: #2d93ad;
+  color: #fff;
+  font-weight: 600;
+}
+.panel-footer .action:hover {
+  filter: brightness(0.95);
+}
+
+/* 데스크탑에서도 햄버거만 보이도록 기본 gnb 숨김 */
+.gnb-title-container {
+  display: none !important;
+}
+
+/* 헤더 좌우 정렬 보정 */
+.header-layout {
+  gap: 12px;
   align-items: center;
 }
 
@@ -121,7 +270,8 @@ header .gnb .gnb-menu .header-layout .gnb-right {
   justify-content: center;
   align-items: center;
   color: #fff;
-  font-weight: 700;
+  font-size: small;
+  font-weight: 400;
   width: 150px;
   height: 44px;
   /* width: 4rem;
@@ -133,14 +283,14 @@ header .gnb .gnb-menu .header-layout .gnb-right {
   justify-content: center;
   align-items: center;
   color: #000;
-  font-weight: 700;
+  font-size: small;
+  font-weight: 400;
+  cursor: grab;
   width: 150px;
   height: 44px;
-  border-radius: 40px;
-  background-color: #2d93ad;
 }
 
-header .gnb .gnb-menu .gnb-title .one a:hover {
+header .gnb .gnb-menu .gnb-title .main-menu:hover {
   color: #000;
 }
 
