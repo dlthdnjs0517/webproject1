@@ -92,14 +92,6 @@ header .gnb .gnb-menu ul {
   place-items: center;
 }
 
-@media screen and (width: 768px) {
-  .gnb-menu {
-    display: flex;
-    flex: 1 1 0%;
-    flex-direction: column;
-  }
-}
-
 .header-layout {
   position: relative;
   /* min-width: 100%; */
@@ -252,11 +244,6 @@ header .gnb .gnb-menu .header-layout .gnb-right {
 }
 .panel-footer .action:hover {
   filter: brightness(0.95);
-}
-
-/* 데스크탑에서도 햄버거만 보이도록 기본 gnb 숨김 */
-.gnb-title-container {
-  display: none !important;
 }
 
 /* 헤더 좌우 정렬 보정 */
