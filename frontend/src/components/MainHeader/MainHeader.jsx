@@ -31,7 +31,17 @@ function MainHeader() {
     setMenuOpen(false);
   };
 
-  // 화면이 렌더링 될때 1회만 실행.
+  // 최초로 웹페이지 로드 시 메뉴 가져오기
+  useEffect(() => {
+    updateMenus();
+  }, []);
+
+  // role 바뀔 때 메뉴 다시 가져오기
+  useEffect(() => {
+    updateMenus();
+  }, [role]);
+
+  // pathname 바뀔 때(페이지 이동 시)는 닫기만 하기
   useEffect(() => {
     setMenuOpen(false);
     setOpenIndex(null);
