@@ -48,10 +48,18 @@ function MainHeader() {
   }, [location.pathname]);
 
   useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
+    const onKey = (e) => {
+      if (e.key !== "Escape") return;
+
+      if (isLoginOpen) {
+        setLoginOpen(false);
+      } else if (isMenuOpen) {
+        setMenuOpen(false);
+      }
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [isLoginOpen, isMenuOpen]);
 
   const toggleSection = (i) => {
     setOpenIndex((prev) => (prev === i ? null : i));
@@ -146,9 +154,11 @@ function MainHeader() {
                         aria-expanded={openIndex === index}
                       >
                         {menu.title}
-                        <span
-                          className={`chevron ${openIndex === index ? "up" : ""}`}
-                        />
+                        {menu.links?.length > 0 && (
+                          <span
+                            className={`chevron ${openIndex === index ? "up" : ""}`}
+                          />
+                        )}
                       </button>
 
                       {/* 2뎁스: 링크 목록(아코디언) */}
