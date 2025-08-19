@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import "./MainHeader.css";
 import { fetchMenus } from "../../api/menu";
-import { getUserRole } from "../../utils/auth";
 import LoginModal from "../../components/LoginModal";
 import logo from "../../assets/img/logo.svg";
 import { logoutRequest } from "../../api/auth";
@@ -12,7 +11,7 @@ import { logout } from "../../store/authSlice";
 function MainHeader() {
   const [menus, setMenus] = useState([]); //api로 받은 메뉴 저장
   const [isMenuOpen, setMenuOpen] = useState(false); // 햄버거 열림/닫힘
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openId, setOpenId] = useState(null);
   const [isLoginOpen, setLoginOpen] = useState(false);
 
   const dispatch = useDispatch();
@@ -44,12 +43,12 @@ function MainHeader() {
   // pathname 바뀔 때(페이지 이동 시)는 닫기만 하기
   useEffect(() => {
     setMenuOpen(false);
-    setOpenIndex(null);
+    setOpenId(null);
   }, [location.pathname]);
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key !== "Escape") return;
+      if (e.key !== "Escape") return; //guard clause 패턴
 
       if (isLoginOpen) {
         setLoginOpen(false);
@@ -59,10 +58,11 @@ function MainHeader() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+    //정리함수, 의존성 배열의 값이 변할 때마다 이전의 effect를 정리해주는 역할을 하는 함수.
   }, [isLoginOpen, isMenuOpen]);
 
-  const toggleSection = (i) => {
-    setOpenIndex((prev) => (prev === i ? null : i));
+  const toggleSection = (id) => {
+    setOpenId((prev) => (prev === id ? null : id));
   };
   return (
     <header>
@@ -73,47 +73,10 @@ function MainHeader() {
             <h1 className="logo-container">
               <div>
                 <Link to="/">
-                  <img className="logo-img" src={logo} />
+                  <img className="logo-img" src={logo} alt="회사 로고" />
                 </Link>
               </div>
             </h1>
-            {/* api로 불러온 데이터를 기반으로 반복 렌더링 */}
-            {/* <ul className="gnb-title-container">
-              {menus.map((menu, index) => (
-                <li
-                  key={index}
-                  className={`gnb-title ${
-                    activeIndex === index ? "active" : ""
-                  }`}
-                  onMouseEnter={() => setActiveIndex(index)}
-                  onMouseLeave={(e) => {
-                    if (!e.currentTarget.contains(e.relatedTarget)) {
-                      setActiveIndex(null);
-                    }
-                  }}
-                >
-                  <Link to={menu.links[0]?.to || "#"} className="main-menu">
-                    {menu.title}
-                  </Link>
- */}
-            {/* 서브메뉴: 링크가 있을 때만 표시 */}
-            {/* {menu.links.length > 0 && (
-                    <div className="sub">
-                      {menu.links.map((link, i) => (
-                        <Link
-                          key={i}
-                          to={link.to}
-                          className={link.glitch ? "glitch" : ""}
-                          data-text={link.glitch ? link.label : undefined}
-                        >
-                          {link.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul> */}
             <div className="gnb-right">
               {role === "guest" ? (
                 <button onClick={() => setLoginOpen(true)} className="login">
@@ -145,43 +108,54 @@ function MainHeader() {
 
               <aside className={`menu-panel ${isMenuOpen ? "open" : ""}`}>
                 <ul className="panel-list">
-                  {menus.map((menu, index) => (
-                    <li key={index} className="panel-item">
-                      {/* 1뎁스: 섹션 토글 */}
-                      <button
-                        className="panel-section"
-                        onClick={() => toggleSection(index)}
-                        aria-expanded={openIndex === index}
-                      >
-                        {menu.title}
-                        {menu.links?.length > 0 && (
-                          <span
-                            className={`chevron ${openIndex === index ? "up" : ""}`}
-                          />
+                  {menus.map((menu) => {
+                    const hasChildren = menu.links?.length > 0;
+                    return (
+                      <li key={menu.id} className="panel-item">
+                        {/* 1뎁스: 섹션 토글 */}
+                        {hasChildren ? (
+                          <button
+                            className="panel-section"
+                            onClick={() => toggleSection(menu.id)}
+                            aria-expanded={openId === menu.id}
+                          >
+                            {menu.title}
+                            {menu.links?.length > 0 && (
+                              <span
+                                className={`chevron ${openId === menu.id ? "up" : ""}`}
+                              />
+                            )}
+                          </button>
+                        ) : (
+                          <Link to={menu.to} className="panel-section">
+                            {menu.title}
+                          </Link>
                         )}
-                      </button>
 
-                      {/* 2뎁스: 링크 목록(아코디언) */}
-                      {menu.links?.length > 0 && (
-                        <ul
-                          className={`submenu ${openIndex === index ? "open" : ""}`}
-                        >
-                          {menu.links.map((link, i) => (
-                            <li key={i}>
-                              <Link
-                                to={link.to}
-                                className={`submenu-link ${link.glitch ? "glitch" : ""}`}
-                                data-text={link.glitch ? link.label : undefined}
-                                onClick={() => setMenuOpen(false)}
-                              >
-                                {link.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ))}
+                        {/* 2뎁스: 링크 목록(아코디언) */}
+                        {hasChildren && (
+                          <ul
+                            className={`submenu ${openId === menu.id ? "open" : ""}`}
+                          >
+                            {menu.links.map((link, i) => (
+                              <li key={i}>
+                                <Link
+                                  to={link.to}
+                                  className={`submenu-link ${link.glitch ? "glitch" : ""}`}
+                                  data-text={
+                                    link.glitch ? link.label : undefined
+                                  }
+                                  onClick={() => setMenuOpen(false)}
+                                >
+                                  {link.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
 
                 {/* 로그인/로그아웃은 패널 하단 고정 */}

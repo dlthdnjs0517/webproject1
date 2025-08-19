@@ -92,7 +92,7 @@ header .gnb .gnb-menu ul {
   place-items: center;
 }
 
-.header-layout {
+header .gnb .gnb-menu .header-layout {
   position: relative;
   /* min-width: 100%; */
   width: 100%;
@@ -135,8 +135,8 @@ header .gnb .gnb-menu .header-layout .gnb-right {
 .menu-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  z-index: 9998;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 19;
 }
 
 /* 사이드 패널 */
@@ -150,7 +150,7 @@ header .gnb .gnb-menu .header-layout .gnb-right {
   box-shadow: -6px 0 18px rgba(0, 0, 0, 0.25);
   transform: translateX(100%);
   transition: transform 0.28s ease;
-  z-index: 9999;
+  z-index: 20;
   display: flex;
   flex-direction: column;
   padding: 80px 20px 20px; /* 헤더 여백 */
@@ -298,10 +298,6 @@ header .gnb .gnb-menu .gnb-title .sub a:hover {
   background: #2d93ad;
 }
 
-header .gnb .gnb-menu .gnb-title .sub a.glitch:hover {
-  background: transparent;
-}
-
 .glitch {
   position: relative;
   /* mix-blend-mode: lighten; */
@@ -382,56 +378,3 @@ header .gnb .gnb-menu .gnb-title .sub .glitch:hover::after {
     clip: rect(1px, 9999px, 15px, 0);
   }
 }
-
-/* a.glitch::before,
-a.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
-  color: white;
-}
-a.glitch::before {
-  top: -1px;
-  text-shadow: -1px 0 red;
-}
-
-a.glitch::after {
-  top: 1px;
-  text-shadow: -1px 0 blue;
-}
-
-a.glitch:hover::before,
-a.glitch:hover::after {
-  opacity: 1;
-  animation: glitchAni 0.3s infinite;
-} */
-/* @keyframes glitchAni {
-  0% {
-    clip: inset(0 0 50% 0);
-    transform: translate(1px, -1px);
-  }
-  20% {
-    clip: inset(10% 0 40% 0);
-    transform: translate(-2px, 2px);
-  }
-  40% {
-    clip: inset(20% 0 30% 0);
-    transform: translate(2px, -1px);
-  }
-  60% {
-    clip: inset(30% 0 20% 0);
-    transform: translate(-1px, 1px);
-  }
-  80% {
-    clip: inset(40% 0 10% 0);
-    transform: translate(1px, 0);
-  }
-  100% {
-    clip: inset(50% 0 0 0);
-    transform: translate(0, 0);
-  }
-} */
