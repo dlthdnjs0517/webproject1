@@ -4,8 +4,9 @@ const router = express.Router();
 
 const menus = [
   {
+    id: "about",
     title: "기업소개",
-    role: "all",
+    role: ["all"],
     links: [
       { label: "CEO 인삿말", to: "#" },
       { label: "회사연혁", to: "#" },
@@ -14,8 +15,9 @@ const menus = [
     ],
   },
   {
+    id: "rnd",
     title: "R&D",
-    role: "all",
+    role: ["all"],
     links: [
       { label: "연구분야", to: "#" },
       { label: "개발성과", to: "#" },
@@ -24,8 +26,9 @@ const menus = [
     ],
   },
   {
+    id: "iteminfo",
     title: "제품정보",
-    role: "all",
+    role: ["all"],
     links: [
       { label: "일반의약품", to: "#" },
       { label: "전문의약품", to: "#" },
@@ -34,8 +37,9 @@ const menus = [
     ],
   },
   {
+    id: "hr",
     title: "인재채용",
-    role: "all",
+    role: ["all"],
     links: [
       { label: "인재상", to: "#" },
       { label: "직무소개", to: "#" },
@@ -44,14 +48,16 @@ const menus = [
     ],
   },
   {
+    id: "support",
     title: "고객지원",
-    role: "all",
-    links: [],
+    role: ["all"],
+    to: "#",
   },
   {
+    id: "items",
     title: "아이템 도감",
     role: ["admin", "character"],
-    links: [],
+    to: "#",
   },
 ];
 
@@ -73,7 +79,12 @@ router.get("/", (req, res) => {
   });
 
   // 필터링된 메뉴를 JSON으로 응답
-  res.json(filteredMenus);
+  try {
+    res.json(filteredMenus);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "메뉴를 가져올 수 없음." });
+  }
 });
 
 module.exports = router;
