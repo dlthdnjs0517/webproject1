@@ -1,13 +1,14 @@
 import * as THREE from "three";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import gsap from "gsap";
 import CapsuleHalf from "./CapsuleHalf";
+import ParticleText from "./ParticleText";
 import { useThree } from "@react-three/fiber";
 import { Observer } from "gsap/all";
 
 gsap.registerPlugin(Observer);
 
-export default function SplitCapsule({ isLoggedIn }) {
+function SplitCapsule({ isLoggedIn }) {
   const topRef = useRef();
   const bottomRef = useRef();
   const { camera } = useThree();
@@ -29,7 +30,7 @@ export default function SplitCapsule({ isLoggedIn }) {
     gsap.set(bottomRef.current.position, { z: 0 });
     gsap.set(topRef.current.rotation, { y: 0 });
     gsap.set(bottomRef.current.rotation, { y: 0 });
-    // 카메라 초기 위치(너가 쓰던 초깃값으로 맞춰)
+    // 카메라 초기 위치
     gsap.set(camera.position, { x: 8, y: 0, z: 0 });
     camera.lookAt(0, 0, 0);
 
@@ -90,3 +91,5 @@ export default function SplitCapsule({ isLoggedIn }) {
     </>
   );
 }
+
+export default SplitCapsule;
