@@ -1,15 +1,27 @@
 import * as THREE from "three";
-import { useMemo, forwardRef, useRef } from "react";
+import { useMemo, forwardRef, useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 
 const CapsuleHalf = forwardRef(
-  ({ isTop, color, axis = "z", followLocalPlane = true }, ref) => {
+  (
+    { isTop, color, axis = "z", followLocalPlane = true, onGeometryReady },
+    ref
+  ) => {
     // 캡슐 지오메트리 캐싱(길이축을 z+로 맞춤)
     const capsuleGeometry = useMemo(() => {
       const g = new THREE.CapsuleGeometry(1, 3, 20, 50);
       g.rotateX(Math.PI / 2);
       return g;
     }, []);
+
+    useEffect(() => {
+      if (capsuleGeometry && onGeometryReady) {
+        // 다음 프레임에서 호출 (ref.current가 설정된 후)
+        requestAnimationFrame(() => {
+          onGeometryReady();
+        });
+      }
+    }, [capsuleGeometry, onGeometryReady]);
 
     const localPlane = useMemo(() => {
       const n =
