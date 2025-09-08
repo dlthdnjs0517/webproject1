@@ -1,7 +1,6 @@
 import * as THREE from "three";
-import { useMemo, useRef, useEffect } from "react";
+import { useMemo, useRef, useEffect, useState, useCallback } from "react";
 import { Text } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import gsap from "gsap";
 
 //선형 보간 함수 (lerp)
@@ -24,65 +23,75 @@ function ParticleText({
   startPositionsBottom,
   topColor,
   bottomColor,
-  fontUrl = "//cdn.jsdelivr.net/npm/font-kopub@1.0",
   text = "BEYOND INNOVATION MEDICINE",
   finalTextColor = "#ffffff",
+  explosionFactor = 2.5,
+  explosionDuration = 0.8,
+  textFormationDuration = 1.5,
 }) {
   const textRef = useRef();
-  const endPositions = useMemo(() => {
-    //textRef가 준비되지 않았을때 endPosition에 null값 저장(값이 아직 없음)
-    if (!textRef.current) return null;
-    return textRef.current.geometry.attributes.position.array;
-  }, [textRef.current]);
+  const pointsRef = useRef();
 
-  //파티클의 지오메트리 생성(위치,색상)
+  const [endPositions, setEndPositions] = useState(null);
+
+  // 1) Text 지오메트리 준비 완료 시 타깃 좌표 확보
+  const handleSync = useCallback(() => {
+    if (textRef.current?.geometry?.attributes?.position?.array) {
+      const positions = textRef.current.geometry.attributes.position.array;
+      setEndPositions(new Float32Array(positions));
+      console.log(`End positions captured. ${positions.length / 3} vertices.`);
+    }
+  }, []);
+
+  // 2) 파티클 시작 좌표 + 색상 설정
   const particleGeometry = useMemo(() => {
-    if (!endPositions || !startPositionsTop || !startPositionsBottom)
+    if (!startPositionsTop || !startPositionsBottom || !endPositions)
       return null;
 
     const numParticles = endPositions.length / 3;
-    const numTopParticles = Math.ceil(numParticles / 2);
-    const numBottomParticles = numParticles - numTopParticles;
+    const numTop = Math.ceil(numParticles / 2);
+    const numBottom = numParticles - numTop;
 
-    // 버퍼 attribute 배열 생성
-    const position = new Float32Array(numParticles * 3);
+    const positions = new Float32Array(numParticles * 3);
     const colors = new Float32Array(numParticles * 3);
-    const colorTop = new THREE.Color(topColor);
-    const colorBottom = new THREE.Color(bottomColor);
 
-    //상단 파티클 색상 및 위치
-    for (let i = 0; i < numTopParticles; i++) {
-      const startIdx = (i * 3) % startPositionsTop.length;
-      const targetIdx = i + numTopParticles;
+    const cTop = new THREE.Color(topColor);
+    const cBottom = new THREE.Color(bottomColor);
+    //상단 포지션, 색깔
+    for (let i = 0; i < numTop; i++) {
+      const i3 = i * 3;
+      const startIdx = i3 % startPositionsTop.length;
       positions.set(
         [
-          startPositionsBottom[startIdx],
-          startPositionsBottom[startIdx + 1],
-          startPositionsBottom[startIdx + 2],
+          startPositionsTop[startIdx],
+          startPositionsTop[startIdx + 1],
+          startPositionsTop[startIdx + 2],
         ],
-        targetIdx * 3
+        i3
       );
+      colors.set([cTop.r, cTop.g, cTop.b], i3);
     }
-    //하단
-    for (let i = 0; i < numBottomParticles; i++) {
+
+    // 하단 포지션, 색깔
+    for (let i = 0; i < numBottom; i++) {
+      const i3 = (numTop + i) * 3;
       const startIdx = (i * 3) % startPositionsBottom.length;
-      const targetIdx = i + numTopParticles;
       positions.set(
         [
           startPositionsBottom[startIdx],
           startPositionsBottom[startIdx + 1],
           startPositionsBottom[startIdx + 2],
         ],
-        targetIdx * 3
+        i3
       );
-      colors.set([colorBottom.r, colorBottom.g, colorBottom.b], targetIdx * 3);
+      colors.set([cBottom.r, cBottom.g, cBottom.b], i3);
     }
-    //최종 지오메트리 생성
-    const geometry = new THREE.BufferGeometry();
 
+    const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
+    console.log("Particle geometry created.");
     return geometry;
   }, [
     endPositions,
@@ -92,86 +101,137 @@ function ParticleText({
     bottomColor,
   ]);
 
-  //gsap로 애니메이션 실행
+  // 3) 애니메이션 (초기 → 텍스트 좌표)
   useEffect(() => {
-    if (!particleGeometry || !endPositions) return;
-    const progress = { value: 0 };
-    const initialColors = particleGeometry.attributes.color.array.slice();
-    const finalColor = new THREE.Color(finalTextColor);
+    if (!particleGeometry || !endPositions || !pointsRef.current) return;
 
-    gsap.to(progress, {
-      value: 1,
-      duration: 3,
-      ease: "power3.inOut",
+    const posAttr = pointsRef.current.geometry.attributes.position;
+    const colAttr = pointsRef.current.geometry.attributes.color;
+    const initialPositions = posAttr.array.slice();
+    const initialColors = colAttr.array.slice();
+    const targetColor = new THREE.Color(finalTextColor);
+
+    // 폭발 포지션 계산
+
+    const explodedPositions = new Float32Array(initialPositions.length);
+    const p = new THREE.Vector3();
+    for (let i = 0; i < initialPositions.length / 3; i++) {
+      p.fromArray(initialPositions, i * 3);
+      const dir = p.clone().normalize();
+      const strength = (Math.random() * 0.8 + 0.2) * explosionFactor;
+      p.add(dir.multiplyScalar(strength));
+      p.toArray(explodedPositions, i * 3);
+    }
+
+    const tl = gsap.timeline();
+    const dummy = { t: 0 };
+    const dummy2 = { t: 0 };
+
+    //애니메이션 1
+    tl.to(dummy, {
+      t: 1,
+      duration: explosionDuration,
+      ease: "power2.out",
       onUpdate: () => {
-        const currentPositions = particleGeometry.attributes.position.array;
-        const currentColors = particleGeometry.attributes.color.array;
-
-        //progress 값에 따라 시작 위치와 최종 위치 사이를 보간
-        for (let i = 0; i < endPositions.length / 3; i++) {
-          const idx = i * 3;
-          currentPositions[idx] = lerp(
-            currentPositions[idx],
-            endPositions[idx],
-            0.05
+        for (let i = 0; i < initialPositions.length / 3; i++) {
+          const i3 = i * 3;
+          posAttr.array[i3] = lerp(
+            initialPositions[i3],
+            explodedPositions[i3],
+            dummy.t
           );
-          currentPositions[idx + 1] = lerp(
-            currentPositions[idx + 1],
-            endPositions[idx + 1],
-            0.05
+          posAttr.array[i3 + 1] = lerp(
+            initialPositions[i3 + 1],
+            explodedPositions[i3 + 1],
+            dummy.t
           );
-          currentPositions[idx + 2] = lerp(
-            currentPositions[idx + 2],
-            endPositions[idx + 2],
-            0.05
-          );
-          //색상 보간
-          currentColors[idx] = lerp(
-            initialColors[idx],
-            finalColor.r,
-            progress.value
-          );
-          currentColors[idx + 1] = lerp(
-            initialColors[idx + 1],
-            finalColor.g,
-            progress.value
-          );
-          currentColors[idx + 2] = lerp(
-            initialColors[idx + 2],
-            finalColor.b,
-            progress.value
+          posAttr.array[i3 + 2] = lerp(
+            initialPositions[i3 + 2],
+            explodedPositions[i3 + 2],
+            dummy.t
           );
         }
-        particleGeometry.attributes.position.needsUpdate = true;
-        particleGeometry.attributes.color.needsUpdate = true;
+        posAttr.needsUpdate = true;
       },
     });
-  }, [particleGeometry, endPositions]);
+
+    //text 생성
+    tl.to(dummy2, {
+      t: 1,
+      duration: textFormationDuration,
+      ease: "power3.inOut",
+      onUpdate: () => {
+        for (let i = 0; i < endPositions.length / 3; i++) {
+          const i3 = i * 3;
+          // Animate position from exploded to final text shape
+          posAttr.array[i3] = lerp(
+            explodedPositions[i3],
+            endPositions[i3],
+            dummy2.t
+          );
+          posAttr.array[i3 + 1] = lerp(
+            explodedPositions[i3 + 1],
+            endPositions[i3 + 1],
+            dummy2.t
+          );
+          posAttr.array[i3 + 2] = lerp(
+            explodedPositions[i3 + 2],
+            endPositions[i3 + 2],
+            dummy2.t
+          );
+          // Animate color from initial to final
+          colAttr.array[i3] = lerp(initialColors[i3], targetColor.r, dummy2.t);
+          colAttr.array[i3 + 1] = lerp(
+            initialColors[i3 + 1],
+            targetColor.g,
+            dummy2.t
+          );
+          colAttr.array[i3 + 2] = lerp(
+            initialColors[i3 + 2],
+            targetColor.b,
+            dummy2.t
+          );
+        }
+        posAttr.needsUpdate = true;
+        colAttr.needsUpdate = true;
+      },
+    });
+    return () => tl.kill();
+  }, [
+    particleGeometry,
+    endPositions,
+    finalTextColor,
+    explosionFactor,
+    explosionDuration,
+    textFormationDuration,
+  ]);
+
   return (
     <>
       {/* 위치 데이터 추출용 */}
-      <Text
-        ref={textRef}
-        visible={false}
-        font={fontUrl}
-        fontSize={1.5}
-        position={[0, 0, -1]}
-      >
-        {text}
-      </Text>
-      {/* 실제 파티클 */}
-      {particleGeometry && (
-        <points geometry={particleGeometry}>
-          <pointsMaterial
-            color="#ffffff"
-            size={0.05}
-            sizeAttenuation
-            transparent
-            opacity={1.0}
-            vertexColors={true}
-          />
-        </points>
-      )}
+      <group rotation={[0, Math.PI / 2, 0]}>
+        <Text
+          ref={textRef}
+          visible={false}
+          // font="/fonts/KoPubWorld_Dotum_Pro_Bold.otf"
+          fontSize={1.5}
+          onSync={!endPositions ? handleSync : null}
+        >
+          {text}
+        </Text>
+        {/* 실제 파티클 */}
+        {particleGeometry && (
+          <points geometry={particleGeometry}>
+            <pointsMaterial
+              size={0.05}
+              sizeAttenuation
+              transparent={true}
+              vertexColors={true}
+              depthWrite={false}
+            />
+          </points>
+        )}
+      </group>
     </>
   );
 }
