@@ -6,20 +6,33 @@ import { MeshSurfaceSampler } from "three/addons/math/MeshSurfaceSampler.js";
 
 import CapsuleHalf from "./CapsuleHalf";
 import ParticleText from "./ParticleText";
+import TextGeometry from "./TextGeometry";
 
-// MESH 표면에서 랜덤한 점들의 위치를 샘플링하는 헬퍼 함수
-const meshPositions = (mesh, count) => {
-  if (!mesh?.geometry) return null;
-  const sampler = new MeshSurfaceSampler(mesh).build();
-  const points = new Float32Array(count * 3);
-  const p = new THREE.Vector3();
-
-  for (let i = 0; i < count; i++) {
-    sampler.sample(p);
-    p.toArray(points, i * 3);
+// 메시 표면에서 랜덤한 점들의 위치를 샘플링하는 헬퍼 함수
+const sampleMeshPositions = (mesh, count) => {
+  if (!mesh?.geometry) {
+    console.error("[sampleMeshPositions] Invalid mesh or geometry");
+    return null;
   }
-  return points;
+
+  try {
+    const sampler = new MeshSurfaceSampler(mesh).build();
+    const points = new Float32Array(count * 3);
+    const p = new THREE.Vector3();
+
+    for (let i = 0; i < count; i++) {
+      sampler.sample(p);
+      p.toArray(points, i * 3);
+    }
+
+    console.log(`[sampleMeshPositions] Sampled ${count} points`);
+    return points;
+  } catch (error) {
+    console.error("[sampleMeshPositions] Error:", error);
+    return null;
+  }
 };
+
 function SplitCapsule({ isLoggedIn }) {
   const topRef = useRef();
   const bottomRef = useRef();
@@ -29,43 +42,124 @@ function SplitCapsule({ isLoggedIn }) {
   const [geometriesReady, setGeometriesReady] = useState({
     top: false,
     bottom: false,
+    text: false,
   });
-  const timelineRef = useRef(null);
-
+  const [textEndPositions, setTextEndPositions] = useState(null);
   const [startPositionsTop, setStartPositionsTop] = useState(null);
   const [startPositionsBottom, setStartPositionsBottom] = useState(null);
   const [showParticles, setShowParticles] = useState(false);
 
+  const timelineRef = useRef(null);
   const topColor = "#ffffff";
   const bottomColor = isLoggedIn ? "#E67775" : "#344C80";
 
-  // 각 캡슐의 geometry 준비 완료 콜백
-  const handleTopGeometryReady = useCallback(
-    () => setGeometriesReady((prev) => ({ ...prev, top: true })),
-    []
-  );
-  const handleBottomGeometryReady = useCallback(
-    () => setGeometriesReady((prev) => ({ ...prev, bottom: true })),
-    []
-  );
+  // 각 지오메트리 준비 완료 콜백
+  const handleTopGeometryReady = useCallback(() => {
+    console.log("[SplitCapsule] Top geometry ready");
+    setGeometriesReady((prev) => ({ ...prev, top: true }));
+  }, []);
 
-  //GSAP 타임라인 생성
+  const handleBottomGeometryReady = useCallback(() => {
+    console.log("[SplitCapsule] Bottom geometry ready");
+    setGeometriesReady((prev) => ({ ...prev, bottom: true }));
+  }, []);
+
+  const handleTextGeometryReady = useCallback((positions) => {
+    console.log(
+      "[SplitCapsule] Text geometry ready with",
+      positions.length / 3,
+      "vertices"
+    );
+    setTextEndPositions(positions);
+    setGeometriesReady((prev) => ({ ...prev, text: true }));
+  }, []);
+
+  // 파티클 샘플링 함수
+  const sampleParticlesFromCapsules = useCallback(() => {
+    if (!topRef.current || !bottomRef.current || !textEndPositions) {
+      console.error("[sampleParticles] Missing references");
+      return;
+    }
+
+    // 월드 매트릭스 업데이트
+    topRef.current.updateWorldMatrix(true, false);
+    bottomRef.current.updateWorldMatrix(true, false);
+
+    const particleCount = textEndPositions.length / 3;
+    const topCount = Math.ceil(particleCount / 2);
+    const bottomCount = Math.floor(particleCount / 2);
+
+    console.log(
+      `[sampleParticles] Sampling ${topCount} from top, ${bottomCount} from bottom`
+    );
+
+    // 로컬 좌표계에서 샘플링
+    const localTopPoints = sampleMeshPositions(topRef.current, topCount);
+    const localBottomPoints = sampleMeshPositions(
+      bottomRef.current,
+      bottomCount
+    );
+
+    if (!localTopPoints || !localBottomPoints) {
+      console.error("[sampleParticles] Failed to sample points");
+      return;
+    }
+
+    // 월드 좌표계로 변환
+    const worldTopPoints = new Float32Array(localTopPoints.length);
+    const worldBottomPoints = new Float32Array(localBottomPoints.length);
+    const p = new THREE.Vector3();
+
+    for (let i = 0; i < localTopPoints.length / 3; i++) {
+      p.fromArray(localTopPoints, i * 3);
+      p.applyMatrix4(topRef.current.matrixWorld);
+      p.toArray(worldTopPoints, i * 3);
+    }
+
+    for (let i = 0; i < localBottomPoints.length / 3; i++) {
+      p.fromArray(localBottomPoints, i * 3);
+      p.applyMatrix4(bottomRef.current.matrixWorld);
+      p.toArray(worldBottomPoints, i * 3);
+    }
+
+    setStartPositionsTop(worldTopPoints);
+    setStartPositionsBottom(worldBottomPoints);
+
+    // 캡슐 숨기고 파티클 표시
+    topRef.current.visible = false;
+    bottomRef.current.visible = false;
+    setShowParticles(true);
+
+    console.log("[sampleParticles] Particle sampling complete");
+  }, [textEndPositions]);
+
+  // GSAP 타임라인 생성 및 애니메이션 설정
   useEffect(() => {
     if (
       !geometriesReady.top ||
       !geometriesReady.bottom ||
-      !topRef.current ||
-      !bottomRef.current
-    )
+      !geometriesReady.text
+    ) {
+      console.log("[Timeline] Waiting for geometries...", geometriesReady);
       return;
+    }
 
-    // 전체 시퀀스를 담는 gsap 타임라인 생성
+    console.log("[Timeline] All geometries ready, creating timeline");
+
+    // 타임라인 생성
     if (!timelineRef.current) {
       timelineRef.current = gsap.timeline({
         paused: true,
-        onStart: () => setIsAnimating(true),
-        onComplete: () => setIsAnimating(false),
+        onStart: () => {
+          console.log("[Timeline] Animation started");
+          setIsAnimating(true);
+        },
+        onComplete: () => {
+          console.log("[Timeline] Animation completed");
+          setIsAnimating(false);
+        },
         onReverseComplete: () => {
+          console.log("[Timeline] Animation reversed");
           setIsAnimating(false);
           setShowParticles(false);
           if (topRef.current) topRef.current.visible = true;
@@ -77,176 +171,105 @@ function SplitCapsule({ isLoggedIn }) {
     const tl = timelineRef.current;
     tl.clear();
 
-    // --- 애니메이션 시퀀스 정의 ---
-
+    // 캡슐 분리 애니메이션
     tl.to(
       topRef.current.position,
       { z: 2, duration: 2, ease: "power2.inOut" },
-      "start"
+      "split"
     )
       .to(
         bottomRef.current.position,
         { z: -2, duration: 2, ease: "power2.inOut" },
-        "start"
+        "split"
       )
       .to(
         topRef.current.rotation,
         { y: Math.PI / 6, duration: 2, ease: "power2.inOut" },
-        "start"
+        "split"
       )
       .to(
         bottomRef.current.rotation,
         { y: -Math.PI / 6, duration: 2, ease: "power2.inOut" },
-        "start"
+        "split"
       )
-
       .to(
         camera.position,
         {
           x: 2,
-          y: 8,
+          y: 6,
           z: 0,
-          duration: 2,
+          duration: 2.5,
           ease: "power3.inOut",
           onUpdate: () => camera.lookAt(0, 0, 0),
         },
-        "start"
-      );
-    // 파티클 폭발
-    tl.call(
-      () => {
-        if (!topRef.current || !bottomRef.current) return;
+        "split"
+      )
+      // 파티클 샘플링 및 시작
+      .call(
+        () => {
+          console.log("[Timeline] Triggering particle sampling");
+          sampleParticlesFromCapsules();
+        },
+        [],
+        "split+=1.5"
+      ); // 캡슐이 거의 분리되었을 때 파티클 생성
+  }, [geometriesReady, camera, sampleParticlesFromCapsules]);
 
-        // Ensure world matrices are up-to-date at the final position
-        topRef.current.updateWorldMatrix(true, false);
-        bottomRef.current.updateWorldMatrix(true, false);
-
-        const PARTICLE_COUNT = 25000;
-        const localTopPoints = meshPositions(
-          topRef.current,
-          Math.ceil(PARTICLE_COUNT / 2)
-        );
-        const localBottomPoints = meshPositions(
-          bottomRef.current,
-          Math.floor(PARTICLE_COUNT / 2)
-        );
-
-        if (!localTopPoints || !localBottomPoints) return;
-
-        const worldTopPoints = new Float32Array(localTopPoints.length);
-        const worldBottomPoints = new Float32Array(localBottomPoints.length);
-        const p = new THREE.Vector3();
-
-        // Transform local points to world space for the top half
-        for (let i = 0; i < localTopPoints.length / 3; i++) {
-          p.fromArray(localTopPoints, i * 3);
-          p.applyMatrix4(topRef.current.matrixWorld);
-          p.toArray(worldTopPoints, i * 3);
-        }
-
-        // Transform local points to world space for the bottom half
-        for (let i = 0; i < localBottomPoints.length / 3; i++) {
-          p.fromArray(localBottomPoints, i * 3);
-          p.applyMatrix4(bottomRef.current.matrixWorld);
-          p.toArray(worldBottomPoints, i * 3);
-        }
-
-        setStartPositionsTop(worldTopPoints);
-        setStartPositionsBottom(worldBottomPoints);
-
-        // Hide original capsules and trigger particle animation
-        topRef.current.visible = false;
-        bottomRef.current.visible = false;
-        setShowParticles(true);
-      },
-      [],
-      ">-0.5"
-    ); // Start this callback slightly before the split animation ends for a smooth transition
-  }, [geometriesReady, camera, isLoggedIn]);
-
-  // 2. Wheel 이벤트 감지 (ScrollTrigger 대체)
+  // 휠 이벤트 핸들러
   useEffect(() => {
     const handleWheel = (event) => {
-      console.log(
-        "[wheel]",
-        event.deltaY,
-        "tl?",
-        !!timelineRef.current,
-        "anim?",
-        isAnimating
-      );
-      // 애니메이션이 재생 중이면 아무것도 하지 않음
       if (isAnimating || !timelineRef.current) return;
 
       const tl = timelineRef.current;
 
-      // event.deltaY > 0 은 아래로 스크롤했다는 의미
       if (event.deltaY > 0 && !tl.isActive()) {
+        console.log("[Wheel] Playing animation");
         tl.play();
-      }
-      // event.deltaY < 0 은 위로 스크롤했다는 의미
-      else if (event.deltaY < 0 && !tl.isActive()) {
+      } else if (event.deltaY < 0 && !tl.isActive()) {
+        console.log("[Wheel] Reversing animation");
         tl.reverse();
       }
     };
 
     window.addEventListener("wheel", handleWheel, { passive: true });
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 정리
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-    };
+    return () => window.removeEventListener("wheel", handleWheel);
   }, [isAnimating]);
-
-  // gsap.set(topRef.current.position, { z: 0 });
-  // gsap.set(bottomRef.current.position, { z: 0 });
-  // gsap.set(topRef.current.rotation, { y: 0 });
-  // gsap.set(bottomRef.current.rotation, { y: 0 });
-  // // 카메라 초기 위치
-  // gsap.set(camera.position, { x: 8, y: 0, z: 0 });
-  // camera.lookAt(0, 0, 0);
-
-  // progressRef.current = 0;
-
-  // //카메라 이동도 함께
-  // tl.to(
-  //   camera.position,
-  //   {
-  //     x: 0,
-  //     y: 6,
-  //     z: 0,
-  //     duration: 2.5,
-  //     onUpdate: () => camera.lookAt(0, 0, 0),
-  //   },
-  //   0
-  // ).set(camera.position, { x: 0, y: 0, z: 0 });
 
   return (
     <>
+      {/* 텍스트 지오메트리 생성 (보이지 않음) */}
+      {!textEndPositions && <TextGeometry onReady={handleTextGeometryReady} />}
+
+      {/* 상단 캡슐 */}
       <CapsuleHalf
         ref={topRef}
         isTop={true}
         color={topColor}
-        axis="z"
         onGeometryReady={handleTopGeometryReady}
       />
+
+      {/* 하단 캡슐 */}
       <CapsuleHalf
         ref={bottomRef}
         isTop={false}
         color={bottomColor}
-        axis="z"
         onGeometryReady={handleBottomGeometryReady}
       />
 
-      {/* startAnimation이 true가 되면 particleText 컴포넌트 렌더링 */}
-      {showParticles && startPositionsTop && startPositionsBottom && (
-        <ParticleText
-          startPositionsTop={startPositionsTop}
-          startPositionsBottom={startPositionsBottom}
-          topColor={topColor}
-          bottomColor={bottomColor}
-        />
-      )}
+      {/* 파티클 텍스트 애니메이션 */}
+      {showParticles &&
+        startPositionsTop &&
+        startPositionsBottom &&
+        textEndPositions && (
+          <ParticleText
+            startPositionsTop={startPositionsTop}
+            startPositionsBottom={startPositionsBottom}
+            endPositions={textEndPositions}
+            topColor={topColor}
+            bottomColor={bottomColor}
+            finalTextColor="#ffffff"
+          />
+        )}
     </>
   );
 }
