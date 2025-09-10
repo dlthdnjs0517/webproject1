@@ -1,71 +1,74 @@
-import { useRef, useEffect } from "react";
-import { Text } from "@react-three/drei";
+import { useEffect } from "react";
 import * as THREE from "three";
 
+// 이 컴포넌트는 파티클의 '최종 위치' 배열만 생성하여 onReady로 전달합니다.
+// 렌더링은 하지 않으므로 return null; 입니다.
+
 function TextGeometry({ onReady, text = "BEYOND INNOVATION MEDICINE" }) {
-  const textRef = useRef();
-
   useEffect(() => {
-    // Text 컴포넌트가 완전히 로드될 때까지 대기
-    const checkGeometry = () => {
-      if (textRef.current && textRef.current.geometry) {
-        const geometry = textRef.current.geometry;
+    const createTextParticles = () => {
+      // 1. 텍스트를 그릴 2D 캔버스 생성
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-        // Geometry를 복사하고 중심을 맞춤
-        const clonedGeometry = geometry.clone();
-        clonedGeometry.center();
+      const canvasWidth = 2000;
+      const canvasHeight = 200;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
 
-        // 포지션 데이터 추출
-        const positions = clonedGeometry.attributes.position.array;
+      // 2. 폰트 및 텍스트 스타일 설정 (TTF/OTF 변환 필요 없음)
+      ctx.fillStyle = "white";
+      ctx.font = "bold 80px KoPub Dotum"; // 여기에 원하는 웹 폰트나 시스템 폰트를 바로 사용
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, canvasWidth / 2, canvasHeight / 2);
 
-        // 텍스트를 파티클로 변환하기 위해 더 많은 점 생성
-        const particleCount = 2000; // 파티클 개수 증가
-        const textPositions = new Float32Array(particleCount * 3);
+      // 3. 캔버스의 픽셀 데이터 스캔
+      const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+      const pixels = imageData.data;
+      const positions = [];
 
-        // 텍스트 지오메트리의 vertices를 기반으로 파티클 위치 생성
-        if (positions && positions.length > 0) {
-          for (let i = 0; i < particleCount; i++) {
-            // 텍스트 지오메트리의 랜덤한 vertex를 선택
-            const vertexIndex =
-              Math.floor(Math.random() * (positions.length / 3)) * 3;
+      // 4. 밀도 조절 (이 값을 줄이면 파티클이 촘촘해집니다)
+      const density = 1;
 
-            // 약간의 노이즈를 추가하여 파티클 효과 개선
-            const noise = 0.05;
-            textPositions[i * 3] =
-              positions[vertexIndex] + (Math.random() - 0.5) * noise;
-            textPositions[i * 3 + 1] =
-              positions[vertexIndex + 1] + (Math.random() - 0.5) * noise;
-            textPositions[i * 3 + 2] =
-              positions[vertexIndex + 2] + (Math.random() - 0.5) * noise;
+      for (let y = 0; y < canvasHeight; y += density) {
+        for (let x = 0; x < canvasWidth; x += density) {
+          const index = (y * canvasWidth + x) * 4;
+          // alpha 채널 값이 128보다 크면(반투명 이상) 파티클로 인정
+          if (pixels[index + 3] > 128) {
+            // 3D 공간 좌표로 변환 (중앙 정렬 및 스케일 조정)
+            const posX = (x - canvasWidth / 2) * 0.013;
+            const posY = -(y - canvasHeight / 2) * 0.013;
+            const posZ = 0; // 2D 평면이므로 Z는 0
+
+            positions.push(posX, posY, posZ);
           }
-
-          console.log(
-            `[TextGeometry] Generated ${particleCount} particle positions from text geometry`
-          );
-          onReady(textPositions);
         }
       }
+
+      if (positions.length === 0) {
+        console.error(
+          "No particles were generated. Check font loading or text content."
+        );
+        return;
+      }
+
+      const particlePositions = new Float32Array(positions);
+      console.log(
+        `[TextGeometry] Generated ${particlePositions.length / 3} particles using Canvas.`
+      );
+
+      // 생성된 위치 배열을 부모 컴포넌트로 전달
+      onReady(particlePositions);
     };
 
-    // Text 컴포넌트가 로드되기까지 약간의 지연 필요
-    const timer = setTimeout(checkGeometry, 100);
+    // 폰트 로딩 시간을 고려하여 약간의 지연 후 실행
+    const timer = setTimeout(createTextParticles, 100);
 
     return () => clearTimeout(timer);
   }, [text, onReady]);
 
-  return (
-    <group position={[0, 0, 0]}>
-      <Text
-        ref={textRef}
-        visible={false}
-        fontSize={0.8}
-        letterSpacing={0.05}
-        // font="/fonts/Inter-Bold.woff" // drei의 기본 폰트 사용
-      >
-        {text}
-      </Text>
-    </group>
-  );
+  return null; // 이 컴포넌트는 시각적 요소를 렌더링하지 않습니다.
 }
 
 export default TextGeometry;
