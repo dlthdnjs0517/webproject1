@@ -212,7 +212,20 @@ function SplitCapsule({ isLoggedIn }) {
         },
         [],
         "split+=1.5"
-      ); // 캡슐이 거의 분리되었을 때 파티클 생성
+      ) // 캡슐이 거의 분리되었을 때 파티클 생성
+
+      .to(
+        camera.position,
+        {
+          x: 0,
+          y: 0,
+          z: 10, // 텍스트를 정면에서 바라볼 Z축 위치 (값은 조절 가능)
+          duration: 2.0, // 카메라가 이동하는 시간
+          ease: "power3.inOut",
+          onUpdate: () => camera.lookAt(0, 0, 0), // 이동하는 내내 텍스트를 바라보도록 설정
+        },
+        "split+=2.0" // 캡슐이 분리되기 시작하고 2초 후에 카메라 이동 시작
+      );
   }, [geometriesReady, camera, sampleParticlesFromCapsules]);
 
   // 휠 이벤트 핸들러
@@ -234,6 +247,35 @@ function SplitCapsule({ isLoggedIn }) {
     window.addEventListener("wheel", handleWheel, { passive: true });
     return () => window.removeEventListener("wheel", handleWheel);
   }, [isAnimating]);
+
+  useEffect(() => {
+    if (!timelineRef.current) return;
+
+    // 로그인 상태가 바뀔 때마다 초기화
+    console.log("[SplitCapsule] Resetting animation due to login change");
+
+    const tl = timelineRef.current;
+    tl.pause(0); // 타임라인 맨 앞으로 멈춤
+
+    // 캡슐 다시 보이게
+    if (topRef.current) {
+      topRef.current.visible = true;
+      topRef.current.position.set(0, 0, 0);
+      topRef.current.rotation.set(0, 0, 0);
+    }
+    if (bottomRef.current) {
+      bottomRef.current.visible = true;
+      bottomRef.current.position.set(0, 0, 0);
+      bottomRef.current.rotation.set(0, 0, 0);
+    }
+
+    // 파티클 숨김
+    setShowParticles(false);
+
+    // 카메라 초기 위치로 복원
+    camera.position.set(8, 0, 0);
+    camera.lookAt(0, 0, 0);
+  }, [isLoggedIn, camera]);
 
   return (
     <>
