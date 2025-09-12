@@ -10,19 +10,6 @@ a {
 
 body {
   font-family: "KoPub Dotum";
-  /* background: #d4d3e8;
-  background: radial-gradient(
-    circle,
-    rgba(212, 211, 232, 1) 0%,
-    rgba(68, 142, 207, 1) 100%
-  ); */
-  /* background: #d5f0f0;
-  background: radial-gradient(
-    circle,
-    rgba(213, 240, 240, 1) 0%,
-    rgba(166, 206, 227, 1) 13%,
-    rgba(13, 101, 163, 1) 100%
-  ); */
   background: #f1e1f2;
   background: radial-gradient(
     circle,
