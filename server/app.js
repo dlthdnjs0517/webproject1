@@ -55,12 +55,6 @@ app.use("/orgChart", orgChartRouter);
 const menuRouter = require("./routes/menuRoute.js");
 app.use("/api/menu", menuRouter);
 
-// app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-// app.use((req, res) => {
-//   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-// });
-
 app.listen(port, () => {
   console.log(`✅ 서버 실행 중: http://localhost:${port}`);
 });
