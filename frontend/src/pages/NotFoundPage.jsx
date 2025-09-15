@@ -1,0 +1,274 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
+// CSS 스타일을 컴포넌트 내부에 정의합니다.
+const PageStyles = () => (
+  <style>{`
+    :root {
+        --background-color: #000000;
+        --text-color: #ffffff;
+        --tape-yellow: #facc15; /* Tailwind Yellow 400 */
+        --tape-black: #18181b;  /* Tailwind Zinc 900 */
+        --glitch-cyan: #00ffff;
+        --glitch-magenta: #ff00ff;
+    }
+
+    /* 이 컴포넌트가 렌더링될 때 body 스타일을 적용하기 위한 래퍼 클래스 */
+    .not-found-page-wrapper {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: 'Source Sans Pro';
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        text-align: center;
+        width: 100%;
+    }
+
+    .container {
+        position: relative;
+        z-index: 10;
+    }
+    
+    /* --- 글리치 효과 (강화 버전) --- */
+    .glitch {
+        font-size: 10rem;
+        font-weight: 900;
+        position: relative;
+        color: white;
+        letter-spacing: 0.1em;
+        /* 여러 애니메이션을 동시에 적용 */
+        animation: 
+            glitch-flicker 3s infinite linear,
+            glitch-jump 1s infinite linear;
+    }
+
+    .glitch::before,
+    .glitch::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        width: 80%;
+        height: 100%;
+        background: var(--background-color);
+        clip: rect(0, 0, 0, 0);
+    }
+
+    .glitch::before {
+        left: -3px; /* 오프셋 증가 */
+        text-shadow: 3px 0 var(--glitch-magenta);
+        /* 애니메이션 속도 증가 */
+        animation: glitch-loop-1 0.6s infinite ease-in-out alternate-reverse;
+    }
+
+    .glitch::after {
+        left: 3px; 
+        text-shadow: -3px 0 var(--glitch-cyan);
+        /* 애니메이션 속도 증가 */
+        animation: glitch-loop-2 0.6s infinite ease-in-out alternate-reverse;
+    }
+    
+    /* 글자 자체의 깜빡임 및 그림자 효과 */
+    @keyframes glitch-flicker {
+        0%, 100% { color: white; text-shadow: none; }
+        25% { color: #e0e0e0; text-shadow: 0 0 10px var(--glitch-cyan); }
+        50% { color: white; }
+        75% { color: #d0d0d0; text-shadow: 0 0 10px var(--glitch-magenta); }
+    }
+    
+    /* 메인 텍스트의 미세한 점프 효과 추가 */
+    @keyframes glitch-jump {
+        0%, 100% { transform: translate(0, 0); }
+        20% { transform: translate(-3px, 3px); }
+        40% { transform: translate(3px, -3px); }
+        60% { transform: translate(-2px, 2px); }
+        80% { transform: translate(2px, -2px); }
+    }
+
+    /* before 가상요소의 잘림(clip) 효과 강화 */
+    @keyframes glitch-loop-1 {
+        0% { clip: rect(27px, 9999px, 94px, 0); transform: skew(0.7deg); }
+        20% { clip: rect(10px, 9999px, 95px, 0); }
+        40% { clip: rect(55px, 9999px, 130px, 0); }
+        60% { clip: rect(33px, 9999px, 85px, 0); }
+        80% { clip: rect(120px, 9999px, 45px, 0); }
+        100% { clip: rect(75px, 9999px, 60px, 0); transform: skew(-0.7deg); }
+    }
+
+    /* after 가상요소의 잘림 및 위치 이동 효과 강화 */
+    @keyframes glitch-loop-2 {
+        0% { top: -5px; left: 5px; clip: rect(79px, 9999px, 105px, 0); }
+        20% { top: 5px; left: -5px; clip: rect(20px, 9999px, 140px, 0); }
+        40% { top: -3px; left: 3px; clip: rect(100px, 9999px, 20px, 0); }
+        60% { top: 3px; left: -3px; clip: rect(130px, 9999px, 5px, 0); }
+        80% { top: -6px; left: 6px; clip: rect(40px, 9999px, 80px, 0); }
+        100% { top: 6px; left: -6px; clip: rect(90px, 9999px, 70px, 0); }
+    }
+
+    /* --- 부가 텍스트 및 링크 --- */
+    .message {
+        font-size: 1.5rem;
+        margin-top: -2rem;
+        margin-bottom: 2rem;
+        letter-spacing: 2px;
+        font-weight: 700;
+    }
+
+    .home-link {
+        display: inline-block;
+        padding: 12px 24px;
+        border: 2px solid var(--text-color);
+        color: var(--text-color);
+        text-decoration: none;
+        font-weight: 700;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .home-link:hover {
+        background-color: var(--text-color);
+        color: var(--background-color);
+    }
+
+    /* --- 출입 통제선 효과 --- */
+    .tape-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 20;
+    }
+
+    .tape {
+        position: relative;
+        overflow: hidden;
+        height: 60px;
+        width: 150%;
+        background-color: var(--tape-yellow);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--tape-black);
+        white-space: nowrap;
+        letter-spacing: 2px;
+        border-top: 3px solid var(--tape-black);
+        border-bottom: 3px solid var(--tape-black);
+        box-sizing: border-box;
+    }
+    
+    .tape::before,
+    .tape::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 12px;
+        background: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            var(--tape-black) 10px,
+            var(--tape-black) 20px
+        );
+        z-index: 1;
+    }
+
+    .tape::before {
+        top: 0;
+    }
+
+    .tape::after {
+        bottom: 0;
+    }
+
+    .tape .text {
+        padding: 0 1rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* 테이프 위치 및 각도 설정 */
+    .tape-1 {
+        top: 10%;
+        left: -15%;
+        transform: rotate(-20deg);
+    }
+    .tape-2 {
+        bottom: 10%;
+        left: -15%;
+        transform: rotate(25deg);
+    }
+    .tape-3 {
+        position: absolute;
+        top: 55%;
+        left: -20%;
+        transform: rotate(-10deg);
+        opacity: 0.6;
+        z-index: 5;
+    }
+    .tape-4 {
+        position: absolute;
+        bottom: 10%;
+        left: -15%;
+        transform: rotate(20deg);
+    }
+  `}</style>
+);
+
+// 404 페이지 컴포넌트
+function NotFoundPage() {
+  return (
+    <div className="not-found-page-wrapper">
+      <PageStyles />
+
+      {/* 텍스트 뒤에 배치될 테이프 */}
+      <div className="tape tape-3">
+        <span className="text">
+          위험 DANGER 危険 위험 DANGER 危険 위험 DANGER 危険 DANGER 危険
+        </span>
+      </div>
+
+      {/* 텍스트 앞에 배치될 테이프 */}
+      <div className="tape-container">
+        <div className="tape tape-1">
+          <span className="text">
+            접근금지 KEEP OUT 立入禁止 접근금지 KEEP OUT 立入禁止 접근금지 KEEP
+            OUT 立入禁止
+          </span>
+        </div>
+        <div className="tape tape-2">
+          <span className="text">
+            NO ENTRY 관계자외 출입금지 闲人免进 NO ENTRY 관계자외 출입금지
+            闲人免进
+          </span>
+        </div>
+        <div className="tape tape-4">
+          <span className="text">
+            危险 DANGER 危険 危险 DANGER 危険 危险 DANGER 危険 危险 DANGER 危険
+          </span>
+        </div>
+      </div>
+
+      {/* 중앙 콘텐츠 */}
+      <div className="container">
+        <div className="glitch" data-text="404">
+          404
+        </div>
+        <div className="message">PAGE NOT FOUND</div>
+        <Link to="/" className="home-link">
+          RETURN HOME
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+export default NotFoundPage;
