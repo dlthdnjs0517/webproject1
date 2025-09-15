@@ -1,0 +1,235 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700;900&display=swap");
+
+/* --- 글리치 효과 (강화 버전) --- */
+.not-found-container .glitch {
+  font-size: 10rem;
+  font-weight: 900;
+  position: relative;
+  color: white;
+  letter-spacing: 0.1em;
+  font-family: "Source Sans Pro", sans-serif;
+  /* 여러 애니메이션을 동시에 적용 */
+  animation:
+    glitch-flicker 3s infinite linear,
+    glitch-jump 1s infinite linear;
+  /* 성능 최적화 */
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.not-found-container .glitch::before,
+.not-found-container .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  width: 80%;
+  height: 100%;
+  background: #000000;
+  clip: rect(0, 0, 0, 0);
+}
+
+.not-found-container .glitch::before {
+  left: -3px; /* 오프셋 증가 */
+  text-shadow: 3px 0 #ff00ff;
+  /* 애니메이션 속도 증가 */
+  animation: glitch-loop-1 0.6s infinite ease-in-out alternate-reverse;
+}
+
+.not-found-container .glitch::after {
+  left: 3px;
+  text-shadow: -3px 0 #00ffff;
+  /* 애니메이션 속도 증가 */
+  animation: glitch-loop-2 0.6s infinite ease-in-out alternate-reverse;
+}
+
+/* 글자 자체의 깜빡임 및 그림자 효과 */
+@keyframes glitch-flicker {
+  0%,
+  100% {
+    color: white;
+    text-shadow: none;
+  }
+  25% {
+    color: #e0e0e0;
+    text-shadow: 0 0 10px #00ffff;
+  }
+  50% {
+    color: white;
+  }
+  75% {
+    color: #d0d0d0;
+    text-shadow: 0 0 10px #ff00ff;
+  }
+}
+
+/* 메인 텍스트의 미세한 점프 효과 추가 */
+@keyframes glitch-jump {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-3px, 3px);
+  }
+  40% {
+    transform: translate(3px, -3px);
+  }
+  60% {
+    transform: translate(-2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* before 가상요소의 잘림(clip) 효과 강화 */
+@keyframes glitch-loop-1 {
+  0% {
+    clip: rect(27px, 9999px, 94px, 0);
+    transform: skew(0.7deg);
+  }
+  20% {
+    clip: rect(10px, 9999px, 95px, 0);
+  }
+  40% {
+    clip: rect(55px, 9999px, 130px, 0);
+  }
+  60% {
+    clip: rect(33px, 9999px, 85px, 0);
+  }
+  80% {
+    clip: rect(120px, 9999px, 45px, 0);
+  }
+  100% {
+    clip: rect(75px, 9999px, 60px, 0);
+    transform: skew(-0.7deg);
+  }
+}
+
+/* after 가상요소의 잘림 및 위치 이동 효과 강화 */
+@keyframes glitch-loop-2 {
+  0% {
+    top: -5px;
+    left: 5px;
+    clip: rect(79px, 9999px, 105px, 0);
+  }
+  20% {
+    top: 5px;
+    left: -5px;
+    clip: rect(20px, 9999px, 140px, 0);
+  }
+  40% {
+    top: -3px;
+    left: 3px;
+    clip: rect(100px, 9999px, 20px, 0);
+  }
+  60% {
+    top: 3px;
+    left: -3px;
+    clip: rect(130px, 9999px, 5px, 0);
+  }
+  80% {
+    top: -6px;
+    left: 6px;
+    clip: rect(40px, 9999px, 80px, 0);
+  }
+  100% {
+    top: 6px;
+    left: -6px;
+    clip: rect(90px, 9999px, 70px, 0);
+  }
+}
+
+/* --- 출입 통제선 효과 --- */
+.tape {
+  position: relative;
+  overflow: hidden;
+  height: 60px;
+  width: 150%;
+  background-color: #facc15;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #18181b;
+  white-space: nowrap;
+  letter-spacing: 2px;
+  border-top: 3px solid #18181b;
+  border-bottom: 3px solid #18181b;
+  box-sizing: border-box;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.tape::before,
+.tape::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    #18181b 10px,
+    #18181b 20px
+  );
+  z-index: 1;
+}
+
+.tape::before {
+  top: 0;
+}
+
+.tape::after {
+  bottom: 0;
+}
+
+.tape .text {
+  padding: 0 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* 테이프 위치 및 각도 설정 */
+.tape-1 {
+  top: 10%;
+  left: -15%;
+  transform: rotate(-20deg);
+}
+.tape-2 {
+  bottom: 10%;
+  left: -15%;
+  transform: rotate(25deg);
+}
+.tape-3 {
+  position: absolute;
+  top: 55%;
+  left: -20%;
+  transform: rotate(-10deg);
+  opacity: 0.6;
+  z-index: 5;
+}
+.tape-4 {
+  position: absolute;
+  bottom: 10%;
+  left: -15%;
+  transform: rotate(20deg);
+}
+
+/* 컨테이너 스타일 */
+.not-found-container {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+/* 메시지 및 링크 스타일 */
+.not-found-message {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.not-found-link {
+  font-family: "Source Sans Pro", sans-serif;
+}

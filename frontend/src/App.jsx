@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
 import Home from "./pages/home/home";
-import NotFoundPage from "./pages/NotFoundPage";
+import NotFoundPage from "./pages/NotFound/NotFoundPage";
 
 // 서버실행을 위해 npm run dev 입력하기
 
