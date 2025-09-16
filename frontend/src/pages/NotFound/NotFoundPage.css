@@ -161,6 +161,7 @@
   border-bottom: 3px solid #18181b;
   box-sizing: border-box;
   font-family: "Source Sans Pro", sans-serif;
+  pointer-events: none;
 }
 
 .tape::before,
