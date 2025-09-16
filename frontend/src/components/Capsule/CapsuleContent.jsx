@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
 import SplitCapsule from "./SplitCapsule";
+import "./CapsuleContent.css";
 
 export default function CapsuleContent() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
