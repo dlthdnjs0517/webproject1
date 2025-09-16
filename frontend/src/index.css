@@ -11,12 +11,6 @@ a {
 body {
   font-family: "KoPub Dotum";
   background: #f1e1f2;
-  background: radial-gradient(
-    circle,
-    rgba(241, 225, 242, 1) 0%,
-    rgba(68, 118, 235, 1) 75%,
-    rgba(93, 132, 222, 1) 100%
-  );
 }
 
 html {
