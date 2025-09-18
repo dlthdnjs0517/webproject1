@@ -8,6 +8,21 @@ import { logoutRequest } from "../../api/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/authSlice";
 
+// react-icons 에서 아이콘 import 하기
+import { BsBuilding, BsFillPeopleFill, BsInfoCircle } from "react-icons/bs";
+import { GiBubblingFlask, GiMedicinePills, GiSpellBook } from "react-icons/gi";
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { MdKeyboardArrowRight } from "react-icons/md";
+
+const iconMapping = {
+  기업소개: <BsBuilding />,
+  "R&D": <GiBubblingFlask />,
+  제품정보: <GiMedicinePills />,
+  인재채용: <BsFillPeopleFill />,
+  고객지원: <BsInfoCircle />,
+  "아이템 도감": <GiSpellBook />,
+};
+
 function MainHeader() {
   const [menus, setMenus] = useState([]); //api로 받은 메뉴 저장
   const [isMenuOpen, setMenuOpen] = useState(false); // 햄버거 열림/닫힘
@@ -91,67 +106,74 @@ function MainHeader() {
                 className="hamburger-btn"
                 aria-label="메뉴 열기"
                 aria-expanded={isMenuOpen}
-                onClick={() => setMenuOpen((v) => !v)}
+                onClick={() => setMenuOpen(true)}
               >
-                <span className="bar" />
-                <span className="bar" />
-                <span className="bar" />
+                <AiOutlineMenu size={28} />
               </button>
 
               {/* 사이드 패널 + 오버레이 */}
-              {isMenuOpen && (
-                <div
-                  className="menu-overlay"
-                  onClick={() => setMenuOpen(false)}
-                />
-              )}
 
-              <aside className={`menu-panel ${isMenuOpen ? "open" : ""}`}>
-                <ul className="panel-list">
+              <div
+                className={`menu-overlay ${isMenuOpen ? "is-active" : ""}`}
+                onClick={() => setMenuOpen(false)}
+              />
+
+              <aside className={`side-menu ${isMenuOpen ? "is-open" : ""}`}>
+                <div className="menu-header">
+                  <span className="logo-in-menu">MENU</span>
+                  <button
+                    className="close-btn"
+                    aria-label="메뉴 닫기"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <AiOutlineClose size={24} />
+                  </button>
+                </div>
+
+                <ul className="menu-list">
                   {menus.map((menu) => {
                     const hasChildren = menu.links?.length > 0;
+                    const menuIcon = iconMapping[menu.title];
                     return (
-                      <li key={menu.id} className="panel-item">
+                      <li key={menu.id} className="menu-item">
                         {/* 1뎁스: 섹션 토글 */}
                         {hasChildren ? (
-                          <button
-                            className="panel-section"
-                            onClick={() => toggleSection(menu.id)}
-                            aria-expanded={openId === menu.id}
-                          >
-                            {menu.title}
-                            {menu.links?.length > 0 && (
-                              <span
-                                className={`chevron ${openId === menu.id ? "up" : ""}`}
-                              />
-                            )}
-                          </button>
+                          <>
+                            <div
+                              className={`menu-title ${openId === menu.id ? "active" : ""}`}
+                              onClick={() => toggleSection(menu.id)}
+                              role="button"
+                              aria-expanded={openId === menu.id}
+                              tabIndex="0"
+                            >
+                              <span className="menu-content-wrapper">
+                                <span className="menu-icon">{menuIcon}</span>
+                                {menu.title}
+                                <span className="arrow-icon">
+                                  <MdKeyboardArrowRight size="20" />
+                                </span>
+                              </span>
+                            </div>
+                            <ul
+                              className="submenu-links"
+                              style={{
+                                maxHeight: openId === menu.id ? "500px" : "0",
+                              }}
+                            >
+                              {menu.links.map((link, i) => (
+                                <li key={i}>
+                                  <Link to={link.to}>{link.label}</Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </>
                         ) : (
-                          <Link to={menu.to} className="panel-section">
-                            {menu.title}
+                          <Link to={menu.to} className="single-link">
+                            <span className="menu-content-wrapper">
+                              <span className="menu-icon">{menuIcon}</span>
+                              {menu.title}
+                            </span>
                           </Link>
-                        )}
-
-                        {/* 2뎁스: 링크 목록(아코디언) */}
-                        {hasChildren && (
-                          <ul
-                            className={`submenu ${openId === menu.id ? "open" : ""}`}
-                          >
-                            {menu.links.map((link, i) => (
-                              <li key={i}>
-                                <Link
-                                  to={link.to}
-                                  className={`submenu-link ${link.glitch ? "glitch" : ""}`}
-                                  data-text={
-                                    link.glitch ? link.label : undefined
-                                  }
-                                  onClick={() => setMenuOpen(false)}
-                                >
-                                  {link.label}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
                         )}
                       </li>
                     );
@@ -165,12 +187,12 @@ function MainHeader() {
                       onClick={() => {
                         setLoginOpen(true);
                       }}
-                      className="login action"
+                      className="login action-btn"
                     >
                       로그인
                     </button>
                   ) : (
-                    <button onClick={handleLogout} className="login action">
+                    <button onClick={handleLogout} className="login action-btn">
                       로그아웃
                     </button>
                   )}
