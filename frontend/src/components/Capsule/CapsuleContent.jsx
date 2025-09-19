@@ -19,7 +19,6 @@ export default function CapsuleContent() {
         <directionalLight position={[3, 4, 4]} intensity={1} />
         <Environment preset="sunset" />
         <SplitCapsule isLoggedIn={isLoggedIn} />
-        {/* <OrbitControls /> */}
       </Canvas>
     </section>
   );
