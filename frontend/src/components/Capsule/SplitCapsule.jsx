@@ -39,6 +39,7 @@ function SplitCapsule({ isLoggedIn }) {
   const { camera } = useThree();
 
   const [isAnimating, setIsAnimating] = useState(false);
+  const [animationStarted, setAnimationStarted] = useState(false);
   const [geometriesReady, setGeometriesReady] = useState({
     top: false,
     bottom: false,
@@ -153,14 +154,19 @@ function SplitCapsule({ isLoggedIn }) {
         onStart: () => {
           console.log("[Timeline] Animation started");
           setIsAnimating(true);
+          setAnimationStarted(true);
+          window.dispatchEvent(new CustomEvent("capsuleAnimationStart"));
         },
         onComplete: () => {
-          console.log("[Timeline] Animation completed");
+          console.log("[Timeline] Animation completed - 신호만 보내고 대기");
           setIsAnimating(false);
+          // ✅ 완료 신호만 보내고 자동으로 다른 동작하지 않음
+          window.dispatchEvent(new CustomEvent("capsuleAnimationComplete"));
         },
         onReverseComplete: () => {
           console.log("[Timeline] Animation reversed");
           setIsAnimating(false);
+          setAnimationStarted(false);
           setShowParticles(false);
           if (topRef.current) topRef.current.visible = true;
           if (bottomRef.current) bottomRef.current.visible = true;
@@ -212,50 +218,55 @@ function SplitCapsule({ isLoggedIn }) {
         },
         [],
         "split+=1.5"
-      ) // 캡슐이 거의 분리되었을 때 파티클 생성
-
+      )
       .to(
         camera.position,
         {
           x: 0,
           y: 0,
-          z: 10, // 텍스트를 정면에서 바라볼 Z축 위치 (값은 조절 가능)
-          duration: 2.0, // 카메라가 이동하는 시간
+          z: 10,
+          duration: 2.0,
           ease: "power3.inOut",
-          onUpdate: () => camera.lookAt(0, 0, 0), // 이동하는 내내 텍스트를 바라보도록 설정
+          onUpdate: () => camera.lookAt(0, 0, 0),
         },
-        "split+=2.0" // 캡슐이 분리되기 시작하고 2초 후에 카메라 이동 시작
+        "split+=2.0"
       );
   }, [geometriesReady, camera, sampleParticlesFromCapsules]);
 
-  // 휠 이벤트 핸들러
+  // 이벤트 리스너들
   useEffect(() => {
-    const handleWheel = (event) => {
-      if (isAnimating || !timelineRef.current) return;
-
-      const tl = timelineRef.current;
-
-      if (event.deltaY > 0 && !tl.isActive()) {
-        console.log("[Wheel] Playing animation");
-        tl.play();
-      } else if (event.deltaY < 0 && !tl.isActive()) {
-        console.log("[Wheel] Reversing animation");
-        tl.reverse();
+    const handleStartAnimation = () => {
+      if (timelineRef.current && !isAnimating) {
+        console.log("[Event] Starting capsule animation");
+        timelineRef.current.play();
       }
     };
 
-    window.addEventListener("wheel", handleWheel, { passive: true });
-    return () => window.removeEventListener("wheel", handleWheel);
+    const handleSkipAnimation = () => {
+      if (timelineRef.current && isAnimating) {
+        console.log("[Event] Skipping capsule animation");
+        // 애니메이션을 빠르게 끝으로 이동
+        timelineRef.current.progress(1);
+      }
+    };
+
+    window.addEventListener("startCapsuleAnimation", handleStartAnimation);
+    window.addEventListener("skipCapsuleAnimation", handleSkipAnimation);
+
+    return () => {
+      window.removeEventListener("startCapsuleAnimation", handleStartAnimation);
+      window.removeEventListener("skipCapsuleAnimation", handleSkipAnimation);
+    };
   }, [isAnimating]);
 
+  // 로그인 상태 변경 시 초기화
   useEffect(() => {
     if (!timelineRef.current) return;
 
-    // 로그인 상태가 바뀔 때마다 초기화
     console.log("[SplitCapsule] Resetting animation due to login change");
 
     const tl = timelineRef.current;
-    tl.pause(0); // 타임라인 맨 앞으로 멈춤
+    tl.pause(0);
 
     // 캡슐 다시 보이게
     if (topRef.current) {
@@ -271,11 +282,37 @@ function SplitCapsule({ isLoggedIn }) {
 
     // 파티클 숨김
     setShowParticles(false);
+    setAnimationStarted(false);
 
     // 카메라 초기 위치로 복원
     camera.position.set(8, 0, 0);
     camera.lookAt(0, 0, 0);
   }, [isLoggedIn, camera]);
+
+  // 새로고침 시 초기화
+  useEffect(() => {
+    // 컴포넌트 마운트 시 모든 상태 초기화
+    console.log("[SplitCapsule] Component mounted - initializing");
+
+    setShowParticles(false);
+    setAnimationStarted(false);
+
+    // 캡슐 초기 상태
+    if (topRef.current) {
+      topRef.current.visible = true;
+      topRef.current.position.set(0, 0, 0);
+      topRef.current.rotation.set(0, 0, 0);
+    }
+    if (bottomRef.current) {
+      bottomRef.current.visible = true;
+      bottomRef.current.position.set(0, 0, 0);
+      bottomRef.current.rotation.set(0, 0, 0);
+    }
+
+    // 카메라 초기 위치
+    camera.position.set(8, 0, 0);
+    camera.lookAt(0, 0, 0);
+  }, []); // 빈 의존성 배열로 마운트 시에만 실행
 
   return (
     <>
