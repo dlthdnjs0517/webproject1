@@ -1,5 +1,4 @@
 import React, { useLayoutEffect, useRef } from "react";
-
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -9,109 +8,138 @@ import MainHeader from "../../components/MainHeader/MainHeader";
 import CapsuleContent from "../../components/Capsule/CapsuleContent";
 import MissionState from "../../components/Mission/MissonState";
 
-// GSAP 플러그인을 등록합니다.
+// GSAP 플러그인 등록
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function Home() {
   const mainRef = useRef(null);
+  const currentSectionRef = useRef(0);
+  const isPageAnimatingRef = useRef(false);
+  const isCapsuleAnimationStartedRef = useRef(false);
+  const isCapsuleAnimationCompleteRef = useRef(false);
 
   useLayoutEffect(() => {
-    // 새로고침 시 스크롤을 맨 위로 이동하여 첫 페이지 상태로 초기화
-    window.scrollTo(0, 0);
-
     const ctx = gsap.context(() => {
+      // 스크롤바 숨기기
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+
       const sections = gsap.utils.toArray(".panel");
+      const totalSections = sections.length;
 
-      let currentSection = 0;
-      let isPageAnimating = false;
-      let isCapsuleAnimationStarted = false;
-      let isCapsuleAnimationComplete = false; // 캡슐 애니메이션 완료 상태
+      // 새로고침 시 첫 페이지로 이동
+      gsap.set(window, { scrollTo: { y: 0 } });
 
-      // 특정 섹션으로 스크롤하는 함수
-      const goToSection = (index, duration = 1.2) => {
-        if (isPageAnimating || index < 0 || index >= sections.length) return;
+      // 섹션으로 이동하는 함수 (GSAP scrollTo 사용)
+      const goToSection = (index) => {
+        if (isPageAnimatingRef.current || index < 0 || index >= totalSections) {
+          console.log("[DEBUG] goToSection 차단:", {
+            isAnimating: isPageAnimatingRef.current,
+            index,
+            totalSections,
+          });
+          return;
+        }
 
-        isPageAnimating = true;
-        currentSection = index;
-
-        gsap.to(window, {
-          scrollTo: { y: sections[index], autoKill: false },
-          duration: duration,
-          ease: "power3.inOut",
-          onComplete: () => {
-            isPageAnimating = false;
-          },
+        console.log("[DEBUG] goToSection 실행:", {
+          from: currentSectionRef.current,
+          to: index,
         });
 
-        // 두 번째 페이지부터는 텍스트 페이드인 애니메이션을 적용
-        if (index > 0) {
-          gsap.fromTo(
-            sections[index].querySelectorAll(".section-animation"),
-            { y: 50, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 1,
-              stagger: 0.2,
-              ease: "power2.out",
-              delay: 0.4,
+        isPageAnimatingRef.current = true;
+        currentSectionRef.current = index;
+
+        // GSAP scrollTo를 사용하여 해당 섹션으로 부드럽게 이동
+        gsap.to(window, {
+          duration: 0.3,
+          scrollTo: {
+            y: sections[index],
+            autoKill: false,
+          },
+          ease: "power2.inOut",
+          onComplete: () => {
+            isPageAnimatingRef.current = false;
+            console.log("[DEBUG] 페이지 이동 완료");
+
+            // 텍스트 애니메이션 (두 번째 페이지부터)
+            if (index > 0) {
+              const targetTimeline = gsap.timeline();
+              gsap.set(sections[index].querySelectorAll(".section-animation"), {
+                y: 50,
+                opacity: 0,
+              });
+              targetTimeline.to(
+                sections[index].querySelectorAll(".section-animation"),
+                {
+                  y: 0,
+                  opacity: 1,
+                  duration: 1,
+                  stagger: 0.2,
+                  ease: "power2.out",
+                  delay: 0.4,
+                }
+              );
             }
-          );
-        }
+          },
+        });
       };
 
       // 캡슐 애니메이션 완료 리스너
       const handleCapsuleAnimationComplete = () => {
         console.log("home.jsx: 캡슐 애니메이션 완료 신호 받음");
-        isCapsuleAnimationComplete = true;
-        // 자동으로 다음 페이지로 이동하지 않음
-        // 사용자가 다음 스크롤을 해야 페이지 이동
+        isCapsuleAnimationCompleteRef.current = true;
       };
 
       // 스크롤 이벤트 처리
       let lastScrollTime = 0;
-      let isScrolling = false; // 스크롤 처리 중 플래그
-      const scrollThrottle = 1000; // 스크롤 이벤트 쓰로틀링 (1초)
+      let isScrolling = false;
+      const scrollThrottle = 300;
 
       const handleScroll = (direction) => {
         const now = Date.now();
 
-        // 이미 스크롤 처리 중이거나 쓰로틀링 시간 내라면 무시
-        if (isScrolling || now - lastScrollTime < scrollThrottle) {
-          console.log("[DEBUG] 스크롤 무시:", {
-            isScrolling,
-            timeDiff: now - lastScrollTime,
-          });
+        // 현재 상태 로그
+        console.log("[DEBUG] 스크롤 이벤트:", {
+          direction,
+          currentSection: currentSectionRef.current,
+          isPageAnimating: isPageAnimatingRef.current,
+          isScrolling,
+          isCapsuleStarted: isCapsuleAnimationStartedRef.current,
+          isCapsuleComplete: isCapsuleAnimationCompleteRef.current,
+          timeDiff: now - lastScrollTime,
+        });
+
+        // 페이지 애니메이션 중이거나 스크롤 중이면 무시
+        if (
+          isPageAnimatingRef.current ||
+          isScrolling ||
+          now - lastScrollTime < scrollThrottle
+        ) {
+          console.log("[DEBUG] 스크롤 무시");
           return;
         }
 
-        isScrolling = true; // 스크롤 처리 시작
+        isScrolling = true;
         lastScrollTime = now;
-
-        console.log("[DEBUG] 스크롤 처리 시작:", direction);
 
         if (direction === "down") {
           // 아래로 스크롤
-          if (currentSection === 0) {
+          if (currentSectionRef.current === 0) {
             // 첫 번째 페이지에서의 스크롤 다운 처리
-            if (!isCapsuleAnimationStarted) {
+            if (!isCapsuleAnimationStartedRef.current) {
               // 첫 번째 스크롤: 캡슐 애니메이션 시작
               console.log("home.jsx: 첫 스크롤 -> 캡슐 애니메이션 시작");
-              isCapsuleAnimationStarted = true;
+              isCapsuleAnimationStartedRef.current = true;
               window.dispatchEvent(new CustomEvent("startCapsuleAnimation"));
-            } else if (!isCapsuleAnimationComplete) {
-              // 두 번째 스크롤: 캡슐 애니메이션 스킵
-              console.log("home.jsx: 두 번째 스크롤 -> 캡슐 애니메이션 스킵");
+            } else if (!isCapsuleAnimationCompleteRef.current) {
+              // 두 번째 스크롤: 캡슐 애니메이션 스킵하고 바로 다음 페이지로 이동
+              console.log(
+                "home.jsx: 두 번째 스크롤 -> 애니메이션 스킵하고 바로 다음 페이지로"
+              );
               window.dispatchEvent(new CustomEvent("skipCapsuleAnimation"));
-              // 스킵 후 바로 다음 페이지로 이동
-              setTimeout(() => {
-                if (currentSection === 0) {
-                  // 여전히 첫 페이지에 있다면
-                  goToSection(1);
-                  isScrolling = false; // 스크롤 처리 완료
-                }
-              }, 500);
-              return; // 여기서 리턴하여 아래 isScrolling = false 실행 방지
+              goToSection(1);
+              isScrolling = false;
+              return;
             } else {
               // 캡슐 애니메이션이 자연스럽게 완료된 후: 다음 페이지로 이동
               console.log(
@@ -121,38 +149,61 @@ export default function Home() {
             }
           } else {
             // 다른 페이지에서는 바로 다음 페이지로 이동
-            goToSection(currentSection + 1);
+            console.log(
+              "[DEBUG] 다른 페이지에서 스크롤 다운:",
+              currentSectionRef.current + 1
+            );
+            goToSection(currentSectionRef.current + 1);
           }
         } else if (direction === "up") {
-          // 위로 스크롤: 이전 페이지로 이동
-          if (currentSection > 0) {
-            goToSection(currentSection - 1);
+          // 위로 스크롤
+          if (currentSectionRef.current === 0) {
+            // 첫 번째 페이지에서 위로 스크롤
+            if (isCapsuleAnimationStartedRef.current) {
+              console.log(
+                "home.jsx: 첫 페이지에서 스크롤 업 -> 캡슐 애니메이션 역재생"
+              );
+              window.dispatchEvent(new CustomEvent("reverseCapsuleAnimation"));
+              isCapsuleAnimationStartedRef.current = false;
+              isCapsuleAnimationCompleteRef.current = false;
+            } else {
+              console.log(
+                "home.jsx: 첫 페이지에서 스크롤 업 -> 아무 동작 없음"
+              );
+            }
+          } else if (currentSectionRef.current > 0) {
+            // 다른 페이지에서는 이전 페이지로 이동
+            console.log(
+              "[DEBUG] 다른 페이지에서 스크롤 업:",
+              currentSectionRef.current - 1
+            );
+            goToSection(currentSectionRef.current - 1);
+
             // 첫 페이지로 돌아갈 때는 캡슐 상태 리셋
-            if (currentSection - 1 === 0) {
-              isCapsuleAnimationStarted = false;
-              isCapsuleAnimationComplete = false;
+            if (currentSectionRef.current - 1 === 0) {
+              console.log("home.jsx: 첫 페이지로 돌아가면서 캡슐 상태 리셋");
+              isCapsuleAnimationStartedRef.current = false;
+              isCapsuleAnimationCompleteRef.current = false;
             }
           }
         }
 
-        // 스크롤 처리 완료 (타이머로 안전하게 해제)
+        // 스크롤 처리 완료
         setTimeout(() => {
           isScrolling = false;
           console.log("[DEBUG] 스크롤 처리 완료");
         }, 100);
       };
 
-      // ScrollTrigger 대신 직접 wheel과 touch 이벤트 처리
+      // 휠 이벤트 처리
       const handleWheel = (e) => {
         e.preventDefault();
+        e.stopPropagation();
 
-        // deltaY 값으로 스크롤 방향과 강도 확인
         const deltaY = e.deltaY;
         console.log("[DEBUG] Wheel event - deltaY:", deltaY);
 
-        // 너무 작은 델타값은 무시 (민감도 조절)
         if (Math.abs(deltaY) < 10) {
-          console.log("[DEBUG] 델타값이 너무 작아서 무시:", deltaY);
           return;
         }
 
@@ -160,24 +211,37 @@ export default function Home() {
         handleScroll(direction);
       };
 
+      // 터치 이벤트 처리
+      let touchStartY = 0;
+
       const handleTouchStart = (e) => {
-        window.touchStartY = e.touches[0].clientY;
+        touchStartY = e.touches[0].clientY;
       };
 
       const handleTouchEnd = (e) => {
-        if (!window.touchStartY) return;
+        if (!touchStartY) return;
 
         const touchEndY = e.changedTouches[0].clientY;
-        const diff = window.touchStartY - touchEndY;
+        const diff = touchStartY - touchEndY;
 
         if (Math.abs(diff) > 50) {
-          // 최소 50px 이동해야 스크롤로 인식
           const direction = diff > 0 ? "down" : "up";
           handleScroll(direction);
         }
 
-        window.touchStartY = null;
+        touchStartY = 0;
       };
+
+      // 텍스트 애니메이션 초기 상태 설정
+      sections.forEach((section, index) => {
+        if (index > 0) {
+          const animations = section.querySelectorAll(".section-animation");
+          gsap.set(animations, {
+            y: 50,
+            opacity: 0,
+          });
+        }
+      });
 
       // 이벤트 리스너 등록
       window.addEventListener("wheel", handleWheel, { passive: false });
@@ -189,6 +253,15 @@ export default function Home() {
         "capsuleAnimationComplete",
         handleCapsuleAnimationComplete
       );
+      window.addEventListener("missionScrollUp", () => {
+        // 이전 섹션으로 이동
+        goToPreviousSection();
+      });
+
+      window.addEventListener("missionScrollDown", () => {
+        // 다음 섹션으로 이동
+        goToNextSection();
+      });
 
       // 정리 함수
       return () => {
@@ -199,6 +272,8 @@ export default function Home() {
           "capsuleAnimationComplete",
           handleCapsuleAnimationComplete
         );
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
       };
     }, mainRef);
 
