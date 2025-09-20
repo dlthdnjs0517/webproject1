@@ -250,12 +250,32 @@ function SplitCapsule({ isLoggedIn }) {
       }
     };
 
+    const handleReverseAnimation = () => {
+      if (timelineRef.current) {
+        console.log("[Event] Reversing capsule animation");
+
+        // 현재 애니메이션 상태에 관계없이 역재생
+        if (timelineRef.current.progress() > 0) {
+          // 진행된 애니메이션이 있다면 역재생
+          timelineRef.current.reverse();
+        } else {
+          // 이미 초기 상태라면 별도 처리 없음
+          console.log("[Event] Already at initial state");
+        }
+      }
+    };
+
     window.addEventListener("startCapsuleAnimation", handleStartAnimation);
     window.addEventListener("skipCapsuleAnimation", handleSkipAnimation);
+    window.addEventListener("reverseCapsuleAnimation", handleReverseAnimation);
 
     return () => {
       window.removeEventListener("startCapsuleAnimation", handleStartAnimation);
       window.removeEventListener("skipCapsuleAnimation", handleSkipAnimation);
+      window.removeEventListener(
+        "reverseCapsuleAnimation",
+        handleReverseAnimation
+      );
     };
   }, [isAnimating]);
 
