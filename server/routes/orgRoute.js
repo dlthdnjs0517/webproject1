@@ -5,10 +5,9 @@ const path = require("path");
 const departments = require("../constants/departments");
 const Employee = require("../models/Employee");
 const mappingFields = require("../utils/mappingFields");
-const { title } = require("process");
 const tableFields = require("../constants/tableFields");
 
-router.get("/orgChart", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const employees = await Employee.find();
     res.json({ departments, employees });
