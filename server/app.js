@@ -50,7 +50,7 @@ const authRouter = require("./routes/authRoute.js");
 app.use("/api/auth", authRouter);
 
 const orgChartRouter = require("./routes/orgRoute.js");
-app.use("/orgChart", orgChartRouter);
+app.use("/api/org", orgChartRouter);
 
 const menuRouter = require("./routes/menuRoute.js");
 app.use("/api/menu", menuRouter);
