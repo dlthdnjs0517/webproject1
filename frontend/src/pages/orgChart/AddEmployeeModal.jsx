@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "../../lib/axios";
 
-export default function AddEmployeeModal({ onClose, onSuccess }) {
+export default function AddEmployeeModal({ onClose, onSuccess, departments }) {
   const [form, setForm] = useState({
     name: "",
     department: departments[0]?.value || "",
@@ -30,7 +30,7 @@ export default function AddEmployeeModal({ onClose, onSuccess }) {
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl p-8 shadow-2xl w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6">직원 등록</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">직원 등록</h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* 이름 */}
