@@ -22,6 +22,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:5173", // 내 컴퓨터에서 개발할 때
+  "https://daydream-ten.vercel.app/", //vercel 프론트 주소
   process.env.FRONTEND_URL, // Render 서버에 배포되었을 때
 ];
 
