@@ -44,6 +44,8 @@ app.use(
   })
 );
 
+app.use(express.static("public"));
+
 // /api/auth라는 경로로 들어오는 모든 요청을 authRouter에게 위임
 const authRouter = require("./routes/authRoute.js");
 app.use("/api/auth", authRouter);
@@ -57,7 +59,6 @@ app.use("/api/menu", menuRouter);
 app.use((req, res, next) => {
   res.status(404).json({ message: "API endpoint not found" });
 });
-app.use(express.static("public"));
 
 app.listen(port, () => {
   console.log(`✅ 서버 실행 중: https://localhost:${port}`);
