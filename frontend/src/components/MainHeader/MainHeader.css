@@ -31,8 +31,7 @@ header .gnb .gnb-menu .header-layout {
   margin-top: 1rem;
   padding: 0 2rem;
   display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
+  align-items: center;
 }
 
 .gnb-right .login {
@@ -61,16 +60,15 @@ header .gnb .gnb-menu .header-layout {
 }
 
 .logo-container {
+  position: absolute;
   display: flex;
-  justify-content: center;
+  left: 50%;
   align-items: center;
 }
 
 .logo-img {
   width: auto;
-  height: 35px;
-  vertical-align: middle;
-  min-width: 80px;
+  height: 40px;
 }
 
 .hamburger-btn {
@@ -97,9 +95,10 @@ header .gnb .gnb-menu ul {
 }
 
 header .gnb .gnb-menu .header-layout .gnb-right {
+  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 8px; /*버튼 간격*/
+  gap: 12px; /*버튼 간격*/
 }
 
 /* === 햄버거 & 패널 레이아웃 === */

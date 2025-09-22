@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./MainHeader.css";
 import { fetchMenus } from "../../api/menu";
 import LoginModal from "../../components/LoginModal";
-import logo from "../../assets/img/logo.svg";
+import logo from "/favicon.svg";
 import { logoutRequest } from "../../api/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/authSlice";
