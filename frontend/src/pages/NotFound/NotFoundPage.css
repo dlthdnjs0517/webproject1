@@ -1,67 +1,202 @@
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200..900&display=swap");
+/* CSS 변수 선언 */
+:root {
+  --background-color: #000000;
+  --text-color: #ffffff;
+  --tape-yellow: #facc15; /* Tailwind Yellow 400 */
+  --tape-black: #18181b; /* Tailwind Zinc 700 */
+  --glitch-cyan: #00ffff;
+  --glitch-magenta: #ff00ff;
+}
 
-/* --- 글리치 효과 (강화 버전) --- */
-.not-found-container .glitch {
+/* 페이지 전체 스타일 */
+.not-found-container {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: "Source Sans 3", sans-serif !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* 중앙 콘텐츠 컨테이너 */
+.container {
+  position: relative;
+  z-index: 40;
+}
+
+/* --- 글리치 효과 --- */
+.glitch {
   font-size: 10rem;
   font-weight: 900;
   position: relative;
+  display: inline-block;
   color: white;
   letter-spacing: 0.1em;
-  font-family: "Source Sans Pro", sans-serif;
-  /* 여러 애니메이션을 동시에 적용 */
   animation: glitch-flicker 3s infinite linear;
-  /* 성능 최적화 */
-  will-change: transform;
-  backface-visibility: hidden;
-  perspective: 1000px;
 }
 
-.not-found-container .glitch::before,
-.not-found-container .glitch::after {
+.glitch::before,
+.glitch::after {
   content: attr(data-text);
   position: absolute;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: #000000;
-  /* clip-path: inset(0, 0, 0, 0); */
+  background: var(--background-color);
+  clip-path: inset(0);
 }
 
-.not-found-container .glitch::before {
-  left: -3px; /* 오프셋 증가 */
-  text-shadow: 3px 0 #ff00ff;
-  /* 애니메이션 속도 증가 */
-  animation: glitch-loop-1 0.6s infinite ease-in-out alternate-reverse;
+.glitch::before {
+  left: -3px;
+  text-shadow: 3px 0 var(--glitch-magenta);
+  animation: glitch-loop-1 0.8s infinite ease-in-out alternate-reverse;
 }
 
-.not-found-container .glitch::after {
+.glitch::after {
   left: 3px;
-  text-shadow: -3px 0 #00ffff;
-  /* 애니메이션 속도 증가 */
-  animation: glitch-loop-2 0.6s infinite ease-in-out alternate-reverse;
+  text-shadow: -3px 0 var(--glitch-cyan);
+  animation: glitch-loop-2 0.8s infinite ease-in-out alternate-reverse;
+}
+
+/* --- 애니메이션 키프레임 --- */
+@keyframes glitch-flicker {
+  0%,
+  100% {
+    color: white;
+    text-shadow: none;
+  }
+  25% {
+    color: #e0e0e0;
+    text-shadow: 0 0 10px var(--glitch-cyan);
+  }
+  50% {
+    color: white;
+  }
+  75% {
+    color: #d0d0d0;
+    text-shadow: 0 0 10px var(--glitch-magenta);
+  }
+}
+
+@keyframes glitch-loop-1 {
+  0% {
+    clip-path: inset(27px 0 94px 0);
+    transform: skew(0.7deg);
+  }
+  20% {
+    clip-path: inset(44px 0 95px 0);
+  }
+  40% {
+    clip-path: inset(55px 0 130px 0);
+  }
+  60% {
+    clip-path: inset(33px 0 85px 0);
+  }
+  80% {
+    clip-path: inset(120px 0 45px 0);
+  }
+  100% {
+    clip-path: inset(75px 0 60px 0);
+    transform: skew(-0.7deg);
+  }
+}
+
+@keyframes glitch-loop-2 {
+  0% {
+    top: -5px;
+    left: 5px;
+    clip-path: inset(79px 0 105px 0);
+  }
+  20% {
+    top: 5px;
+    left: -5px;
+    clip-path: inset(20px 0 140px 0);
+  }
+  40% {
+    top: -3px;
+    left: 3px;
+    clip-path: inset(100px 0 20px 0);
+  }
+  60% {
+    top: 3px;
+    left: -3px;
+    clip-path: inset(130px 0 5px 0);
+  }
+  80% {
+    top: -6px;
+    left: 6px;
+    clip-path: inset(40px 0 80px 0);
+  }
+  100% {
+    top: 6px;
+    left: -6px;
+    clip-path: inset(90px 0 70px 0);
+  }
+}
+
+/* --- 부가 텍스트 및 링크 --- */
+.message {
+  font-size: 1.5rem;
+  margin-top: -0.5rem; /* glitch 텍스트와의 간격 조정 */
+  margin-bottom: 2rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  line-height: 2rem;
+}
+
+.home-link {
+  display: inline-block;
+  padding: 12px 24px;
+  border: 2px solid var(--text-color);
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 700;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.home-link:hover {
+  background-color: var(--text-color);
+  color: var(--background-color);
 }
 
 /* --- 출입 통제선 효과 --- */
+.tape-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 20;
+}
+
 .tape {
-  position: relative;
+  position: relative; /* .not-found-container 기준으로 위치 */
   overflow: hidden;
   height: 60px;
   width: 150%;
-  background-color: #facc15;
+  background-color: var(--tape-yellow);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 900;
-  color: #18181b;
+  color: var(--tape-black);
   white-space: nowrap;
   letter-spacing: 2px;
-  border-top: 3px solid #18181b;
-  border-bottom: 3px solid #18181b;
+  border-top: 3px solid var(--tape-black);
+  border-bottom: 3px solid var(--tape-black);
   box-sizing: border-box;
-  font-family: "Source Sans Pro", sans-serif;
-  pointer-events: none;
+  pointer-events: none; /* 테이프가 클릭 이벤트를 방해하지 않도록 설정 */
 }
 
 .tape::before,
@@ -75,8 +210,8 @@
     45deg,
     transparent,
     transparent 10px,
-    #18181b 10px,
-    #18181b 20px
+    var(--tape-black) 10px,
+    var(--tape-black) 20px
   );
   z-index: 1;
 }
@@ -84,7 +219,6 @@
 .tape::before {
   top: 0;
 }
-
 .tape::after {
   bottom: 0;
 }
@@ -119,94 +253,4 @@
   bottom: 10%;
   left: -15%;
   transform: rotate(20deg);
-}
-
-/* 컨테이너 스타일 */
-.not-found-container {
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-/* 메시지 및 링크 스타일 */
-.not-found-message {
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-.not-found-link {
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-@keyframes glitch-flicker {
-  0%,
-  100% {
-    color: white;
-    text-shadow: none;
-  }
-  25% {
-    color: #e0e0e0;
-    text-shadow: 0 0 10px #00ffff;
-  }
-  50% {
-    color: white;
-  }
-  75% {
-    color: #d0d0d0;
-    text-shadow: 0 0 10px #ff00ff;
-  }
-}
-
-@keyframes glitch-loop-1 {
-  0% {
-    clip-path: inset(27px, 0px, 94px, 0);
-    transform: skew(0.7deg);
-  }
-  20% {
-    clip-path: inset(10px, 0px, 95px, 0);
-  }
-  40% {
-    clip-path: inset(55px, 0px, 130px, 0);
-  }
-  60% {
-    clip-path: inset(33px, 0px, 85px, 0);
-  }
-  80% {
-    clip-path: inset(120px, 0px, 45px, 0);
-  }
-  100% {
-    clip-path: inset(75px, 0px, 60px, 0);
-    transform: skew(-0.7deg);
-  }
-}
-
-/* after 가상요소의 잘림 및 위치 이동 효과 강화 */
-@keyframes glitch-loop-2 {
-  0% {
-    top: -5px;
-    left: 5px;
-    clip-path: inset(79px, 0px, 105px, 0);
-  }
-  20% {
-    top: 5px;
-    left: -5px;
-    clip-path: inset(20px, 0px, 140px, 0);
-  }
-  40% {
-    top: -3px;
-    left: 3px;
-    clip-path: inset(100px, 0px, 20px, 0);
-  }
-  60% {
-    top: 3px;
-    left: -3px;
-    clip-path: inset(130px, 0px, 5px, 0);
-  }
-  80% {
-    top: -6px;
-    left: 6px;
-    clip-path: inset(40px, 0px, 80px, 0);
-  }
-  100% {
-    top: 6px;
-    left: -6px;
-    clip-path: inset(90px, 0px, 70px, 0);
-  }
 }
