@@ -12,17 +12,17 @@
     />
     <style>
       :root {
-        --background-color: #000000;
-        --text-color: #ffffff;
-        --tape-yellow: #facc15; /* Tailwind Yellow 400 */
-        --tape-black: #18181b; /* Tailwind Zinc 900 */
-        --glitch-cyan: #00ffff;
-        --glitch-magenta: #ff00ff;
+        --notfound-background-color: #000000;
+        --notfound-text-color: #ffffff;
+        --notfound-tape-yellow: #facc15; /* Tailwind Yellow 400 */
+        --notfound-tape-black: #18181b; /* Tailwind Zinc 900 */
+        --notfound-glitch-cyan: #00ffff;
+        --notfound-glitch-magenta: #ff00ff;
       }
 
       body {
-        background-color: var(--background-color);
-        color: var(--text-color);
+        background-color: var(--notfound-background-color);
+        color: var(--notfound-text-color);
         font-family: "Source Sans 3", sans-serif;
         display: flex;
         justify-content: center;
@@ -35,7 +35,6 @@
 
       .container {
         position: relative;
-
         z-index: 40;
       }
 
@@ -57,20 +56,20 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background: var(--background-color);
+        background: var(--notfound-background-color);
         clip: rect(0, 0, 0, 0);
       }
 
       .glitch::before {
         left: -3px; /* 오프셋 증가 */
-        text-shadow: 3px 0 var(--glitch-magenta);
+        text-shadow: 3px 0 var(--notfound-glitch-magenta);
         /* 애니메이션 속도 증가 */
         animation: glitch-loop-1 0.8s infinite ease-in-out alternate-reverse;
       }
 
       .glitch::after {
         left: 3px; /* 오프셋 증가 */
-        text-shadow: -3px 0 var(--glitch-cyan);
+        text-shadow: -3px 0 var(--notfound-glitch-cyan);
         /* 애니메이션 속도 증가 */
         animation: glitch-loop-2 0.8s infinite ease-in-out alternate-reverse;
       }
@@ -84,14 +83,14 @@
         }
         25% {
           color: #e0e0e0;
-          text-shadow: 0 0 10px var(--glitch-cyan);
+          text-shadow: 0 0 10px var(--notfound-glitch-cyan);
         }
         50% {
           color: white;
         }
         75% {
           color: #d0d0d0;
-          text-shadow: 0 0 10px var(--glitch-magenta);
+          text-shadow: 0 0 10px var(--notfound-glitch-magenta);
         }
       }
 
@@ -166,8 +165,8 @@
       .home-link {
         display: inline-block;
         padding: 12px 24px;
-        border: 2px solid var(--text-color);
-        color: var(--text-color);
+        border: 2px solid var(--notfound-text-color);
+        color: var(--notfound-text-color);
         text-decoration: none;
         font-weight: 700;
         transition:
@@ -176,8 +175,8 @@
       }
 
       .home-link:hover {
-        background-color: var(--text-color);
-        color: var(--background-color);
+        background-color: var(--notfound-text-color);
+        color: var(--notfound-background-color);
       }
 
       /* --- 출입 통제선 효과 --- */
@@ -196,18 +195,18 @@
         overflow: hidden;
         height: 60px;
         width: 150%;
-        background-color: var(--tape-yellow);
+        background-color: var(--notfound-tape-yellow);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.5rem;
         font-weight: 900;
-        color: var(--tape-black);
+        color: var(--notfound-tape-black);
         white-space: nowrap;
         letter-spacing: 2px;
-        border-top: 3px solid var(--tape-black);
-        border-bottom: 3px solid var(--tape-black);
+        border-top: 3px solid var(--notfound-tape-black);
+        border-bottom: 3px solid var(--notfound-tape-black);
         box-sizing: border-box;
         pointer-events: none;
       }
@@ -223,8 +222,8 @@
           45deg,
           transparent,
           transparent 10px,
-          var(--tape-black) 10px,
-          var(--tape-black) 20px
+          var(--notfound-tape-black) 10px,
+          var(--notfound-tape-black) 20px
         );
         z-index: 1;
       }
