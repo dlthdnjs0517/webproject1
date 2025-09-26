@@ -33,6 +33,9 @@ function MainHeader() {
   const role = useSelector((state) => state.auth.role);
   const location = useLocation();
 
+  // 어두운 배경 페이지 판단 (홈페이지만 어두운 배경)
+  const isDarkBg = location.pathname === "/";
+
   const updateMenus = async () => {
     const data = await fetchMenus();
     setMenus(data);
@@ -79,8 +82,9 @@ function MainHeader() {
   const toggleSection = (id) => {
     setOpenId((prev) => (prev === id ? null : id));
   };
+
   return (
-    <header>
+    <header className={isDarkBg ? "dark-bg" : "light-bg"}>
       <nav className="gnb">
         {/* global navigation bar, 전체 상단 메뉴바 */}
         <div className="gnb-menu">
@@ -94,16 +98,22 @@ function MainHeader() {
             </h1>
             <div className="gnb-right">
               {role === "guest" ? (
-                <button onClick={() => setLoginOpen(true)} className="login">
+                <button
+                  onClick={() => setLoginOpen(true)}
+                  className={`login ${isDarkBg ? "white-text" : "black-text"}`}
+                >
                   로그인
                 </button>
               ) : (
-                <button onClick={handleLogout} className="login">
+                <button
+                  onClick={handleLogout}
+                  className={`login ${isDarkBg ? "white-text" : "black-text"}`}
+                >
                   로그아웃
                 </button>
               )}
               <button
-                className="hamburger-btn"
+                className={`hamburger-btn ${isDarkBg ? "white-text" : "black-text"}`}
                 aria-label="메뉴 열기"
                 aria-expanded={isMenuOpen}
                 onClick={() => setMenuOpen(true)}
