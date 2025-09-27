@@ -200,34 +200,13 @@ export default function MissionState() {
           <h2 className="text-6xl md:text-8xl font-bold tracking-widest text-gray-800 mb-4">
             BEYOND
           </h2>
-          <div className="w-16 h-1 bg-gray-400 mx-auto"></div>
-
-          {/* 페이지 인디케이터 */}
-          <div className="flex justify-center mt-8 space-x-2">
-            {rightPageData.map((_, index) => (
-              <div
-                key={index}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentRightPage ? "bg-gray-700" : "bg-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-
-          {/* 왼쪽 섹션 설명 */}
-          <div className="mt-8 text-gray-600 text-sm">
-            <p>오른쪽 페이지를 넘겨보세요</p>
-            <p className="text-xs mt-2">
-              ({currentRightPage + 1}/{rightPageData.length})
-            </p>
-          </div>
         </div>
       </div>
 
       {/* 오른쪽 슬라이딩 섹션 (일 - Day) */}
       <div
         ref={rightSectionRef}
-        className={`w-full md:w-1/2 bg-black text-white flex flex-col justify-center p-12 cursor-pointer transition-all duration-300 ${
+        className={`relative w-full md:w-1/2 bg-black text-white flex flex-col justify-center p-12 cursor-pointer transition-all duration-300 ${
           isRightSectionActive ? "ring-4 ring-blue-500 ring-opacity-50" : ""
         }`}
       >
@@ -250,19 +229,19 @@ export default function MissionState() {
               className={`transition-colors duration-300 ${
                 isRightSectionActive ? "text-blue-400" : "text-gray-500"
               }`}
-            >
-              {isRightSectionActive
-                ? "🎯 활성화됨! 스크롤해보세요"
-                : "마우스를 올려서 활성화하세요"}
-            </p>
-            <div className="flex items-center mt-2">
-              <span>↕️ 스크롤</span>
-              <span className="mx-2">|</span>
-              <span>
-                {currentRightPage + 1} / {rightPageData.length}
-              </span>
-            </div>
+            ></p>
           </div>
+        </div>
+        {/* 페이지 인디케이터 */}
+        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {rightPageData.map((_, index) => (
+            <div
+              key={index}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentRightPage ? "bg-gray-700" : "bg-gray-300"
+              }`}
+            />
+          ))}
         </div>
       </div>
 
@@ -274,13 +253,6 @@ export default function MissionState() {
       >
         <div className="w-full h-full bg-gradient-to-r from-transparent to-white/10"></div>
       </div>
-
-      {/* 오른쪽 섹션 활성화 표시 */}
-      {isRightSectionActive && (
-        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white px-2 py-1 text-xs rounded-l-md">
-          활성화됨
-        </div>
-      )}
     </div>
   );
 }
