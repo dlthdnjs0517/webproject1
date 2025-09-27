@@ -1,5 +1,6 @@
 import MainHeader from "../../components/MainHeader/MainHeader";
 import AddEmployeeModal from "./AddEmployeeModal";
+import CombinedEffect from "./CombinedEffect";
 import axios from "../../lib/axios";
 import { useSelector } from "react-redux";
 import React, { useState, useMemo, useEffect } from "react";
@@ -9,10 +10,17 @@ export default function OrgChart() {
   const [activeTab, setActiveTab] = useState("search");
   const [showAddModal, setShowAddModal] = useState(false);
 
+  // 단일 효과 상태로 간소화
+  const [effectEmployee, setEffectEmployee] = useState(null);
+  const [isRabbitPhase, setIsRabbitPhase] = useState(false);
+
   const [employees, setEmployees] = useState([]);
   const [departments, setDepartments] = useState([]);
 
   const { role } = useSelector((state) => state.auth);
+
+  // 특수 효과를 가진 특정 직원들
+  const specialEmployees = ["김솔음"];
 
   // 직원 + 부서 데이터 불러오기
   useEffect(() => {
@@ -44,9 +52,28 @@ export default function OrgChart() {
     );
   }, [searchTerm, employees]);
 
+  const handleCardHover = (employee) => {
+    // 특수 직원에게만 효과 적용
+    if (specialEmployees.includes(employee.name)) {
+      setEffectEmployee(employee);
+    }
+  };
+
+  const handleEffectComplete = () => {
+    setEffectEmployee(null);
+  };
+
   return (
     <>
       <MainHeader />
+
+      {/* 통합된 효과 컴포넌트 */}
+      <CombinedEffect
+        employee={effectEmployee}
+        onComplete={handleEffectComplete}
+        onRabbitPhase={setIsRabbitPhase}
+      />
+
       <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-blue-100 pt-20 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-2xl border border-gray-100">
           {/* 큰 제목 */}
@@ -110,47 +137,65 @@ export default function OrgChart() {
 
               {/* 직원 카드 */}
               {filteredEmployees.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {filteredEmployees.map((employee) => (
-                    <div
-                      key={employee._id}
-                      className="group bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-md hover:shadow-2xl transition transform hover:-translate-y-1 p-8 border border-gray-100"
-                    >
-                      <div className="flex items-center gap-5">
-                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-white font-bold text-2xl shadow-inner">
-                          {employee.name[0]}
+                <div className="relative">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {filteredEmployees.map((employee) => (
+                      <div
+                        key={employee._id}
+                        className="relative group bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-md hover:shadow-2xl transition transform hover:-translate-y-1 p-8 border border-gray-100 cursor-pointer"
+                        onMouseEnter={() => handleCardHover(employee)}
+                      >
+                        {/* 토끼를 이 카드에만 표시 */}
+                        {effectEmployee?._id === employee._id &&
+                          isRabbitPhase && (
+                            <div className="absolute inset-0 flex items-center justify-center z-50 rounded-2xl">
+                              <img
+                                src="/rabbit.png"
+                                alt="토끼"
+                                className="w-24 h-24 animate-bounce"
+                                style={{
+                                  filter:
+                                    "drop-shadow(0 4px 8px rgba(0,0,0,0.3))",
+                                }}
+                              />
+                            </div>
+                          )}
+                        <div className="flex items-center gap-5">
+                          <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-white font-bold text-2xl shadow-inner">
+                            {employee.name[0]}
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">
+                              {employee.name}
+                            </h3>
+                            <p className="text-sm text-gray-500">
+                              {employee.position}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">
-                            {employee.name}
-                          </h3>
-                          <p className="text-sm text-gray-500">
-                            {employee.position}
+                        <div className="mt-6 space-y-2">
+                          <p className="text-sm text-gray-600">
+                            부서:{" "}
+                            <span className="font-medium">
+                              {employee.department}
+                            </span>
                           </p>
+                          <p className="text-sm text-gray-600">
+                            담당 업무:{" "}
+                            <span className="font-medium">
+                              {employee.assignedTask || "미정"}
+                            </span>
+                          </p>
+                          <a
+                            href={`mailto:${employee.email}`}
+                            className="text-sm text-indigo-600 hover:underline"
+                          >
+                            {employee.email}
+                          </a>
                         </div>
                       </div>
-                      <div className="mt-6 space-y-2">
-                        <p className="text-sm text-gray-600">
-                          부서:{" "}
-                          <span className="font-medium">
-                            {employee.department}
-                          </span>
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          담당 업무:{" "}
-                          <span className="font-medium">
-                            {employee.assignedTask || "미정"}
-                          </span>
-                        </p>
-                        <a
-                          href={`mailto:${employee.email}`}
-                          className="text-sm text-indigo-600 hover:underline"
-                        >
-                          {employee.email}
-                        </a>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <div className="text-center py-24">
