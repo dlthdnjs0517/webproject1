@@ -9,6 +9,8 @@ import MainHeader from "../../components/MainHeader/MainHeader";
 import CapsuleContent from "../../components/Capsule/CapsuleContent";
 import MissionState from "../../components/Mission/MissonState";
 import RetroPopup from "../../components/Popup/RetroPopup";
+import ImageMarquee from "../../components/ImageMarquee/ImageMarquee";
+import Footer from "../../components/Footer/Footer";
 
 export default function Home() {
   const swiperRef = useRef(null);
@@ -247,14 +249,17 @@ export default function Home() {
         </SwiperSlide>
 
         <SwiperSlide>
-          <div className="h-screen w-screen flex items-center justify-center bg-gray-100 relative">
-            <div className="text-center">
-              <p className="text-2xl text-gray-500 mb-4">More content here</p>
-              <p className="text-sm text-gray-400 mb-8">
-                현재 슬라이드: {currentSlide + 1}
-              </p>
+          <section className="panel h-screen w-screen flex flex-col">
+            {/* 파란색 영역 - 협력업체 마키 */}
+            <div className="h-1/2 bg-blue-400">
+              <ImageMarquee />
             </div>
-          </div>
+
+            {/* 노란색 영역 - 푸터 */}
+            <div className="h-1/2 bg-yellow-300">
+              <Footer />
+            </div>
+          </section>
         </SwiperSlide>
       </Swiper>
       {role === "character" && <RetroPopup isLoggedIn={isLoggedIn} />}
