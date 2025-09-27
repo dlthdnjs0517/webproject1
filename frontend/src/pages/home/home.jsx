@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
+import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel, Keyboard } from "swiper/modules";
 import "swiper/css";
@@ -7,6 +8,7 @@ import "swiper/css";
 import MainHeader from "../../components/MainHeader/MainHeader";
 import CapsuleContent from "../../components/Capsule/CapsuleContent";
 import MissionState from "../../components/Mission/MissonState";
+import RetroPopup from "../../components/Popup/RetroPopup";
 
 export default function Home() {
   const swiperRef = useRef(null);
@@ -16,6 +18,9 @@ export default function Home() {
     complete: false,
   });
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const { role } = useSelector((state) => state.auth);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   // 첫 페이지 스크롤 처리를 위한 ref
   const scrollAccumulator = useRef(0);
@@ -252,6 +257,7 @@ export default function Home() {
           </div>
         </SwiperSlide>
       </Swiper>
+      {role === "character" && <RetroPopup isLoggedIn={isLoggedIn} />}
 
       <style>{`
         body { overflow: hidden; }
