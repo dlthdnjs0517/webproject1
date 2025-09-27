@@ -1,0 +1,159 @@
+.simple-footer-container {
+  background-color: #778da9;
+  color: #e0e1dd;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+}
+
+.simple-footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* 메인 섹션 */
+.footer-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 3rem;
+  align-items: start;
+}
+
+.company-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.company-name {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.company-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #4b5563;
+  max-width: 400px;
+}
+
+.contact-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.contact-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.contact-value {
+  font-size: 0.95rem;
+}
+
+/* 하단 섹션 */
+.footer-bottom {
+  border-top: 2px solid rgba(31, 41, 55, 0.1);
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-link {
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #1f2937;
+  text-decoration: underline;
+}
+
+.divider {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.copyright {
+  margin: 0;
+}
+
+.copyright p {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .simple-footer-container {
+    padding: 1.5rem;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .company-name {
+    font-size: 1.5rem;
+  }
+
+  .company-description {
+    font-size: 1rem;
+    max-width: none;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .company-name {
+    font-size: 1.25rem;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .divider {
+    display: none;
+  }
+}
