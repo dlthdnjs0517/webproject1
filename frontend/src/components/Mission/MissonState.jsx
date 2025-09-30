@@ -206,9 +206,7 @@ export default function MissionState() {
       {/* 오른쪽 슬라이딩 섹션 (일 - Day) */}
       <div
         ref={rightSectionRef}
-        className={`relative w-full md:w-1/2 bg-black text-white flex flex-col justify-center p-12 cursor-pointer transition-all duration-300 ${
-          isRightSectionActive ? "ring-4 ring-blue-500 ring-opacity-50" : ""
-        }`}
+        className=" relative w-full md:w-1/2 bg-black text-white flex flex-col justify-center p-12 cursor-pointer transition-all duration-300 "
       >
         <div className="space-y-6">
           <h3 className="text-4xl md:text-5xl font-bold text-white">
