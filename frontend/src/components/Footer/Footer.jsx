@@ -11,10 +11,8 @@ const Footer = () => {
         {/* 메인 정보 */}
         <div className="footer-main section-animation">
           <div className="company-info">
-            <h3 className="company-name">BEYOND INNOVATION MEDICINE</h3>
-            <p className="company-description">
-              인류의 건강한 미래를 위한 혁신적인 의약품 개발
-            </p>
+            <h3 className="company-name">백일몽 주식회사</h3>
+            <p className="company-description">BEYOND INNOVATION MEDICINE</p>
           </div>
 
           <div className="contact-summary">

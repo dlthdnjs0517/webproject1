@@ -5,7 +5,7 @@ import "./ImageMarquee.css";
 const ImageMarquee = () => {
   const marqueeRef = useRef(null);
 
-  // 협력업체 로고 이미지 배열 - 실제 프로젝트에서는 PNG 파일 경로로 변경해주세요
+  // 협력업체 로고 이미지 배열
   const partnerLogos = [
     "/images/partner1.png",
     "/images/partner2.png",
@@ -31,7 +31,7 @@ const ImageMarquee = () => {
   return (
     <div className="partners-marquee-container section-animation">
       <div className="partners-content">
-        <h2 className="partners-title section-animation">Our Partners</h2>
+        <h2 className="partners-title section-animation">OUR PARTNERS</h2>
         <p className="partners-subtitle section-animation">
           함께 성장하는 파트너사
         </p>
