@@ -40,17 +40,73 @@ export default function MissionState() {
   const [isScrolling, setIsScrolling] = useState(false);
   const [isRightSectionActive, setIsRightSectionActive] = useState(false);
 
+  const lastWheelTimeRef = useRef(0);
+  const currentRightPageRef = useRef(0);
+  const isScrollingRef = useRef(false);
+  const isRightSectionActiveRef = useRef(false);
+
+  useEffect(() => {
+    currentRightPageRef.current = currentRightPage;
+  }, [currentRightPage]);
+
+  useEffect(() => {
+    isScrollingRef.current = isScrolling;
+  }, [isScrolling]);
+
+  useEffect(() => {
+    isRightSectionActiveRef.current = isRightSectionActive;
+  }, [isRightSectionActive]);
+
+  // 페이지 전환 애니메이션
+  const animateRightPage = (newPageIndex) => {
+    const rightSection = rightSectionRef.current;
+    if (!rightSection || isScrollingRef.current) return;
+
+    console.log(
+      "[MissionState] 페이지 전환:",
+      currentRightPageRef.current,
+      "->",
+      newPageIndex
+    );
+    setIsScrolling(true);
+    setCurrentRightPage(newPageIndex);
+
+    // 현재 페이지 fade out
+    gsap.to(rightSection.children, {
+      opacity: 0,
+      y: -20,
+      duration: 0.3,
+      stagger: 0.05,
+      onComplete: () => {
+        // 새 페이지 fade in
+        gsap.fromTo(
+          rightSection.children,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            stagger: 0.1,
+            ease: "power2.out",
+            onComplete: () => {
+              setIsScrolling(false);
+            },
+          }
+        );
+      },
+    });
+  };
+
   useEffect(() => {
     const container = containerRef.current;
     const rightSection = rightSectionRef.current;
     if (!container || !rightSection) return;
 
-    let lastWheelTime = 0;
     const wheelThrottle = 300; // 스크롤 감도 조정
 
     // 오른쪽 섹션에서의 휠 이벤트 처리
     const handleRightSectionWheel = (e) => {
-      if (!isRightSectionActive) return;
+      if (!isRightSectionActiveRef.current) return;
 
       e.preventDefault();
       e.stopPropagation(); // 이벤트 버블링 차단하여 전체 페이지 스크롤 방지
@@ -58,17 +114,19 @@ export default function MissionState() {
       const now = Date.now();
 
       // 스크롤 중이거나 너무 빠른 연속 스크롤 방지
-      if (isScrolling || now - lastWheelTime < wheelThrottle) {
+      if (
+        isScrollingRef.current ||
+        now - lastWheelTimeRef.current < wheelThrottle
+      ) {
         return;
       }
 
       const deltaY = e.deltaY;
-      console.log("[MissionState] 오른쪽 섹션 스크롤 감지:", deltaY);
 
       // 스크롤 방향 결정
       if (Math.abs(deltaY) < 10) return;
       const direction = deltaY > 0 ? 1 : -1; // 1: 아래, -1: 위
-      const nextPage = currentRightPage + direction;
+      const nextPage = currentRightPageRef.current + direction;
 
       // 페이지 범위 체크
       if (nextPage < 0) {
@@ -91,68 +149,25 @@ export default function MissionState() {
 
       // 오른쪽 페이지 전환 애니메이션
       animateRightPage(nextPage);
-      lastWheelTime = now;
-    };
-
-    // 페이지 전환 애니메이션
-    const animateRightPage = (newPageIndex) => {
-      if (isScrolling) return;
-
-      console.log(
-        "[MissionState] 페이지 전환:",
-        currentRightPage,
-        "->",
-        newPageIndex
-      );
-      setIsScrolling(true);
-      setCurrentRightPage(newPageIndex);
-
-      // 현재 페이지 fade out
-      gsap.to(rightSection.children, {
-        opacity: 0,
-        y: -20,
-        duration: 0.3,
-        stagger: 0.05,
-        onComplete: () => {
-          // 새 페이지 fade in
-          gsap.fromTo(
-            rightSection.children,
-            { opacity: 0, y: 20 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.4,
-              stagger: 0.1,
-              ease: "power2.out",
-              onComplete: () => {
-                setIsScrolling(false);
-              },
-            }
-          );
-        },
-      });
+      lastWheelTimeRef.current = now;
     };
 
     // 오른쪽 섹션 마우스 진입/이탈 처리
     const handleRightMouseEnter = () => {
-      console.log("[MissionState] 오른쪽 섹션 활성화");
       setIsRightSectionActive(true);
     };
 
     const handleRightMouseLeave = () => {
-      console.log("[MissionState] 오른쪽 섹션 비활성화");
       setIsRightSectionActive(false);
     };
 
     // 전체 컨테이너 휠 이벤트 (오른쪽 섹션이 활성화되지 않았을 때만)
     const handleContainerWheel = (e) => {
-      if (isRightSectionActive) {
+      if (isRightSectionActiveRef.current) {
         // 오른쪽 섹션이 활성화되어 있으면 이벤트를 오른쪽으로 위임
         return;
       }
-
       // 오른쪽 섹션이 비활성화되어 있으면 전체 페이지 스크롤 허용
-      console.log("[MissionState] 전체 페이지 스크롤 허용");
     };
 
     // 이벤트 리스너 등록
@@ -164,6 +179,18 @@ export default function MissionState() {
     container.addEventListener("wheel", handleContainerWheel, {
       passive: true,
     });
+
+    return () => {
+      rightSection.removeEventListener("mouseenter", handleRightMouseEnter);
+      rightSection.removeEventListener("mouseleave", handleRightMouseLeave);
+      rightSection.removeEventListener("wheel", handleRightSectionWheel);
+      container.removeEventListener("wheel", handleContainerWheel);
+    };
+  }, []);
+
+  useEffect(() => {
+    const rightSection = rightSectionRef.current;
+    if (!rightSection) return;
 
     // 초기 애니메이션
     gsap.fromTo(
@@ -178,14 +205,7 @@ export default function MissionState() {
         delay: 0.3,
       }
     );
-
-    return () => {
-      rightSection.removeEventListener("mouseenter", handleRightMouseEnter);
-      rightSection.removeEventListener("mouseleave", handleRightMouseLeave);
-      rightSection.removeEventListener("wheel", handleRightSectionWheel);
-      container.removeEventListener("wheel", handleContainerWheel);
-    };
-  }, [currentRightPage, isScrolling, isRightSectionActive]);
+  }, [currentRightPage]);
 
   const currentData = rightPageData[currentRightPage];
 
@@ -220,15 +240,6 @@ export default function MissionState() {
               {text}
             </p>
           ))}
-
-          {/* 스크롤 힌트 */}
-          <div className="mt-12 text-gray-500 text-sm">
-            <p
-              className={`transition-colors duration-300 ${
-                isRightSectionActive ? "text-blue-400" : "text-gray-500"
-              }`}
-            ></p>
-          </div>
         </div>
         {/* 페이지 인디케이터 */}
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
@@ -236,7 +247,7 @@ export default function MissionState() {
             <div
               key={index}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentRightPage ? "bg-gray-700" : "bg-gray-300"
+                index === currentRightPage ? "bg-white" : "bg-gray-600"
               }`}
             />
           ))}
@@ -245,11 +256,19 @@ export default function MissionState() {
 
       {/* 페이지 전환 이펙트 */}
       <div
-        className={`absolute right-0 top-0 w-1/2 h-full pointer-events-none transition-opacity duration-300 ${
+        className={`absolute right-0 top-0 w-1/2 h-full pointer-events-none transition-all duration-600 ${
           isScrolling ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div className="w-full h-full bg-gradient-to-r from-transparent to-white/10"></div>
+        <div className="w-full h-full relative overflow-hidden">
+          <div
+            className={`absolute inset-0 bg-gradient-to-r from-cyan-400/30 to-blue-500/40 transform transition-transform duration-1000 ${
+              isScrolling
+                ? "skew-x-12 translate-x-0"
+                : "skew-x-0 -translate-x-full"
+            }`}
+          ></div>
+        </div>
       </div>
     </div>
   );
