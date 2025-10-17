@@ -29,7 +29,6 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      console.log("🌍 요청 Origin:", origin);
       // 1. 요청의 출처(origin)가 allowedOrigins 배열에 포함되어 있는가?
       // 2. Postman 같은 도구에서 보내서 출처(origin)가 없는 요청인가?
       // -> 둘 중 하나라도 참이면 요청을 허용한다.
