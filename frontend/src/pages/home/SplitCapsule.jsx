@@ -259,8 +259,7 @@ function SplitCapsule({ isLoggedIn }) {
           // 진행된 애니메이션이 있다면 역재생
           timelineRef.current.reverse();
         } else {
-          // 이미 초기 상태라면 별도 처리 없음
-          console.log("[Event] Already at initial state");
+          // 초기상태면 별도의 동작 처리 없음
         }
       }
     };

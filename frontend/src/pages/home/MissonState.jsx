@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+// import TextBackground from "./GlassText";
 
 // 오른쪽 페이지 데이터
 const rightPageData = [
@@ -33,7 +34,7 @@ const rightPageData = [
   },
 ];
 
-export default function MissionState() {
+function MissionState() {
   const containerRef = useRef(null);
   const rightSectionRef = useRef(null);
   const [currentRightPage, setCurrentRightPage] = useState(0);
@@ -130,18 +131,12 @@ export default function MissionState() {
 
       // 페이지 범위 체크
       if (nextPage < 0) {
-        console.log(
-          "[MissionState] 첫 페이지에서 위로 스크롤 -> 이전 섹션 이동 신호"
-        );
         // 첫 번째 페이지에서 위로 스크롤 시 home.jsx에 신호
         window.dispatchEvent(new CustomEvent("missionScrollUp"));
         return;
       }
 
       if (nextPage >= rightPageData.length) {
-        console.log(
-          "[MissionState] 마지막 페이지에서 아래로 스크롤 -> 다음 섹션 이동 신호"
-        );
         // 마지막 페이지에서 아래로 스크롤 시 home.jsx에 신호
         window.dispatchEvent(new CustomEvent("missionScrollDown"));
         return;
@@ -273,3 +268,5 @@ export default function MissionState() {
     </div>
   );
 }
+
+export default MissionState;

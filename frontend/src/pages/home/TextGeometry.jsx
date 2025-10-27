@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import * as THREE from "three";
 
 // 이 컴포넌트는 파티클의 '최종 위치' 배열만 생성하여 onReady로 전달합니다.
 // 렌더링은 하지 않으므로 return null; 입니다.

@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Environment } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import SplitCapsule from "./SplitCapsule";
 
 export default function CapsuleContent() {
