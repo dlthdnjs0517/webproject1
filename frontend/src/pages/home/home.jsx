@@ -6,10 +6,10 @@ import "swiper/css";
 
 // 페이지 컴포넌트들
 import MainHeader from "../../components/MainHeader/MainHeader";
-import CapsuleContent from "./CapsuleContent";
-import MissionState from "./MissonState";
+import CapsuleContent from "./Capsule/CapsuleContent";
+import MissionState from "./MissionState/MissonState";
 import RetroPopup from "../../components/Popup/RetroPopup";
-import ImageMarquee from "./ImageMarquee";
+import ImageMarquee from "./ImageMarquee/ImageMarquee";
 import Footer from "../../components/Footer/Footer";
 
 export default function Home() {
