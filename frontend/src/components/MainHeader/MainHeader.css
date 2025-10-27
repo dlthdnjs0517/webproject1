@@ -150,6 +150,9 @@ header .gnb .gnb-menu .header-layout .gnb-right {
   font-weight: 500;
   box-sizing: border-box;
 }
+.single-link {
+  margin-bottom: 12.8px;
+}
 
 .menu-content-wrapper {
   display: flex;
@@ -221,7 +224,7 @@ header .gnb .gnb-menu .header-layout .gnb-right {
 
 .submenu-links {
   list-style: none;
-  padding: 0.5rem 0 0.5rem 3.75rem;
+  padding: 0.5rem 0 0.3rem 3.75rem;
   margin: 0;
   max-height: 0;
   overflow: hidden;
