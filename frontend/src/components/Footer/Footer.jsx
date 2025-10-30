@@ -6,13 +6,15 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="simple-footer-container">
-      <div className="simple-footer-content">
+    <footer className="footer-container">
+      <div className="footer-content">
         {/* 메인 정보 */}
         <div className="footer-main section-animation">
           <div className="company-info">
-            <h3 className="company-name">백일몽 주식회사</h3>
-            <p className="company-description">BEYOND INNOVATION MEDICINE</p>
+            <h3 className="company-name hidden md:block">백일몽 주식회사</h3>
+            <p className="company-description hidden md:block">
+              BEYOND INNOVATION MEDICINE
+            </p>
           </div>
 
           <div className="contact-summary">
