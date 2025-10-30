@@ -1,14 +1,14 @@
-.simple-footer-container {
+.footer-container {
   background-color: #778da9;
   color: #e0e1dd;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   padding: 2rem;
 }
 
-.simple-footer-content {
+.footer-content {
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
@@ -110,7 +110,7 @@
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
-  .simple-footer-container {
+  .footer-container {
     padding: 1.5rem;
   }
 
