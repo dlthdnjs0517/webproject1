@@ -71,7 +71,7 @@ export default function ChatbotInterface({ onClose }) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col rounded-3xl overflow-hidden h-full bg-white">
       {/* 헤더 */}
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 flex justify-between items-center">
         <div>
