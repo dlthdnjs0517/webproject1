@@ -15,7 +15,7 @@ const ChatbotButton = () => {
         </div>
       )}
 
-      {/* Neumorphism 플로팅 버튼 */}
+      {/* glass-morphism 플로팅 버튼 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="
@@ -23,15 +23,14 @@ const ChatbotButton = () => {
           w-16 h-16
           flex items-center justify-center
           transition-all duration-300
+		  backdrop-blur-2xl
           group
-          neuro-button
         "
         style={{
-          borderRadius: "50px",
-          background: "#c9d3e9",
-          boxShadow: isOpen
-            ? "inset 20px 20px 60px #abb3c6, inset -20px -20px 60px #e7f3ff"
-            : "20px 20px 60px #abb3c6, -20px -20px 60px #e7f3ff",
+          borderRadius: "40px",
+          background: "rgba(255,255,255,0.35)",
+          boxShadow:
+            "inset 0 3px 0 rgba(255, 255, 255, 0.2), inset 0 -3px 0 rgba(255,255,255,0.2),inset 0 0 20px 20px rgba(255, 255, 255, 0.5) ",
         }}
         aria-label={isOpen ? "챗봇 닫기" : "챗봇 열기"}
       >
@@ -58,10 +57,10 @@ const ChatbotButton = () => {
             pointer-events-none
           "
             style={{
-              boxShadow: "5px 5px 20px #abb3c6, -5px -5px 20px #e7f3ff",
+              boxShadow: "-20px -20px 60px #abb3c6, 20px 20px 60px #e7f3ff",
             }}
           >
-            💬 CHAT AI와 대화하기
+            💬 AI CHATBOT과 대화하기
           </span>
         )}
       </button>
