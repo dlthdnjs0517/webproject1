@@ -18,7 +18,7 @@ mongoose
   });
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.json()); // JSON 파싱하는 코드
 
 const allowedOrigins = [
   "http://localhost:5173", // 내 컴퓨터에서 개발할 때
@@ -57,6 +57,9 @@ app.use("/api/org", orgChartRouter);
 
 const menuRouter = require("./routes/menuRoute.js");
 app.use("/api/menu", menuRouter);
+
+const chatRouter = require("./routes/chatRoute.js");
+app.use("/api/geminichat", chatRouter);
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "API endpoint not found" });
