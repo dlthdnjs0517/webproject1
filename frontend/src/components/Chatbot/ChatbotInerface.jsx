@@ -1,4 +1,5 @@
 // components/Chatbot/ChatbotInterface.jsx
+import axios from "../../lib/axios";
 import { useState, useRef, useEffect } from "react";
 
 export default function ChatbotInterface({ onClose }) {
@@ -11,6 +12,8 @@ export default function ChatbotInterface({ onClose }) {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -35,16 +38,17 @@ export default function ChatbotInterface({ onClose }) {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/chatbot/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: userMessage,
-          userId: "user123", // 실제론 로그인 정보
-        }),
+      const response = await axios.post("/api/geminichat", {
+        message: userMessage,
+        sessionId: sessionId,
       });
 
-      const data = await response.json();
+      const data = await response.data; //axios 는 .json 이 아니라 .data 사용
+
+      if (!sessionId && data.sessionId) {
+        setSessionId(data.sessionId);
+        console.log("sessionId 저장:", sessionId);
+      }
 
       setMessages((prev) => [
         ...prev,
@@ -76,7 +80,9 @@ export default function ChatbotInterface({ onClose }) {
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 flex justify-between items-center">
         <div>
           <h3 className="font-bold text-lg">AI CHATBOT</h3>
-          <p className="text-xs opacity-90">궁금한게 있나여?</p>
+          <p className="text-xs opacity-90">
+            이 사이트에 대해 궁금한게 있나여?
+          </p>
         </div>
         <button
           onClick={onClose}
