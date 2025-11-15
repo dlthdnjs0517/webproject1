@@ -38,7 +38,7 @@ export default function ChatbotInterface({ onClose }) {
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/geminichat", {
+      const response = await axios.post("/api/geminichat/chat", {
         message: userMessage,
         sessionId: sessionId,
       });
