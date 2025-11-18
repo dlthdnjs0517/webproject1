@@ -3,13 +3,18 @@ const express = require("express");
 const { GoogleGenAI } = require("@google/genai");
 
 const router = express.Router();
+const fs = require("fs");
+const path = require("path");
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // 모든 클래스가 초기화됨 : new ApiClient, new Models,new Chats(models,apiClient)
-
-//uuid 사용하는 방법
 //const sessionId = uuidv4();
 
+//페르소나 로드
+const personaPath = path.join(__dirname, "../config/persona.json");
+const persona = JSON.parse(fs.readFileSync(personaPath, "utf8")); //json파일 읽기
+
+//첫 세션 저장소
 const chatSessions = new Map();
 
 router.post("/chat", async (req, res) => {
@@ -23,6 +28,7 @@ router.post("/chat", async (req, res) => {
       chat = ai.chats.create({
         model: "gemini-2.5-flash",
         config: {
+          systemInstruction: persona.instructions.join("\n"),
           thinkingConfig: {
             thinkingBudget: 0, //Disable thinking
           },
