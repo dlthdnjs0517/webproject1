@@ -2,10 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const path = require("path");
+// const path = require("path");
 const cors = require("cors");
 const methodOverride = require("method-override");
-const { title } = require("process");
 const port = process.env.PORT || 3000;
 
 mongoose
@@ -22,8 +21,7 @@ app.use(express.json()); // JSON 파싱하는 코드
 
 const allowedOrigins = [
   "http://localhost:5173", // 내 컴퓨터에서 개발할 때
-  "https://daydream-ten.vercel.app/", //vercel 프론트 주소
-  process.env.FRONTEND_URL, // Render 서버에 배포되었을 때
+  "https://daydream-ten.vercel.app", //vercel 프론트 주소
 ];
 
 app.use(
