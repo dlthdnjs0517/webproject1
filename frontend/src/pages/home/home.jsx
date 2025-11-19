@@ -250,12 +250,12 @@ export default function Home() {
 
         <SwiperSlide>
           <section className="panel h-screen w-screen flex flex-col">
-            {/* 파란색 영역 - 협력업체 마키 */}
+            {/* 협력업체 마키 영역*/}
             <div className="h-2/3 bg-blue-400">
               <ImageMarquee />
             </div>
 
-            {/* 노란색 영역 - 푸터 */}
+            {/* 푸터영역 */}
             <div className="h-1/3">
               <Footer />
             </div>

@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router(); //새로운 라우터 객체 생성
@@ -17,7 +16,7 @@ router.post("/login", async (req, res) => {
     if (!user || user.password !== password) {
       return res
         .status(401)
-        .json({ message: "아이디나 패스워드가 잘못 되었습니다" });
+        .json({ message: "아이디나 패스워드가 맞는지 확인하십시오." });
     }
 
     const token = jwt.sign(
