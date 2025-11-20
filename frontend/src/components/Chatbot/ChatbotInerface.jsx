@@ -6,7 +6,7 @@ export default function ChatbotInterface({ onClose }) {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "안녕하세요! BEYOND AI 도우미입니다. 무엇을 도와드릴까요?",
+      content: "안녕하세여! AI 도우미입니다. 무엇을 도와드릴까여?",
       timestamp: new Date(),
     },
   ]);
@@ -15,6 +15,8 @@ export default function ChatbotInterface({ onClose }) {
   const [sessionId, setSessionId] = useState(null);
 
   const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
+  const inputRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -22,11 +24,37 @@ export default function ChatbotInterface({ onClose }) {
 
   useEffect(scrollToBottom, [messages]);
 
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    if (!chatContainer) return;
+
+    const handleWheel = (e) => {
+      e.stopPropagation(); //이벤트 버블링 차단 코드
+    };
+
+    chatContainer.addEventListener("wheel", handleWheel);
+    chatContainer.addEventListener("touchmove", handleWheel);
+
+    return () => {
+      chatContainer.removeEventListener("wheel", handleWheel);
+      chatContainer.removeEventListener("touchmove", handleWheel);
+    };
+  }, []);
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
+    }
+  }, [loading]);
+
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
 
     const userMessage = input.trim();
+
     setInput("");
+
     setMessages((prev) => [
       ...prev,
       {
@@ -75,7 +103,10 @@ export default function ChatbotInterface({ onClose }) {
   };
 
   return (
-    <div className="flex flex-col rounded-3xl overflow-hidden h-full bg-white">
+    <div
+      ref={chatContainerRef}
+      className="flex flex-col rounded-3xl overflow-hidden h-full bg-white"
+    >
       {/* 헤더 */}
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 flex justify-between items-center">
         <div>
@@ -155,6 +186,7 @@ export default function ChatbotInterface({ onClose }) {
         <div className="flex space-x-2">
           <input
             type="text"
+            ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) =>
