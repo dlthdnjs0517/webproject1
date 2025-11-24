@@ -33,6 +33,35 @@ router.post("/addEmployee", async (req, res) => {
   }
 });
 
+router.put("/updateEmployee/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, department, position, email, assignedTask } = req.body;
+    const updatedEmployee = await Employee.findByIdAndUpdate(
+      id,
+      {
+        name,
+        department,
+        position,
+        email,
+        assignedTask,
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedEmployee) {
+      return res.status(404).json({ error: "직원을 찾을 수 없습니다" });
+    }
+    res.json({
+      message: "직원 정보 업데이트 완료",
+      employee: updatedEmployee,
+    });
+  } catch (error) {
+    console.error(err);
+    res.status(500).json({ error: "직원 정보 수정 중 에러가 발생했습니다" });
+  }
+});
+
 router.get("/searchEmployee", async (req, res) => {
   try {
     const keyword = req.query.query;

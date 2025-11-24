@@ -1,15 +1,17 @@
+import React, { useState, useMemo, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import MainHeader from "../../components/MainHeader/MainHeader";
 import AddEmployeeModal from "./AddEmployeeModal";
 import CombinedEffect from "./CombinedEffect";
 import axios from "../../lib/axios";
-import { useSelector } from "react-redux";
-import React, { useState, useMemo, useEffect } from "react";
 
 export default function OrgChart() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("search");
-  const [showAddModal, setShowAddModal] = useState(false);
 
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editEmployee, setEditEmployee] = useState(null);
   // 단일 효과 상태로 간소화
   const [effectEmployee, setEffectEmployee] = useState(null);
   const [isRabbitPhase, setIsRabbitPhase] = useState(false);
@@ -145,6 +147,23 @@ export default function OrgChart() {
                         className="relative group bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-md hover:shadow-2xl transition transform hover:-translate-y-1 p-8 border border-gray-100 cursor-pointer"
                         onMouseEnter={() => handleCardHover(employee)}
                       >
+                        {/* 관리자 전용 수정/삭제 코드 */}
+                        {role === "admin" && (
+                          <div className="absolute top-4 right-4 flex gap-2 transition-opacity duration-200">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditEmployee(employee);
+                                setShowAddModal(true);
+                              }}
+                              className="p-2 bg-white rounded-full shadow-md hover:bg-blue-50 hover:scale-110 transition-all duration-200"
+                              title="수정"
+                            >
+                              <FiEdit className="w-4 h-4 text-blue-600" />
+                            </button>
+                          </div>
+                        )}
+
                         {/* 토끼를 이 카드에만 표시 */}
                         {effectEmployee?._id === employee._id &&
                           isRabbitPhase && (
@@ -215,9 +234,10 @@ export default function OrgChart() {
         </div>
       </div>
 
-      {/* 직원 추가 모달 */}
+      {/* 직원 추가/수정 모달 */}
       {showAddModal && (
         <AddEmployeeModal
+          employee={editEmployee}
           onClose={() => setShowAddModal(false)}
           onSuccess={handleSuccess}
           departments={departments}
