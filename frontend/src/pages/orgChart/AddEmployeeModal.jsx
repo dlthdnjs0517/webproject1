@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import axios from "../../lib/axios";
 
-export default function AddEmployeeModal({ onClose, onSuccess, departments }) {
+export default function AddEmployeeModal({
+  employee = null,
+  onClose,
+  onSuccess,
+  departments,
+}) {
+  const isEditMode = !!employee;
+
   const [form, setForm] = useState({
-    name: "",
-    department: departments[0]?.value || "",
-    position: "",
-    email: "",
-    assignedTask: "",
+    name: employee.name || "",
+    department: employee.department || departments[0]?.value || "",
+    position: employee.position || "",
+    email: employee.email || "",
+    assignedTask: employee.assignedTask || "",
   });
 
   const handleChange = (e) => {
@@ -17,8 +24,15 @@ export default function AddEmployeeModal({ onClose, onSuccess, departments }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/org/addEmployee", form);
-      alert("✅ 직원 등록 완료!");
+      if (isEditMode) {
+        //✅ 수정 모드
+        await axios.put(`api/org/updateEmployee/${employee._id}`, form);
+      } else {
+        //✅ 등록 모드
+        await axios.post("/api/org/addEmployee", form);
+        alert("✅ 직원 등록 완료!");
+      }
+
       onSuccess?.(); // 부모에서 새로고침 or 데이터 리패치
       onClose(); // 모달 닫기
     } catch (err) {
