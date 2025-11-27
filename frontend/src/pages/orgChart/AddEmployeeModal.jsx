@@ -10,11 +10,11 @@ export default function AddEmployeeModal({
   const isEditMode = !!employee;
 
   const [form, setForm] = useState({
-    name: employee.name || "",
-    department: employee.department || departments[0]?.value || "",
-    position: employee.position || "",
-    email: employee.email || "",
-    assignedTask: employee.assignedTask || "",
+    name: employee?.name || "",
+    department: employee?.department || departments[0]?.value || "",
+    position: employee?.position || "",
+    email: employee?.email || "",
+    assignedTask: employee?.assignedTask || "",
   });
 
   const handleChange = (e) => {
@@ -128,17 +128,17 @@ export default function AddEmployeeModal({
           </div>
 
           {/* 버튼 */}
-          <div className="flex justify-between gap-7 mt-6">
+          <div className="flex justify-center gap-14 mt-6">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition"
+              className="bg-gray-300 text-black px-6 py-2 rounded hover:bg-gray-400 transition"
             >
               취소
             </button>
             <button
               type="submit"
-              className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
+              className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition"
             >
               등록
             </button>
