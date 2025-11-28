@@ -12,6 +12,7 @@ export default function OrgChart() {
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [editEmployee, setEditEmployee] = useState(null);
+
   // 단일 효과 상태로 간소화
   const [effectEmployee, setEffectEmployee] = useState(null);
   const [isRabbitPhase, setIsRabbitPhase] = useState(false);
@@ -124,7 +125,10 @@ export default function OrgChart() {
                 {/* 직원 추가 버튼 (Admin만 보임) */}
                 {role === "admin" && (
                   <button
-                    onClick={() => setShowAddModal(true)}
+                    onClick={() => {
+                      setEditEmployee(null);
+                      setShowAddModal(true);
+                    }}
                     className="bg-indigo-600 text-white px-5 py-3 rounded-full shadow-md hover:bg-indigo-700 transition"
                   >
                     직원 추가

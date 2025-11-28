@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../lib/axios";
 
 export default function AddEmployeeModal({
@@ -10,12 +10,34 @@ export default function AddEmployeeModal({
   const isEditMode = !!employee;
 
   const [form, setForm] = useState({
-    name: employee?.name || "",
-    department: employee?.department || departments[0]?.value || "",
-    position: employee?.position || "",
-    email: employee?.email || "",
-    assignedTask: employee?.assignedTask || "",
+    name: "",
+    department: departments[0]?.value || "",
+    position: "",
+    email: "",
+    assignedTask: "",
   });
+
+  useEffect(() => {
+    if (employee) {
+      //수정 모드
+      setForm({
+        name: employee?.name || "",
+        department: employee?.department || departments[0]?.value || "",
+        position: employee?.position || "",
+        email: employee?.email || "",
+        assignedTask: employee?.assignedTask || "",
+      });
+    } else {
+      //추가 모드 - 폼 초기화
+      setForm({
+        name: "",
+        department: departments[0]?.value || "",
+        position: "",
+        email: "",
+        assignedTask: "",
+      });
+    }
+  }, [employee, departments]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
