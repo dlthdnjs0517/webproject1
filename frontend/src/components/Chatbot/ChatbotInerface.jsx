@@ -189,9 +189,7 @@ export default function ChatbotInterface({ onClose }) {
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) =>
-              e.key === "Enter" && !e.shiftKey && sendMessage()
-            }
+            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
             placeholder="메시지를 입력하세요..."
             disabled={loading}
             className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
