@@ -5,6 +5,7 @@ import MainHeader from "../../components/MainHeader/MainHeader";
 import AddEmployeeModal from "./AddEmployeeModal";
 import CombinedEffect from "./CombinedEffect";
 import axios from "../../lib/axios";
+import { ReducerType } from "@reduxjs/toolkit";
 
 export default function OrgChart() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -64,6 +65,24 @@ export default function OrgChart() {
 
   const handleEffectComplete = () => {
     setEffectEmployee(null);
+  };
+
+  // 함수 정의 - employeeId를 받을 준비
+  const handleDelete = async (employeeId) => {
+    //파라미터 이름은 자유!!
+    if (!window.confirm("정말 삭제하시는 건가여?")) return;
+
+    try {
+      await axios.delete(`/api/org/deleteEmployee/${employeeId}`);
+
+      setEmployees((prev) => prev.filter((emp) => emp._id !== employeeId));
+
+      alert("삭제되었어여");
+    } catch (error) {
+      console.error("삭제실패", error);
+      await handleSuccess();
+      alert("⚠️삭제 중 오류가 발생했어여!!!!!!");
+    }
   };
 
   return (
@@ -164,6 +183,16 @@ export default function OrgChart() {
                               title="수정"
                             >
                               <FiEdit className="w-4 h-4 text-blue-600" />
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation;
+                                handleDelete(employee._id);
+                              }}
+                              className="p-2 bg-white rounded-full shadow-md hover:bg-red-50 hover:scale-110 transition-all duration-200"
+                              title="삭제"
+                            >
+                              <FiTrash2 className="w-4 h-4 text-red-600" />
                             </button>
                           </div>
                         )}

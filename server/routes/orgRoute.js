@@ -90,5 +90,18 @@ router.get("/searchEmployee", async (req, res) => {
   }
 });
 
+router.delete("/deleteEmployee/:id", async (req, res) => {
+  try {
+    const result = await Employee.deleteOne({ _id: req.params.id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "직원을 찾을 수 없습니다" });
+    }
+    res.json({ message: "삭제성공", deletedCount: result.deletedCount });
+  } catch (error) {
+    res.status(500).json({ error: "error가 발생했습니다" });
+  }
+});
+
 module.exports = router;
 //작성된 라우터 객체를 저장해서 내보내는 역할을 한다. 바깥에서 사용할 수 있도록
