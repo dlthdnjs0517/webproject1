@@ -38,7 +38,7 @@ const NotFoundPage = () => {
         <div className="glitch" data-text="404">
           404
         </div>
-        <div className="message">PAGE NOT FOUND</div>
+        <div className="message">NOT ALLOWED</div>
         <Link to="/" className="home-link">
           RETURN HOME
         </Link>
