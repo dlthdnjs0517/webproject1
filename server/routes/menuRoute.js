@@ -8,9 +8,9 @@ const menus = [
     title: "기업소개",
     role: ["all"],
     links: [
-      { label: "CEO 인삿말", to: "#" },
-      { label: "회사연혁", to: "#" },
-      { label: "기업이념", to: "#" },
+      { label: "CEO 인삿말", to: "/greeting" },
+      { label: "회사연혁", to: "/history" },
+      { label: "기업이념", to: "/philosophy" },
       { label: "조직도", to: "/orgChart" },
     ],
   },
@@ -19,10 +19,10 @@ const menus = [
     title: "R&D",
     role: ["all"],
     links: [
-      { label: "연구분야", to: "#" },
-      { label: "개발성과", to: "#" },
-      { label: "연구소 소개", to: "#" },
-      { label: "보도자료", to: "#" },
+      { label: "연구분야", to: "/research" },
+      { label: "개발성과", to: "/development" },
+      { label: "연구소 소개", to: "/lab" },
+      { label: "보도자료", to: "/news" },
     ],
   },
   {
@@ -30,10 +30,10 @@ const menus = [
     title: "제품정보",
     role: ["all"],
     links: [
-      { label: "일반의약품", to: "#" },
-      { label: "전문의약품", to: "#" },
-      { label: "의약외품", to: "#" },
-      { label: "건강기능식품", to: "#" },
+      { label: "일반의약품", to: "/otc" },
+      { label: "전문의약품", to: "/prescription" },
+      { label: "의약외품", to: "/quasi-drug" },
+      { label: "건강기능식품", to: "/supplements" },
     ],
   },
   {
@@ -41,23 +41,23 @@ const menus = [
     title: "인재채용",
     role: ["all"],
     links: [
-      { label: "인재상", to: "#" },
-      { label: "직무소개", to: "#" },
-      { label: "인재채용근황", to: "#" },
-      { label: "복리후생", to: "#" },
+      { label: "인재상", to: "/talent" },
+      { label: "직무소개", to: "/jobs" },
+      { label: "인재채용근황", to: "/status" },
+      { label: "복리후생", to: "/benefits" },
     ],
   },
   {
     id: "support",
     title: "고객지원",
     role: ["all"],
-    to: "#",
+    to: "/support",
   },
   {
     id: "items",
     title: "아이템 도감",
     role: ["admin", "character"],
-    to: "#",
+    to: "/items",
   },
 ];
 
