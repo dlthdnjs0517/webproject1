@@ -9,7 +9,10 @@ const tableFields = require("../constants/tableFields");
 
 router.get("/", async (req, res) => {
   try {
-    const employees = await Employee.find();
+    const employees = await Employee.find()
+    .collation({ locale: "ko", strength: 1})
+    .sort({ name: 1 });//name 기준 오름차순 정렬
+    
     res.json({ departments, employees });
   } catch (err) {
     res.status(500).json({ err: "직원 목록 조회 실패" });
