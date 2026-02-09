@@ -9,6 +9,7 @@ import MainHeader from "../../components/MainHeader/MainHeader";
 import CapsuleContent from "./Capsule/CapsuleContent";
 import MissionState from "./MissionState/MissonState";
 import RetroPopup from "../../components/Popup/RetroPopup";
+import ServerNotice from "../../components/Popup/ServerNotice";
 import ImageMarquee from "./ImageMarquee/ImageMarquee";
 import Footer from "../../components/Footer/Footer";
 
@@ -211,6 +212,8 @@ export default function Home() {
 
   return (
     <>
+      {/* 서버 콜드 스타트 안내 팝업 (프론트 전용, 즉시 렌더링) */}
+      <ServerNotice />
       <MainHeader />
       <Swiper
         modules={[Mousewheel, Keyboard]}
